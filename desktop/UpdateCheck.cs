@@ -13,7 +13,9 @@ record UpdateInfo(string Version, string Notes, string HtmlUrl, string AssetUrl,
 static class UpdateCheck
 {
     // Kan overstyres til test (peger på en lokal mock i stedet for GitHub)
-    public static string ApiUrl = "https://api.github.com/repos/BahneGork/file-command-center/releases/latest";
+    // OBS: peger på fork-repoet (team-sync), ikke det stabile file-command-center - de to må aldrig
+    // dele opdateringskanal, så stabile brugere ikke tilbydes en eksperimentel build ved en fejl.
+    public static string ApiUrl = "https://api.github.com/repos/BahneGork/file-command-center-team/releases/latest";
     static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(15) };
 
     static UpdateCheck()
