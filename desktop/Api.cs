@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace CommandCenter;
 
@@ -12,9 +13,12 @@ static class Api
     static int Int(JsonElement b, string k) => b.ValueKind == JsonValueKind.Object && b.TryGetProperty(k, out var v) && v.ValueKind == JsonValueKind.Number ? v.GetInt32() : 0;
     static string Json(object o) => JsonSerializer.Serialize(o);
 
-    static void RequireRegistered(string p)
+    // "teamFolder" sendes med fra siden ved hvert kald, der skal kunne åbne en team-fil - C#-laget
+    // har ingen egen gemt tilstand, S.team.folder i data.json er den ene sandhed om, hvilken mappe der bruges.
+    static void RequireRegistered(string p, string? teamFolder)
     {
-        if (!Store.IsRegistered(p)) throw new ApiError("Stien er ikke registreret i dashboardet");
+        if (!Store.IsRegistered(p) && !TeamStore.IsRegistered(teamFolder, p))
+            throw new ApiError("Stien er ikke registreret i dashboardet");
     }
 
     // Returnerer svaret som JSON-tekst. onProgress bruges kun af /api/update/install til at rapportere downloadfremgang undervejs.
@@ -32,7 +36,7 @@ static class Api
             case "/api/open":
             {
                 var p = Str(body, "path");
-                RequireRegistered(p);
+                RequireRegistered(p, Str(body, "teamFolder"));
                 FileOps.Open(p, Bool(body, "reveal"));
                 return "{\"ok\":true}";
             }
@@ -40,7 +44,7 @@ static class Api
             case "/api/file":
             {
                 var p = Str(body, "path");
-                RequireRegistered(p);
+                RequireRegistered(p, Str(body, "teamFolder"));
                 return Json(await Task.Run(() => FileOps.ReadFile(p, Int(body, "max"))));
             }
 
@@ -88,6 +92,51 @@ static class Api
                 if (info is null) throw new ApiError("Ingen opdatering fundet - prøv at tjekke igen.");
                 await UpdateCheck.DownloadAndLaunchInstallerAsync(info, (received, total) => onProgress?.Invoke(received, total));
                 return "{\"ok\":true}";
+            }
+
+            case "/api/whoami":
+            {
+                var dom = Environment.UserDomainName;
+                var name = !string.IsNullOrEmpty(dom) && !string.Equals(dom, Environment.MachineName, StringComparison.OrdinalIgnoreCase)
+                    ? dom + "\\" + Environment.UserName : Environment.UserName;
+                return Json(new { name });
+            }
+
+            case "/api/team/connect":
+            {
+                var folder = Str(body, "folder");
+                if (string.IsNullOrWhiteSpace(folder)) throw new ApiError("Vælg en mappe");
+                if (!Directory.Exists(folder)) throw new ApiError("Mappen findes ikke eller kan ikke nås");
+                var empty = new JsonObject { ["categories"] = new JsonArray(), ["files"] = new JsonArray() };
+                var merged = await Task.Run(() => TeamStore.Sync(folder, empty));
+                return merged.ToJsonString();
+            }
+
+            case "/api/team/sync":
+            {
+                var folder = Str(body, "folder");
+                if (string.IsNullOrWhiteSpace(folder)) throw new ApiError("Intet team-mappe valgt");
+                var local = body.TryGetProperty("local", out var l) ? JsonNode.Parse(l.GetRawText()) as JsonObject : null;
+                local ??= new JsonObject { ["categories"] = new JsonArray(), ["files"] = new JsonArray() };
+                var merged = await Task.Run(() => TeamStore.Sync(folder, local));
+                return merged.ToJsonString();
+            }
+
+            case "/api/team/export":
+            {
+                var folder = Str(body, "folder");
+                if (string.IsNullOrWhiteSpace(folder)) throw new ApiError("Intet team-mappe valgt");
+                return TeamStore.Load(folder) ?? "{\"rev\":0,\"categories\":[],\"files\":[]}";
+            }
+
+            case "/api/team/restore":
+            {
+                var folder = Str(body, "folder");
+                if (string.IsNullOrWhiteSpace(folder)) throw new ApiError("Intet team-mappe valgt");
+                var snapshot = body.TryGetProperty("snapshot", out var sn) ? JsonNode.Parse(sn.GetRawText()) as JsonObject : null;
+                if (snapshot == null) throw new ApiError("Ugyldig fil");
+                var merged = await Task.Run(() => TeamStore.Restore(folder, snapshot));
+                return merged.ToJsonString();
             }
 
             default:
