@@ -701,6 +701,29 @@ da:{
 'help.sub':'Hjælp',
 'help.printOrSavePdf':'Udskriv eller gem som PDF',
 'manual.toc':'Indhold',
+'nav.team':'Team',
+'sel.copyToTeam':'Kopiér til team…',
+'team.addedBy':n=>'Tilføjet af '+(n||'?'),
+'team.chooseFolder':'Vælg team-mappe…',
+'team.confirmRemove':n=>'Fjern "'+n+'" fra team-listen? Kan gendannes fra backup.',
+'team.connectFirst':'Vælg først en team-mappe under Backup og indstillinger.',
+'team.connected':'Forbundet til team-mappen',
+'team.connectedTo':(folder,n)=>'Forbundet til '+folder+' ('+n+' filer)',
+'team.copiedN':n=>'Kopierede '+n+' '+(n===1?'fil':'filer')+' til teamet',
+'team.displayName':'Dit navn (vises på team-filer)',
+'team.editedBy':(n,rel)=>'Ændret af '+(n||'?')+', '+rel,
+'team.empty':'Ingen filer i team-listen endnu. Markér filer i dine egne lister, og brug "Kopiér til team…".',
+'team.neverSynced':'aldrig synkroniseret',
+'team.notConnected':'Ikke forbundet til en team-mappe.',
+'team.onboardBody':'Forbind til en delt mappe (netværksdrev, OneDrive eller lignende), som dine kolleger også peger på, for at dele en filliste - adskilt fra dine egne filer.',
+'team.onboardTitle':'Del filer med teamet',
+'team.removeBtn':'Fjern fra team',
+'team.removedToast':'Fjernet fra team-listen',
+'team.settingsHeading':'Team-database',
+'team.statusLine':(folder,n,rel)=>folder+' · '+n+' filer · sidst synkroniseret '+rel,
+'team.syncFailed':m=>'Kunne ikke synkronisere: '+m,
+'team.syncNow':'Synkronisér nu',
+'team.synced':'Synkroniseret',
 }, en:{
 'noHub':'No hub',
 'deadline':'Deadline',
@@ -1056,6 +1079,29 @@ da:{
 'help.sub':'Help',
 'help.printOrSavePdf':'Print or save as PDF',
 'manual.toc':'Contents',
+'nav.team':'Team',
+'sel.copyToTeam':'Copy to team…',
+'team.addedBy':n=>'Added by '+(n||'?'),
+'team.chooseFolder':'Choose team folder…',
+'team.confirmRemove':n=>'Remove "'+n+'" from the team list? Can be restored from backup.',
+'team.connectFirst':'Choose a team folder first, under Backup and settings.',
+'team.connected':'Connected to the team folder',
+'team.connectedTo':(folder,n)=>'Connected to '+folder+' ('+n+' files)',
+'team.copiedN':n=>'Copied '+n+' '+(n===1?'file':'files')+' to the team',
+'team.displayName':'Your name (shown on team files)',
+'team.editedBy':(n,rel)=>'Edited by '+(n||'?')+', '+rel,
+'team.empty':'No files in the team list yet. Select files in your own lists, and use "Copy to team…".',
+'team.neverSynced':'never synced',
+'team.notConnected':'Not connected to a team folder.',
+'team.onboardBody':'Connect to a shared folder (a network drive, OneDrive, or similar) that your colleagues also point at, to share a file list - separate from your own files.',
+'team.onboardTitle':'Share files with the team',
+'team.removeBtn':'Remove from team',
+'team.removedToast':'Removed from the team list',
+'team.settingsHeading':'Team database',
+'team.statusLine':(folder,n,rel)=>folder+' · '+n+' files · last synced '+rel,
+'team.syncFailed':m=>'Could not sync: '+m,
+'team.syncNow':'Sync now',
+'team.synced':'Synced',
 }}
 
 /* ================= State ================= */
@@ -1070,9 +1116,12 @@ function defaultState(){return{version:1,categories:[
   {id:'oekonomi',name:'Økonomi',icon:'💰',color:'#ffb02e',hub:true,description:'',notes:''},
   {id:'stamdata',name:'Stamdata',icon:'🗂️',color:'#7cc4ff',hub:true,description:'',notes:''},
   {id:'diverse',name:'Diverse',icon:'📎',color:'#b7a4ff',hub:true,description:'',notes:''}],
-  files:[],settings:{theme:'dark',view:'cards',sort:'recent',paneWidth:420,lang:'da'}}}
+  files:[],settings:{theme:'dark',view:'cards',sort:'recent',paneWidth:420,lang:'da'},
+  team:{folder:null,displayName:'',files:[],rev:0,lastSync:null}}}
 function migrate(s){s.categories=Array.isArray(s.categories)?s.categories:[];s.categories.forEach(k=>{k.hub=true});s.files=Array.isArray(s.files)?s.files:[];
   s.settings=Object.assign({theme:'dark',view:'cards',sort:'recent',paneWidth:420,lang:'da'},s.settings||{});
+  s.team=Object.assign({folder:null,displayName:'',files:[],rev:0,lastSync:null},s.team||{});
+  s.team.files=Array.isArray(s.team.files)?s.team.files:[];
   const ids=new Set();
   s.files.forEach(f=>{f.tags=f.tags||[];f.status=f.status||'aktiv';f.opens=f.opens||0;f.category=f.category||'';if(!f.id||ids.has(f.id)) f.id=uid();ids.add(f.id)});return s}
 
@@ -1133,14 +1182,22 @@ const canonTag=t=>allTags().find(x=>x.toLowerCase()===t.toLowerCase())||t;
 function updateTagList(){$('#taglist').replaceChildren(...allTags().map(t=>h('option',{value:t})))}
 
 /* ================= API + gem ================= */
-/* Kald til appen går via WebView2-beskeder */
-const native=window.chrome&&window.chrome.webview;
+/* Kald til appen går via WebView2-beskeder. chrome.webview er ikke altid klar i samme tick som
+   siden selv begynder at køre, så vent på den i stedet for at antage den findes fra start. */
+let native=null;
 const pendingCalls=new Map();let callId=0;
-native.addEventListener('message',e=>{
-  if(e.data.event){onNativeEvent(e.data.event,e.data.data);return}
-  const p=pendingCalls.get(e.data.id);if(!p) return;pendingCalls.delete(e.data.id);e.data.ok?p.res(e.data.data):p.rej(new Error(e.data.error))
-});
-const nativeCall=(path,body)=>new Promise((res,rej)=>{const id=++callId;pendingCalls.set(id,{res,rej});native.postMessage({id,path,body:body===undefined?null:body})});
+async function ensureNative(){
+  while(!(window.chrome&&window.chrome.webview)) await new Promise(r=>setTimeout(r,20));
+  if(!native){
+    native=window.chrome.webview;
+    native.addEventListener('message',e=>{
+      if(e.data.event){onNativeEvent(e.data.event,e.data.data);return}
+      const p=pendingCalls.get(e.data.id);if(!p) return;pendingCalls.delete(e.data.id);e.data.ok?p.res(e.data.data):p.rej(new Error(e.data.error))
+    });
+  }
+  return native;
+}
+const nativeCall=async(path,body)=>{await ensureNative();return new Promise((res,rej)=>{const id=++callId;pendingCalls.set(id,{res,rej});native.postMessage({id,path,body:body===undefined?null:body})})};
 async function api(path,body){return nativeCall(path,body)}
 function setSaveState(m){saveMsg=m;const el=$('#savestate');if(el) el.textContent=m}
 function save(){dirty=true;setSaveState(t('save.saving'));clearTimeout(saveTimer);saveTimer=setTimeout(flushSave,400)}
@@ -1149,13 +1206,13 @@ function flushSave(){
   savePromise=api('/api/state',S).then(()=>setSaveState(t('save.saved'))).catch(e=>{dirty=true;setSaveState(t('save.failed'));toast(t('save.failedWithMsg',e.message),'bad')});
   return savePromise;
 }
-addEventListener('pagehide',()=>{if(dirty&&S) native.postMessage({id:0,path:'/api/state',body:S})});
+addEventListener('pagehide',()=>{if(dirty&&S&&native) native.postMessage({id:0,path:'/api/state',body:S})});
 
 /* ================= Filstatus ================= */
 async function checkHealth(paths,manual){
   if(!S) return;
   const btn=$('#chk');if(btn&&manual) btn.textContent=t('check.checking');
-  const uniq=[...new Set(paths||S.files.filter(f=>!isUrl(f.path)).map(f=>f.path))];
+  const uniq=[...new Set(paths||[...S.files,...S.team.files.filter(f=>!f.deleted)].filter(f=>!isUrl(f.path)).map(f=>f.path))];
   let failed=false;
   for(let i=0;i<uniq.length;i+=24){
     try{const r=await api('/api/check',{paths:uniq.slice(i,i+24)});Object.assign(H,r.results)}
@@ -1171,7 +1228,7 @@ async function openFile(f,reveal=false){
     if(isUrl(f.path)){
       if(reveal||fileType(f.path)!=='excel-url') window.open(f.path,'_blank');
       else h('a',{href:'ms-excel:ofe|u|'+f.path}).click();
-    }else{await flushSave();if(!reveal) toast(t('toast.opening',f.title));await api('/api/open',{path:f.path,reveal})}
+    }else{await flushSave();if(!reveal) toast(t('toast.opening',f.title));await api('/api/open',{path:f.path,reveal,teamFolder:S.team.folder||''})}
     if(!reveal){f.lastOpened=new Date().toISOString();f.opens=(f.opens||0)+1;save()}
   }catch(e){toast(e.message,'bad')}
 }
@@ -1265,6 +1322,7 @@ function render(){
   if(!r.parts.length) main.append(...homeView());
   else if(hubCat) main.append(...hubView(hubCat));
   else if(r.parts[0]==='help') main.append(...helpView());
+  else if(r.parts[0]==='team') main.append(...teamView());
   else if(r.parts[0]==='cat') location.hash=cat(r.parts[1])?'#/hub/'+r.parts[1]:'#/all';
   else main.append(...libraryView(r));
   scrollTo(0,y);
@@ -1287,6 +1345,7 @@ function renderSide(){
     nav('#/all?fav=1','⭐',t('nav.favorites'),act.filter(f=>f.pinned).length),
     nav('#/all?status=arkiv','🗄️',t('nav.archive'),S.files.length-act.length),
     nav('#/help','📖',t('nav.manual')),
+    nav('#/team','👥',t('nav.team'),S.team.folder?S.team.files.filter(f=>!f.deleted).length:null),
     h('div',{class:'sec'},t('nav.hubsHeading'),h('button',{title:t('nav.newHub'),onClick:()=>catDialog(null,{hub:true})},'+')),
     hubs.length?hubs.map(c=>nav('#/hub/'+c.id,c.icon,c.name,cnt(c.id),c.color,c)):h('div',{class:'hint',style:{padding:'4px 10px'}},t('nav.noHubsYet')),
     h('div',{class:'grow'}),
@@ -1500,6 +1559,7 @@ function selBar(){
     h('span',{class:'sep'}),
     h('button',{class:'btn sm pri',disabled:!n,onClick:act(bulkAddTags)},t('sel.addTag')),
     h('button',{class:'btn sm',disabled:!n,onClick:act(bulkRemoveTags)},t('sel.removeTag')),
+    h('button',{class:'btn sm',disabled:!n,onClick:act(bulkCopyToTeam)},t('sel.copyToTeam')),
     h('button',{class:'btn sm',disabled:!n,onClick:act(bulkCategory)},t('sel.hub')),
     h('button',{class:'btn sm',disabled:!n,onClick:act(fs=>{const to=!fs.every(f=>f.pinned);fs.forEach(f=>f.pinned=to);save();render();toast(to?t('sel.addedToFav',noun(fs.length)):t('sel.removedFromFav',noun(fs.length)),'ok')})},allPinned?t('sel.removeFavorite'):t('sel.addFavorite')),
     h('button',{class:'btn sm',disabled:!n,onClick:act(fs=>{const to=fs.every(f=>f.status==='arkiv')?'aktiv':'arkiv';fs.forEach(f=>f.status=to);UI.sel.clear();save();render();toast(to==='arkiv'?t('sel.movedToArchive',noun(fs.length)):t('sel.restoredFromArchive',noun(fs.length)),'ok')})},allArch?t('sel.restore'):t('sel.archive')),
@@ -1561,6 +1621,61 @@ function fileMenu(anchor,f){
     {label:f.status==='arkiv'?t('menu.restoreFromArchive'):t('menu.moveToArchive'),fn:()=>{f.status=f.status==='arkiv'?'aktiv':'arkiv';save();render()}},
     '-',
     {label:t('menu.removeFromDashboard'),danger:true,fn:()=>{if(confirm(t('menu.confirmRemoveFile',f.title))){S.files=S.files.filter(x=>x!==f);save();render()}}}]);
+}
+
+/* ---------- Team ---------- */
+async function teamConnect(){
+  const r=await api('/api/pickfolder',{});
+  if(!r.path) return;
+  try{
+    const merged=await api('/api/team/connect',{folder:r.path});
+    S.team.folder=r.path;S.team.files=merged.files||[];S.team.rev=merged.rev||0;S.team.lastSync=new Date().toISOString();
+    save();render();toast(t('team.connected'),'ok');
+  }catch(e){toast(e.message,'bad')}
+}
+async function teamSync(manual){
+  if(!S.team.folder) return;
+  try{
+    const merged=await api('/api/team/sync',{folder:S.team.folder,local:{rev:S.team.rev,categories:[],files:S.team.files}});
+    S.team.files=merged.files||[];S.team.rev=merged.rev||0;S.team.lastSync=new Date().toISOString();
+    save();if(parseRoute().parts[0]==='team') render();
+    if(manual) toast(t('team.synced'),'ok');
+  }catch(e){if(manual) toast(t('team.syncFailed',e.message),'bad')}
+}
+function bulkCopyToTeam(files){
+  if(!S.team.folder){toast(t('team.connectFirst'),'warn');return}
+  const now=new Date().toISOString(),who=S.team.displayName||'';
+  files.forEach(f=>{S.team.files.push({id:uid(),title:f.title,path:f.path,tags:[...(f.tags||[])],desc:f.desc||'',due:f.due||null,dueLabel:f.dueLabel||'',pinned:false,status:'aktiv',added:now,opens:0,addedBy:who,modifiedBy:who,modifiedAt:now})});
+  save();render();toast(t('team.copiedN',files.length),'ok');teamSync();
+}
+function removeFromTeam(f){
+  if(!confirm(t('team.confirmRemove',f.title))) return;
+  const now=new Date().toISOString();f.deleted=true;f.deletedAt=now;f.modifiedBy=S.team.displayName||'';f.modifiedAt=now;
+  save();render();toast(t('team.removedToast'),'ok');teamSync();
+}
+function teamCard(f){
+  const st=statusOf(f);
+  return h('article',{class:'card','data-id':f.id,style:{'--c':'var(--line2)'},onClick:e=>selectFile(f,e)},
+    h('div',{class:'card-top'},
+      h('div',{class:'card-main'},typeBadge(f),h('div',{class:'ttl'},h('b',{},f.title))),
+      canPreview(f)?h('button',{class:'ib',title:t('card.previewBtn'),onClick:()=>showInPane(f)},'👁'):null,
+      h('button',{class:'ib',title:t('team.removeBtn'),onClick:()=>removeFromTeam(f)},'🗑')),
+    h('div',{class:'path mono',title:f.path},midEllipsis(f.path,70)),
+    h('div',{class:'foot'},h('span',{class:'led '+st.k,title:st.t}),
+      h('span',{class:'meta'},f.modifiedBy?t('team.editedBy',f.modifiedBy,relTime(f.modifiedAt)):t('team.addedBy',f.addedBy||'')),
+      h('button',{class:'btn sm pri',onClick:()=>openFile(f)},fileType(f.path)==='folder'?t('card.openFolder'):t('card.open'))));
+}
+function teamView(){
+  if(!S.team.folder) return[topbar(t('nav.team')),
+    h('section',{class:'onboard'},h('h2',{},t('team.onboardTitle')),h('p',{},t('team.onboardBody')),
+      h('div',{class:'acts'},h('button',{class:'btn pri',onClick:teamConnect},t('team.chooseFolder'))))];
+  const list=S.team.files.filter(f=>!f.deleted).sort((a,b)=>(b.modifiedAt||'').localeCompare(a.modifiedAt||''));
+  return[topbar(t('nav.team')),
+    h('div',{class:'gridhead'},
+      h('span',{class:'muted sm'},t('team.statusLine',S.team.folder,list.length,S.team.lastSync?relTime(S.team.lastSync):t('team.neverSynced'))),
+      h('span',{class:'spacer'}),
+      h('button',{class:'btn sm',onClick:()=>teamSync(true)},t('team.syncNow'))),
+    list.length?h('div',{class:'grid'},list.map(teamCard)):h('p',{class:'muted'},t('team.empty'))];
 }
 
 /* ---------- Tags: farver, omdøb, slet ---------- */
@@ -1635,10 +1750,8 @@ function previewToggle(){
 }
 async function fetchBytes(path,max){
   await flushSave();
-  if(native){const r=await api('/api/file',{path,max:max||0});return{u8:Uint8Array.from(atob(r.b64),c=>c.charCodeAt(0)),size:r.size}}
-  const r=await fetch('/api/file',{method:'POST',headers:{'Content-Type':'application/json','X-Dashboard':'1'},body:JSON.stringify({path,max:max||0})});
-  if(!r.ok){const e=await r.json().catch(()=>null);throw new Error((e&&e.error)||r.statusText)}
-  return{u8:new Uint8Array(await r.arrayBuffer()),size:+(r.headers.get('X-File-Size')||0)};
+  const r=await api('/api/file',{path,max:max||0,teamFolder:S.team.folder||''});
+  return{u8:Uint8Array.from(atob(r.b64),c=>c.charCodeAt(0)),size:r.size};
 }
 /* -- minimal zip-læser (xlsx er en zip-fil) -- */
 function zipIndex(u8){
@@ -1819,7 +1932,7 @@ async function fillPane(){
   app.classList.toggle('haspane',on);
   app.style.setProperty('--pane-w',(S.settings.paneWidth||420)+'px');
   if(!on){PANE.key='';revokePaneBlob();pane.replaceChildren();return}
-  const f=S.files.find(x=>x.id===UI.pv),x=f&&H[f.path];
+  const f=[...S.files,...S.team.files].find(x=>x.id===UI.pv),x=f&&H[f.path];
   const key=f?[f.id,f.title,f.path,x&&x.modified,x&&x.size,x&&x.exists].join('|'):'-';
   if(key===PANE.key&&pane.firstChild) return;   // uændret: behold rudens indhold og rulleposition
   PANE.key=key;const tok=++PANE.tok;revokePaneBlob();
@@ -2138,7 +2251,11 @@ function settingsDialog(){
       h('button',{class:'btn',onClick:()=>{const a=h('a',{href:URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'})),download:'file-hub-backup-'+new Date().toISOString().slice(0,10)+'.json'});a.click()}},t('settings.getBackup')),
       h('button',{class:'btn',onClick:()=>file.click()},t('settings.loadBackup')),file,
       h('button',{class:'btn',onClick:()=>{d.close();tagManager()}},t('settings.tagsAndColors')),
-      h('button',{class:'btn',onClick:()=>{if(confirm(t('settings.confirmResetStats'))){S.files.forEach(f=>{f.opens=0;delete f.lastOpened});save();d.close();render()}}},t('settings.resetStats')))],
+      h('button',{class:'btn',onClick:()=>{if(confirm(t('settings.confirmResetStats'))){S.files.forEach(f=>{f.opens=0;delete f.lastOpened});save();d.close();render()}}},t('settings.resetStats'))),
+    h('h2',{class:'h2',style:{marginTop:'20px'}},t('team.settingsHeading')),
+    h('p',{class:'muted sm'},S.team.folder?t('team.connectedTo',S.team.folder,S.team.files.filter(f=>!f.deleted).length):t('team.notConnected')),
+    fld(t('team.displayName'),h('input',{value:S.team.displayName||'',onChange:e=>{S.team.displayName=e.target.value.trim();save()}})),
+    h('div',{class:'inl'},h('button',{class:'btn',onClick:async()=>{await teamConnect();d.close();settingsDialog()}},t('team.chooseFolder')))],
     [h('span',{class:'spacer'}),h('button',{class:'btn pri',onClick:()=>d.close()},t('common.close'))]);
 }
 
@@ -2675,6 +2792,9 @@ async function init(){
   setInterval(()=>{if(!document.hidden) checkHealth()},5*60*1000);
   setInterval(()=>{const c=$('#clock');if(c) c.textContent=new Date().toLocaleTimeString(dateLocale(),{hour:'2-digit',minute:'2-digit'})},20000);
   if(native){setTimeout(checkForUpdate,4000);setInterval(checkForUpdate,6*60*60*1000)}
+  if(!S.team.displayName) api('/api/whoami').then(r=>{if(r&&r.name){S.team.displayName=r.name;save()}}).catch(()=>{});
+  if(S.team.folder) teamSync();
+  setInterval(()=>{if(!document.hidden&&S.team.folder) teamSync()},30000);
 }
 init();
 </script>
