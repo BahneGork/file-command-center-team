@@ -8,7 +8,7 @@ desktop/publish/
 desktop/installer/*.msi
 desktop/installer/*.wixpdb
 
-# Runtime data (created by dashboard-server.ps1 / the desktop app, never checked in)
+# Runtime data (created by the desktop app, never checked in)
 data.json
 backups/
 pdf-cache/

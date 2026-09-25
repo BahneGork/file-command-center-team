@@ -1,7 +1,7 @@
 # File Command Center (desktop)
 
-A Windows desktop version of the dashboard in `../index.html`. It replaces `dashboard-server.ps1`:
-there is **no local web server and no open network port**.
+A Windows desktop version of the dashboard in `../index.html`. It replaces the original PowerShell/browser-based
+version: there is **no local web server and no open network port**.
 
 ## What it is
 - A .NET 8 WinForms window hosting the dashboard with Microsoft Edge WebView2.
@@ -50,6 +50,11 @@ dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=
 ```
 Distribute the contents of `publish/`: `FileCommandCenter.exe` **and the `web` folder next to it**.
 Use `--self-contained false` for a ~1 MB exe that needs the .NET 8 Desktop Runtime.
+
+This same output is also what ships as the **portable** release asset — zip `publish/`'s contents directly (no
+extra nesting folder) as `FileCommandCenter-<version>-portable-win-x64.zip` and attach it to the GitHub release
+alongside the `.msi` (`installer/README.md` covers building that). Both are the same version; only the packaging
+differs.
 
 ## Not done yet
 - Code signing — the installer (`installer/`) is unsigned, so Windows SmartScreen/Defender will warn. Ask IT what they accept (e.g. sign with an internal certificate).

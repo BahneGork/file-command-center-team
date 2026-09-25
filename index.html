@@ -387,8 +387,8 @@ da:{
 'nav.hubsHeading':'Hubs',
 'nav.noHubsYet':'Ingen hubs endnu',
 'nav.editHub':'Redigér',
-'sidefoot.helperOn':'Hjælper kører',
-'sidefoot.helperOff':'Hjælper svarer ikke',
+'sidefoot.helperOn':'Klar',
+'sidefoot.helperOff':'Svarer ikke',
 'sidefoot.themeLight':'Lyst tema',
 'sidefoot.themeDark':'Mørkt tema',
 'sidefoot.backup':'Backup',
@@ -676,7 +676,7 @@ da:{
 'settings.confirmRestore':n=>'Erstat alt i dashboardet med indholdet af backup-filen ('+n+' filer)?',
 'settings.backupLoaded':'Backup indlæst',
 'settings.dialogTitle':'Backup og indstillinger',
-'settings.body':'Dashboardet gemmer alt i data.json i samme mappe som hjælperen. Ved første ændring hver dag lægges en kopi i mappen backups (de seneste 30 dage beholdes).',
+'settings.body':'Dashboardet gemmer alt i data.json i %LOCALAPPDATA%\\FileCommandCenter\\. Ved første ændring hver dag lægges en kopi i mappen backups (de seneste 30 dage beholdes).',
 'settings.getBackup':'Hent backup',
 'settings.loadBackup':'Indlæs backup…',
 'settings.tagsAndColors':'Tags og farver…',
@@ -686,7 +686,7 @@ da:{
 'pal.hint':'↑↓ vælg    Enter åbn    Shift+Enter vis i mappe    Esc luk',
 'pal.goTo':'Gå til',
 'pal.noMatch':'Ingen match',
-'start.helperUnreachableBanner':'Hjælperen svarer ikke. Start start-dashboard.bat igen – ændringer gemmes, når den kører.',
+'start.helperUnreachableBanner':'Appen svarer ikke lige nu. Prøv at genstarte den – dine ændringer gemmes, når den svarer igen.',
 'dnd.browsersCantSeePath':'Browsere må ikke se, hvor en fil ligger. Vælg filerne i Windows-dialogen i stedet.',
 'upd.installingTitle':'Opdaterer…',
 'upd.installingBody':'<p>Installeren er startet. Følg dialogen fra Windows, og genåbn File Command Center bagefter.</p>',
@@ -696,13 +696,34 @@ da:{
 'upd.installNow':'Opdater nu',
 'upd.viewChanges':'Se ændringer',
 'upd.later':'Senere',
-'init.startHelperFirstTitle':'Start hjælperen først',
-'init.startHelperFirstBody':'<p>Siden er åbnet direkte fra en fil. Den skal i stedet køre via den lille hjælper.</p><p>Dobbeltklik på <b>start-dashboard.bat</b> i mappen – så åbner dashboardet af sig selv på <b>http://localhost:8787</b>.</p>',
-'init.helperNotRespondingTitle':'Hjælperen svarer ikke',
-'init.helperNotRespondingBody':m=>'<p>Dashboardet kunne ikke få forbindelse til hjælperen ('+m+').</p><p>Dobbeltklik på <b>start-dashboard.bat</b>, og genindlæs siden.</p>',
+'init.helperNotRespondingTitle':'Kunne ikke starte dashboardet',
+'init.helperNotRespondingBody':m=>'<p>Dashboardet kunne ikke starte ('+m+').</p><p>Prøv at lukke og åbne appen igen.</p>',
 'help.sub':'Hjælp',
 'help.printOrSavePdf':'Udskriv eller gem som PDF',
 'manual.toc':'Indhold',
+'nav.team':'Team',
+'sel.copyToTeam':'Kopiér til team…',
+'team.addedBy':n=>'Tilføjet af '+(n||'?'),
+'team.chooseFolder':'Vælg team-mappe…',
+'team.confirmRemove':n=>'Fjern "'+n+'" fra team-listen? Kan gendannes fra backup.',
+'team.connectFirst':'Vælg først en team-mappe under Backup og indstillinger.',
+'team.connected':'Forbundet til team-mappen',
+'team.connectedTo':(folder,n)=>'Forbundet til '+folder+' ('+n+' filer)',
+'team.copiedN':n=>'Kopierede '+n+' '+(n===1?'fil':'filer')+' til teamet',
+'team.displayName':'Dit navn (vises på team-filer)',
+'team.editedBy':(n,rel)=>'Ændret af '+(n||'?')+', '+rel,
+'team.empty':'Ingen filer i team-listen endnu. Markér filer i dine egne lister, og brug "Kopiér til team…".',
+'team.neverSynced':'aldrig synkroniseret',
+'team.notConnected':'Ikke forbundet til en team-mappe.',
+'team.onboardBody':'Forbind til en delt mappe (netværksdrev, OneDrive eller lignende), som dine kolleger også peger på, for at dele en filliste - adskilt fra dine egne filer.',
+'team.onboardTitle':'Del filer med teamet',
+'team.removeBtn':'Fjern fra team',
+'team.removedToast':'Fjernet fra team-listen',
+'team.settingsHeading':'Team-database',
+'team.statusLine':(folder,n,rel)=>folder+' · '+n+' filer · sidst synkroniseret '+rel,
+'team.syncFailed':m=>'Kunne ikke synkronisere: '+m,
+'team.syncNow':'Synkronisér nu',
+'team.synced':'Synkroniseret',
 }, en:{
 'noHub':'No hub',
 'deadline':'Deadline',
@@ -744,8 +765,8 @@ da:{
 'nav.hubsHeading':'Hubs',
 'nav.noHubsYet':'No hubs yet',
 'nav.editHub':'Edit',
-'sidefoot.helperOn':'Helper running',
-'sidefoot.helperOff':'Helper not responding',
+'sidefoot.helperOn':'Ready',
+'sidefoot.helperOff':'Not responding',
 'sidefoot.themeLight':'Light theme',
 'sidefoot.themeDark':'Dark theme',
 'sidefoot.backup':'Backup',
@@ -1033,7 +1054,7 @@ da:{
 'settings.confirmRestore':n=>'Replace everything in the dashboard with the content of the backup file ('+n+' files)?',
 'settings.backupLoaded':'Backup loaded',
 'settings.dialogTitle':'Backup and settings',
-'settings.body':'The dashboard saves everything in data.json in the same folder as the helper. On the first change each day, a copy is placed in the backups folder (the last 30 days are kept).',
+'settings.body':'The dashboard saves everything in data.json in %LOCALAPPDATA%\\FileCommandCenter\\. On the first change each day, a copy is placed in the backups folder (the last 30 days are kept).',
 'settings.getBackup':'Get backup',
 'settings.loadBackup':'Load backup…',
 'settings.tagsAndColors':'Tags and colors…',
@@ -1043,7 +1064,7 @@ da:{
 'pal.hint':'↑↓ select    Enter open    Shift+Enter show in folder    Esc close',
 'pal.goTo':'Go to',
 'pal.noMatch':'No match',
-'start.helperUnreachableBanner':'The helper is not responding. Start start-dashboard.bat again – changes will be saved once it’s running.',
+'start.helperUnreachableBanner':'The app isn’t responding right now. Try restarting it – your changes will be saved once it responds again.',
 'dnd.browsersCantSeePath':'Browsers aren’t allowed to see where a file is on disk. Pick the files in the Windows dialog instead.',
 'upd.installingTitle':'Updating…',
 'upd.installingBody':'<p>The installer has started. Follow the dialog from Windows, then reopen File Command Center afterwards.</p>',
@@ -1053,18 +1074,39 @@ da:{
 'upd.installNow':'Install now',
 'upd.viewChanges':'View changes',
 'upd.later':'Later',
-'init.startHelperFirstTitle':'Start the helper first',
-'init.startHelperFirstBody':'<p>The page was opened directly from a file. It needs to run via the small helper instead.</p><p>Double-click <b>start-dashboard.bat</b> in the folder – the dashboard will then open on its own at <b>http://localhost:8787</b>.</p>',
-'init.helperNotRespondingTitle':'The helper is not responding',
-'init.helperNotRespondingBody':m=>'<p>The dashboard could not connect to the helper ('+m+').</p><p>Double-click <b>start-dashboard.bat</b>, and reload the page.</p>',
+'init.helperNotRespondingTitle':'Could not start the dashboard',
+'init.helperNotRespondingBody':m=>'<p>The dashboard could not start ('+m+').</p><p>Try closing and reopening the app.</p>',
 'help.sub':'Help',
 'help.printOrSavePdf':'Print or save as PDF',
 'manual.toc':'Contents',
+'nav.team':'Team',
+'sel.copyToTeam':'Copy to team…',
+'team.addedBy':n=>'Added by '+(n||'?'),
+'team.chooseFolder':'Choose team folder…',
+'team.confirmRemove':n=>'Remove "'+n+'" from the team list? Can be restored from backup.',
+'team.connectFirst':'Choose a team folder first, under Backup and settings.',
+'team.connected':'Connected to the team folder',
+'team.connectedTo':(folder,n)=>'Connected to '+folder+' ('+n+' files)',
+'team.copiedN':n=>'Copied '+n+' '+(n===1?'file':'files')+' to the team',
+'team.displayName':'Your name (shown on team files)',
+'team.editedBy':(n,rel)=>'Edited by '+(n||'?')+', '+rel,
+'team.empty':'No files in the team list yet. Select files in your own lists, and use "Copy to team…".',
+'team.neverSynced':'never synced',
+'team.notConnected':'Not connected to a team folder.',
+'team.onboardBody':'Connect to a shared folder (a network drive, OneDrive, or similar) that your colleagues also point at, to share a file list - separate from your own files.',
+'team.onboardTitle':'Share files with the team',
+'team.removeBtn':'Remove from team',
+'team.removedToast':'Removed from the team list',
+'team.settingsHeading':'Team database',
+'team.statusLine':(folder,n,rel)=>folder+' · '+n+' files · last synced '+rel,
+'team.syncFailed':m=>'Could not sync: '+m,
+'team.syncNow':'Sync now',
+'team.synced':'Synced',
 }}
 
 /* ================= State ================= */
-let S=null;                 // gemmes i data.json via hjælperen
-const H={};                 // filstatus fra hjælperen: sti -> {exists,size,modified,timeout}
+let S=null;                 // gemmes i data.json via appen
+const H={};                 // filstatus fra appen: sti -> {exists,size,modified,timeout}
 let helperOnline=true,dirty=false,saveTimer=null,savePromise=Promise.resolve(),saveMsg='';
 let UPDATE=null,updateProgress=null,updateInstalling=false,updateError='';
 const UI={q:'',tags:new Set(),tagMode:'and',status:'aktiv',fav:false,cat:'',problem:false,allTags:false,select:false,sel:new Set(),order:[],last:null,pv:null};
@@ -1074,9 +1116,12 @@ function defaultState(){return{version:1,categories:[
   {id:'oekonomi',name:'Økonomi',icon:'💰',color:'#ffb02e',hub:true,description:'',notes:''},
   {id:'stamdata',name:'Stamdata',icon:'🗂️',color:'#7cc4ff',hub:true,description:'',notes:''},
   {id:'diverse',name:'Diverse',icon:'📎',color:'#b7a4ff',hub:true,description:'',notes:''}],
-  files:[],settings:{theme:'dark',view:'cards',sort:'recent',paneWidth:420,lang:'da'}}}
+  files:[],settings:{theme:'dark',view:'cards',sort:'recent',paneWidth:420,lang:'da'},
+  team:{folder:null,displayName:'',files:[],rev:0,lastSync:null}}}
 function migrate(s){s.categories=Array.isArray(s.categories)?s.categories:[];s.categories.forEach(k=>{k.hub=true});s.files=Array.isArray(s.files)?s.files:[];
   s.settings=Object.assign({theme:'dark',view:'cards',sort:'recent',paneWidth:420,lang:'da'},s.settings||{});
+  s.team=Object.assign({folder:null,displayName:'',files:[],rev:0,lastSync:null},s.team||{});
+  s.team.files=Array.isArray(s.team.files)?s.team.files:[];
   const ids=new Set();
   s.files.forEach(f=>{f.tags=f.tags||[];f.status=f.status||'aktiv';f.opens=f.opens||0;f.category=f.category||'';if(!f.id||ids.has(f.id)) f.id=uid();ids.add(f.id)});return s}
 
@@ -1137,21 +1182,23 @@ const canonTag=t=>allTags().find(x=>x.toLowerCase()===t.toLowerCase())||t;
 function updateTagList(){$('#taglist').replaceChildren(...allTags().map(t=>h('option',{value:t})))}
 
 /* ================= API + gem ================= */
-/* Desktop-app: i selve appen (WebView2) går kald via beskeder i stedet for http */
-const native=window.chrome&&window.chrome.webview;
+/* Kald til appen går via WebView2-beskeder. chrome.webview er ikke altid klar i samme tick som
+   siden selv begynder at køre, så vent på den i stedet for at antage den findes fra start. */
+let native=null;
 const pendingCalls=new Map();let callId=0;
-if(native) native.addEventListener('message',e=>{
-  if(e.data.event){onNativeEvent(e.data.event,e.data.data);return}
-  const p=pendingCalls.get(e.data.id);if(!p) return;pendingCalls.delete(e.data.id);e.data.ok?p.res(e.data.data):p.rej(new Error(e.data.error))
-});
-const nativeCall=(path,body)=>new Promise((res,rej)=>{const id=++callId;pendingCalls.set(id,{res,rej});native.postMessage({id,path,body:body===undefined?null:body})});
-async function api(path,body){
-  if(native) return nativeCall(path,body);
-  const opt=body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json','X-Dashboard':'1'},body:JSON.stringify(body)};
-  const r=await fetch(path,opt);const data=await r.json().catch(()=>null);
-  if(!r.ok) throw new Error((data&&data.error)||r.statusText);
-  return data;
+async function ensureNative(){
+  while(!(window.chrome&&window.chrome.webview)) await new Promise(r=>setTimeout(r,20));
+  if(!native){
+    native=window.chrome.webview;
+    native.addEventListener('message',e=>{
+      if(e.data.event){onNativeEvent(e.data.event,e.data.data);return}
+      const p=pendingCalls.get(e.data.id);if(!p) return;pendingCalls.delete(e.data.id);e.data.ok?p.res(e.data.data):p.rej(new Error(e.data.error))
+    });
+  }
+  return native;
 }
+const nativeCall=async(path,body)=>{await ensureNative();return new Promise((res,rej)=>{const id=++callId;pendingCalls.set(id,{res,rej});native.postMessage({id,path,body:body===undefined?null:body})})};
+async function api(path,body){return nativeCall(path,body)}
 function setSaveState(m){saveMsg=m;const el=$('#savestate');if(el) el.textContent=m}
 function save(){dirty=true;setSaveState(t('save.saving'));clearTimeout(saveTimer);saveTimer=setTimeout(flushSave,400)}
 function flushSave(){
@@ -1159,13 +1206,13 @@ function flushSave(){
   savePromise=api('/api/state',S).then(()=>setSaveState(t('save.saved'))).catch(e=>{dirty=true;setSaveState(t('save.failed'));toast(t('save.failedWithMsg',e.message),'bad')});
   return savePromise;
 }
-addEventListener('pagehide',()=>{if(dirty&&S&&native) native.postMessage({id:0,path:'/api/state',body:S});else if(dirty&&S) fetch('/api/state',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json','X-Dashboard':'1'},body:JSON.stringify(S)})});
+addEventListener('pagehide',()=>{if(dirty&&S&&native) native.postMessage({id:0,path:'/api/state',body:S})});
 
 /* ================= Filstatus ================= */
 async function checkHealth(paths,manual){
   if(!S) return;
   const btn=$('#chk');if(btn&&manual) btn.textContent=t('check.checking');
-  const uniq=[...new Set(paths||S.files.filter(f=>!isUrl(f.path)).map(f=>f.path))];
+  const uniq=[...new Set(paths||[...S.files,...S.team.files.filter(f=>!f.deleted)].filter(f=>!isUrl(f.path)).map(f=>f.path))];
   let failed=false;
   for(let i=0;i<uniq.length;i+=24){
     try{const r=await api('/api/check',{paths:uniq.slice(i,i+24)});Object.assign(H,r.results)}
@@ -1181,7 +1228,7 @@ async function openFile(f,reveal=false){
     if(isUrl(f.path)){
       if(reveal||fileType(f.path)!=='excel-url') window.open(f.path,'_blank');
       else h('a',{href:'ms-excel:ofe|u|'+f.path}).click();
-    }else{await flushSave();if(!reveal) toast(t('toast.opening',f.title));await api('/api/open',{path:f.path,reveal})}
+    }else{await flushSave();if(!reveal) toast(t('toast.opening',f.title));await api('/api/open',{path:f.path,reveal,teamFolder:S.team.folder||''})}
     if(!reveal){f.lastOpened=new Date().toISOString();f.opens=(f.opens||0)+1;save()}
   }catch(e){toast(e.message,'bad')}
 }
@@ -1275,6 +1322,7 @@ function render(){
   if(!r.parts.length) main.append(...homeView());
   else if(hubCat) main.append(...hubView(hubCat));
   else if(r.parts[0]==='help') main.append(...helpView());
+  else if(r.parts[0]==='team') main.append(...teamView());
   else if(r.parts[0]==='cat') location.hash=cat(r.parts[1])?'#/hub/'+r.parts[1]:'#/all';
   else main.append(...libraryView(r));
   scrollTo(0,y);
@@ -1297,6 +1345,7 @@ function renderSide(){
     nav('#/all?fav=1','⭐',t('nav.favorites'),act.filter(f=>f.pinned).length),
     nav('#/all?status=arkiv','🗄️',t('nav.archive'),S.files.length-act.length),
     nav('#/help','📖',t('nav.manual')),
+    nav('#/team','👥',t('nav.team'),S.team.folder?S.team.files.filter(f=>!f.deleted).length:null),
     h('div',{class:'sec'},t('nav.hubsHeading'),h('button',{title:t('nav.newHub'),onClick:()=>catDialog(null,{hub:true})},'+')),
     hubs.length?hubs.map(c=>nav('#/hub/'+c.id,c.icon,c.name,cnt(c.id),c.color,c)):h('div',{class:'hint',style:{padding:'4px 10px'}},t('nav.noHubsYet')),
     h('div',{class:'grow'}),
@@ -1510,6 +1559,7 @@ function selBar(){
     h('span',{class:'sep'}),
     h('button',{class:'btn sm pri',disabled:!n,onClick:act(bulkAddTags)},t('sel.addTag')),
     h('button',{class:'btn sm',disabled:!n,onClick:act(bulkRemoveTags)},t('sel.removeTag')),
+    h('button',{class:'btn sm',disabled:!n,onClick:act(bulkCopyToTeam)},t('sel.copyToTeam')),
     h('button',{class:'btn sm',disabled:!n,onClick:act(bulkCategory)},t('sel.hub')),
     h('button',{class:'btn sm',disabled:!n,onClick:act(fs=>{const to=!fs.every(f=>f.pinned);fs.forEach(f=>f.pinned=to);save();render();toast(to?t('sel.addedToFav',noun(fs.length)):t('sel.removedFromFav',noun(fs.length)),'ok')})},allPinned?t('sel.removeFavorite'):t('sel.addFavorite')),
     h('button',{class:'btn sm',disabled:!n,onClick:act(fs=>{const to=fs.every(f=>f.status==='arkiv')?'aktiv':'arkiv';fs.forEach(f=>f.status=to);UI.sel.clear();save();render();toast(to==='arkiv'?t('sel.movedToArchive',noun(fs.length)):t('sel.restoredFromArchive',noun(fs.length)),'ok')})},allArch?t('sel.restore'):t('sel.archive')),
@@ -1571,6 +1621,61 @@ function fileMenu(anchor,f){
     {label:f.status==='arkiv'?t('menu.restoreFromArchive'):t('menu.moveToArchive'),fn:()=>{f.status=f.status==='arkiv'?'aktiv':'arkiv';save();render()}},
     '-',
     {label:t('menu.removeFromDashboard'),danger:true,fn:()=>{if(confirm(t('menu.confirmRemoveFile',f.title))){S.files=S.files.filter(x=>x!==f);save();render()}}}]);
+}
+
+/* ---------- Team ---------- */
+async function teamConnect(){
+  const r=await api('/api/pickfolder',{});
+  if(!r.path) return;
+  try{
+    const merged=await api('/api/team/connect',{folder:r.path});
+    S.team.folder=r.path;S.team.files=merged.files||[];S.team.rev=merged.rev||0;S.team.lastSync=new Date().toISOString();
+    save();render();toast(t('team.connected'),'ok');
+  }catch(e){toast(e.message,'bad')}
+}
+async function teamSync(manual){
+  if(!S.team.folder) return;
+  try{
+    const merged=await api('/api/team/sync',{folder:S.team.folder,local:{rev:S.team.rev,categories:[],files:S.team.files}});
+    S.team.files=merged.files||[];S.team.rev=merged.rev||0;S.team.lastSync=new Date().toISOString();
+    save();if(parseRoute().parts[0]==='team') render();
+    if(manual) toast(t('team.synced'),'ok');
+  }catch(e){if(manual) toast(t('team.syncFailed',e.message),'bad')}
+}
+function bulkCopyToTeam(files){
+  if(!S.team.folder){toast(t('team.connectFirst'),'warn');return}
+  const now=new Date().toISOString(),who=S.team.displayName||'';
+  files.forEach(f=>{S.team.files.push({id:uid(),title:f.title,path:f.path,tags:[...(f.tags||[])],desc:f.desc||'',due:f.due||null,dueLabel:f.dueLabel||'',pinned:false,status:'aktiv',added:now,opens:0,addedBy:who,modifiedBy:who,modifiedAt:now})});
+  save();render();toast(t('team.copiedN',files.length),'ok');teamSync();
+}
+function removeFromTeam(f){
+  if(!confirm(t('team.confirmRemove',f.title))) return;
+  const now=new Date().toISOString();f.deleted=true;f.deletedAt=now;f.modifiedBy=S.team.displayName||'';f.modifiedAt=now;
+  save();render();toast(t('team.removedToast'),'ok');teamSync();
+}
+function teamCard(f){
+  const st=statusOf(f);
+  return h('article',{class:'card','data-id':f.id,style:{'--c':'var(--line2)'},onClick:e=>selectFile(f,e)},
+    h('div',{class:'card-top'},
+      h('div',{class:'card-main'},typeBadge(f),h('div',{class:'ttl'},h('b',{},f.title))),
+      canPreview(f)?h('button',{class:'ib',title:t('card.previewBtn'),onClick:()=>showInPane(f)},'👁'):null,
+      h('button',{class:'ib',title:t('team.removeBtn'),onClick:()=>removeFromTeam(f)},'🗑')),
+    h('div',{class:'path mono',title:f.path},midEllipsis(f.path,70)),
+    h('div',{class:'foot'},h('span',{class:'led '+st.k,title:st.t}),
+      h('span',{class:'meta'},f.modifiedBy?t('team.editedBy',f.modifiedBy,relTime(f.modifiedAt)):t('team.addedBy',f.addedBy||'')),
+      h('button',{class:'btn sm pri',onClick:()=>openFile(f)},fileType(f.path)==='folder'?t('card.openFolder'):t('card.open'))));
+}
+function teamView(){
+  if(!S.team.folder) return[topbar(t('nav.team')),
+    h('section',{class:'onboard'},h('h2',{},t('team.onboardTitle')),h('p',{},t('team.onboardBody')),
+      h('div',{class:'acts'},h('button',{class:'btn pri',onClick:teamConnect},t('team.chooseFolder'))))];
+  const list=S.team.files.filter(f=>!f.deleted).sort((a,b)=>(b.modifiedAt||'').localeCompare(a.modifiedAt||''));
+  return[topbar(t('nav.team')),
+    h('div',{class:'gridhead'},
+      h('span',{class:'muted sm'},t('team.statusLine',S.team.folder,list.length,S.team.lastSync?relTime(S.team.lastSync):t('team.neverSynced'))),
+      h('span',{class:'spacer'}),
+      h('button',{class:'btn sm',onClick:()=>teamSync(true)},t('team.syncNow'))),
+    list.length?h('div',{class:'grid'},list.map(teamCard)):h('p',{class:'muted'},t('team.empty'))];
 }
 
 /* ---------- Tags: farver, omdøb, slet ---------- */
@@ -1645,10 +1750,8 @@ function previewToggle(){
 }
 async function fetchBytes(path,max){
   await flushSave();
-  if(native){const r=await api('/api/file',{path,max:max||0});return{u8:Uint8Array.from(atob(r.b64),c=>c.charCodeAt(0)),size:r.size}}
-  const r=await fetch('/api/file',{method:'POST',headers:{'Content-Type':'application/json','X-Dashboard':'1'},body:JSON.stringify({path,max:max||0})});
-  if(!r.ok){const e=await r.json().catch(()=>null);throw new Error((e&&e.error)||r.statusText)}
-  return{u8:new Uint8Array(await r.arrayBuffer()),size:+(r.headers.get('X-File-Size')||0)};
+  const r=await api('/api/file',{path,max:max||0,teamFolder:S.team.folder||''});
+  return{u8:Uint8Array.from(atob(r.b64),c=>c.charCodeAt(0)),size:r.size};
 }
 /* -- minimal zip-læser (xlsx er en zip-fil) -- */
 function zipIndex(u8){
@@ -1829,7 +1932,7 @@ async function fillPane(){
   app.classList.toggle('haspane',on);
   app.style.setProperty('--pane-w',(S.settings.paneWidth||420)+'px');
   if(!on){PANE.key='';revokePaneBlob();pane.replaceChildren();return}
-  const f=S.files.find(x=>x.id===UI.pv),x=f&&H[f.path];
+  const f=[...S.files,...S.team.files].find(x=>x.id===UI.pv),x=f&&H[f.path];
   const key=f?[f.id,f.title,f.path,x&&x.modified,x&&x.size,x&&x.exists].join('|'):'-';
   if(key===PANE.key&&pane.firstChild) return;   // uændret: behold rudens indhold og rulleposition
   PANE.key=key;const tok=++PANE.tok;revokePaneBlob();
@@ -2148,7 +2251,11 @@ function settingsDialog(){
       h('button',{class:'btn',onClick:()=>{const a=h('a',{href:URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'})),download:'file-hub-backup-'+new Date().toISOString().slice(0,10)+'.json'});a.click()}},t('settings.getBackup')),
       h('button',{class:'btn',onClick:()=>file.click()},t('settings.loadBackup')),file,
       h('button',{class:'btn',onClick:()=>{d.close();tagManager()}},t('settings.tagsAndColors')),
-      h('button',{class:'btn',onClick:()=>{if(confirm(t('settings.confirmResetStats'))){S.files.forEach(f=>{f.opens=0;delete f.lastOpened});save();d.close();render()}}},t('settings.resetStats')))],
+      h('button',{class:'btn',onClick:()=>{if(confirm(t('settings.confirmResetStats'))){S.files.forEach(f=>{f.opens=0;delete f.lastOpened});save();d.close();render()}}},t('settings.resetStats'))),
+    h('h2',{class:'h2',style:{marginTop:'20px'}},t('team.settingsHeading')),
+    h('p',{class:'muted sm'},S.team.folder?t('team.connectedTo',S.team.folder,S.team.files.filter(f=>!f.deleted).length):t('team.notConnected')),
+    fld(t('team.displayName'),h('input',{value:S.team.displayName||'',onChange:e=>{S.team.displayName=e.target.value.trim();save()}})),
+    h('div',{class:'inl'},h('button',{class:'btn',onClick:async()=>{await teamConnect();d.close();settingsDialog()}},t('team.chooseFolder')))],
     [h('span',{class:'spacer'}),h('button',{class:'btn pri',onClick:()=>d.close()},t('common.close'))]);
 }
 
@@ -2204,18 +2311,11 @@ addEventListener('drop',e=>{e.preventDefault();dragDepth=0;document.body.classLi
 const MANUAL_HTML_DA=`
 <h2 id="m-start">Kom i gang</h2>
 <p>File Command Center samler adgangen til alle dine filer (dokumenter, mapper, links, hvad som helst) ét sted, uanset hvor de ligger. Dashboardet gemmer kun <b>stien</b> til filerne. Dine filer flyttes eller kopieres ikke.</p>
-<p class="muted sm">Manualen er sidst opdateret 21. september 2026. Knappen "Udskriv eller gem som PDF" øverst til højre giver en udskrift uden sidebaren.</p>
+<p class="muted sm">Manualen er sidst opdateret 23. september 2026. Knappen "Udskriv eller gem som PDF" øverst til højre giver en udskrift uden sidebaren.</p>
 <h3>Start og stop</h3>
-<ol>
-<li>Mappen skal indeholde tre filer: <code>index.html</code>, <code>dashboard-server.ps1</code> og <code>start-dashboard.bat</code>. Filerne <code>data.json</code> og mappen <code>backups</code> oprettes automatisk.</li>
-<li>Dobbeltklik på <code>start-dashboard.bat</code>. Der åbner et sort vindue (hjælperen), og dashboardet åbner i browseren på <code>http://localhost:8787</code>.</li>
-<li>Lad det sorte vindue stå åbent, mens du bruger dashboardet. Luk det for at stoppe.</li>
-</ol>
-<div class="note">Åbn ikke <code>index.html</code> ved at dobbeltklikke på den. Siden skal åbnes via hjælperen, ellers kan den hverken gemme eller åbne filer.</div>
-<h3>Hvorfor en hjælper?</h3>
-<p>En browser må ikke åbne programmer eller se, hvor filer ligger på din pc. Den lille hjælper gør det for dashboardet. Den lytter kun på din egen pc, kan kun åbne stier, som du selv har lagt ind i dashboardet, og åbner aldrig programfiler som .exe, .bat, .cmd og .ps1.</p>
-<h3>Opdatering af filerne</h3>
-<p>Erstat filerne i mappen. Hvis kun <code>index.html</code> er ændret, er det nok at genindlæse siden (F5). Hvis <code>dashboard-server.ps1</code> er ændret, skal du lukke det sorte vindue og starte <code>start-dashboard.bat</code> igen.</p>
+<p>Start appen fra Start-menuen (installeret udgave) eller ved at dobbeltklikke <code>FileCommandCenter.exe</code> (portabel udgave). Luk vinduet for at stoppe – dine ændringer er allerede gemt løbende.</p>
+<h3>Opdatering</h3>
+<p>Appen tjekker selv for nye versioner. Er der en, vises en bjælke øverst med "Opdater nu", som henter og starter den nye installer.</p>
 <h3>Eksempeldata</h3>
 <p>Første gang oprettes fire eksempelhubs: Affaldsdata, Økonomi, Stamdata og Diverse. Du kan omdøbe, ændre og slette dem frit.</p>
 
@@ -2229,7 +2329,6 @@ const MANUAL_HTML_DA=`
 <tr><td>Genvej</td><td>Ordet bruges to steder. På en hubs side er "Genveje" hubbens favoritter som knapper. I filvælgeren er en genvej en gemt mappe (📌).</td></tr>
 <tr><td>Arkiv</td><td>Skjuler en fil fra hverdagen uden at slette posten.</td></tr>
 <tr><td>Frist</td><td>En dato på en fil, som vises på Overblik, på kortet og på hubbens side.</td></tr>
-<tr><td>Hjælperen</td><td>Det sorte vindue, der kører, mens du bruger dashboardet.</td></tr>
 </table>
 
 <h2 id="m-arbejdsgang">Typisk arbejdsgang</h2>
@@ -2253,7 +2352,7 @@ const MANUAL_HTML_DA=`
 <li><b>Senest åbnet</b> og <b>Mest brugte</b> ligger nederst og bygger på de filer, du åbner via dashboardet.</li>
 </ul>
 <h3>Sidebaren</h3>
-<p>Overblik, Alle filer, Favoritter, Arkiv, Manual, og derunder dine hubs. Tallet ved hver hub er antallet af aktive filer. Tryk på + ved overskriften for at oprette en ny hub. Hold musen over en hub og tryk på ✎ for at redigere den. Nederst ser du, om hjælperen kører, om der er gemt, og du kan skifte mellem mørkt og lyst tema.</p>
+<p>Overblik, Alle filer, Favoritter, Arkiv, Manual, og derunder dine hubs. Tallet ved hver hub er antallet af aktive filer. Tryk på + ved overskriften for at oprette en ny hub. Hold musen over en hub og tryk på ✎ for at redigere den. Nederst ser du, om appen svarer, om der er gemt, og du kan skifte mellem mørkt og lyst tema.</p>
 
 <h2 id="m-tilfoej">Tilføj filer og mapper</h2>
 <p>Tryk på <b>Tilføj</b> øverst til højre. Du kan vælge mellem:</p>
@@ -2338,7 +2437,7 @@ const MANUAL_HTML_DA=`
 <p>Tryk <kbd>Ctrl</kbd>+<kbd>K</kbd> (eller <kbd>/</kbd>, når du ikke skriver i et felt). Skriv et par bogstaver, brug ↑↓ og tryk Enter for at åbne. <kbd>Shift</kbd>+<kbd>Enter</kbd> viser filen i Stifinder. Uden tekst vises dine hubs, favoritter og senest åbnede. Hubs kan også vælges, og så går du direkte til dem.</p>
 
 <h2 id="m-aabn">Åbn filer og mapper</h2>
-<p>Klik på kortets titel eller ikon, på <b>Åbn</b>-knappen, eller på en genvejsknap. Filen åbner i det program, Windows har knyttet til filtypen (typisk Excel). Mapper åbner i Stifinder. Efter åbning forsøger hjælperen at hente Excel- eller Stifinder-vinduet frem foran browseren.</p>
+<p>Klik på kortets titel eller ikon, på <b>Åbn</b>-knappen, eller på en genvejsknap. Filen åbner i det program, Windows har knyttet til filtypen (typisk Excel). Mapper åbner i Stifinder. Efter åbning forsøger appen at hente Excel- eller Stifinder-vinduet frem foran sig selv.</p>
 <h3>Menuen ⋯ på et kort</h3>
 <table>
 <tr><th>Valg</th><th>Virkning</th></tr>
@@ -2363,11 +2462,11 @@ const MANUAL_HTML_DA=`
 
 <h2 id="m-data">Data og backup</h2>
 <ul>
-<li><b>Hvor:</b> alt gemmes i <code>data.json</code> i samme mappe som hjælperen. Ændringer gemmes automatisk et øjeblik efter, at du har lavet dem. Nederst i sidebaren står "Gemt". Her ligger også dine hubs og deres noter, gemte mappegenveje og indstillinger (tema, visning og sortering).</li>
+<li><b>Hvor:</b> alt gemmes i <code>data.json</code> i <code>%LOCALAPPDATA%\FileCommandCenter\</code>. Ændringer gemmes automatisk et øjeblik efter, at du har lavet dem. Nederst i sidebaren står "Gemt". Her ligger også dine hubs og deres noter, gemte mappegenveje og indstillinger (tema, visning og sortering).</li>
 <li><b>Dagligt:</b> ved dagens første ændring lægges en kopi af den gamle <code>data.json</code> i mappen <code>backups</code> (<code>data-ÅÅÅÅMMDD.json</code>). De seneste 30 beholdes. Kopien viser altså tilstanden fra før dagens ændringer.</li>
 <li><b>Før sletning:</b> hvis en gemning vil give færre filer end før, lægges først en kopi i <code>backups</code> som <code>gemt-foer-sletning-…</code>. De seneste 20 beholdes.</li>
 <li><b>Manuelt:</b> "Backup" nederst i sidebaren har "Hent backup" (en .json-fil), "Indlæs backup…" (erstatter alt i dashboardet, og du bliver spurgt først) og "Nulstil brugsstatistik" (nulstiller senest åbnet og mest brugte).</li>
-<li><b>Gendan en kopi:</b> luk hjælperen, kopiér en fil fra <code>backups</code> over <code>data.json</code>, og start igen. Eller brug "Indlæs backup…".</li>
+<li><b>Gendan en kopi:</b> luk appen, kopiér en fil fra <code>backups</code> over <code>data.json</code>, og start igen. Eller brug "Indlæs backup…".</li>
 <li><b>Flyt til en anden pc:</b> kopiér hele mappen inklusive <code>data.json</code>. Stierne skal findes på den nye pc for at være grønne.</li>
 </ul>
 <div class="note">Bruger du dashboardet fra flere mapper eller flere pc'er, har hver sin <code>data.json</code>. Har du for nylig flyttet filerne til en ny mappe og mangler dine data, så kig efter <code>data.json</code> i den gamle mappe.</div>
@@ -2388,14 +2487,13 @@ const MANUAL_HTML_DA=`
 <h2 id="m-fejl">Fejlfinding</h2>
 <table>
 <tr><th>Problem</th><th>Løsning</th></tr>
-<tr><td>Siden siger "Hjælperen svarer ikke", eller du ser "NetworkError" og "Kunne ikke gemme"</td><td>Hjælperen kører ikke. Start <code>start-dashboard.bat</code>. Genindlæs ikke siden, før den kører, og lav derefter en lille ændring, så bliver alt gemt.</td></tr>
-<tr><td>Det sorte vindue siger, at porten er i brug</td><td>Dashboardet kører sandsynligvis allerede. Åbn <code>http://localhost:8787</code> i browseren.</td></tr>
-<tr><td>Det sorte vindue åbner og lukker igen med en fejl om scripts</td><td>Din pc blokerer måske PowerShell-scripts. Det kan være en indstilling, som din it-afdeling styrer.</td></tr>
-<tr><td>Filen åbner ikke</td><td>Er statusprikken rød eller gul? Så findes filen ikke, eller drevet er ikke forbundet. Læs ellers fejlteksten i browseren og i det sorte vindue, hvor der står "Åbner: …" for hver fil.</td></tr>
-<tr><td>Excel eller mappen åbner, men ligger bag browseren</td><td>Hjælperen forsøger at hente vinduet frem og skriver i det sorte vindue, om det lykkedes. Lykkes det ikke, kan du finde vinduet i proceslinjen.</td></tr>
+<tr><td>Siden siger "Svarer ikke", eller du ser "Kunne ikke gemme"</td><td>Prøv at lukke og åbne appen igen. Lav derefter en lille ændring, så bliver alt gemt.</td></tr>
+<tr><td>Appen siger, den allerede kører</td><td>Der kan kun køre én instans ad gangen. Find det eksisterende vindue – tjek proceslinjen, det er måske minimeret.</td></tr>
+<tr><td>Filen åbner ikke</td><td>Er statusprikken rød eller gul? Så findes filen ikke, eller drevet er ikke forbundet. Læs ellers fejlteksten, der vises i appen.</td></tr>
+<tr><td>Excel eller mappen åbner, men ligger bag appen</td><td>Appen forsøger at hente vinduet frem. Lykkes det ikke, kan du finde vinduet i proceslinjen.</td></tr>
 <tr><td>Filvælgeren viser ikke det, du leder efter</td><td>Fjern evt. kryds ved "Vis kun Excel- og CSV-filer". Skjulte og systemfiler vises ikke. Skriv eller indsæt en netværkssti i adressefeltet.</td></tr>
 <tr><td>Én fil er "væk"</td><td>Tjek filtrene (sæt Aktive/Arkiv/Alle til "Alle"), og se, om den ligger i Arkiv. Kig ellers i <code>backups</code>.</td></tr>
-<tr><td>Knappen "Prøv Windows-dialog" åbner ingenting</td><td>Windows' almindelige dialog kan af og til ikke komme frem, når den startes fra hjælperen. Brug dashboardets egen filvælger, som ikke afhænger af den.</td></tr>
+<tr><td>Knappen "Prøv Windows-dialog" åbner ingenting</td><td>Windows' almindelige dialog kan af og til ikke komme frem, når den startes fra appen. Brug dashboardets egen filvælger, som ikke afhænger af den.</td></tr>
 <tr><td>Filvælgeren siger "Mappen findes ikke eller kan ikke nås"</td><td>Tjek stavemåden, og at netværksdrevet er forbundet. Prøv at åbne stien i Stifinder.</td></tr>
 <tr><td>Et klik åbner ikke filen, men markerer den</td><td>Du er i markér-tilstand. Tryk på "Færdig" eller <kbd>Esc</kbd>.</td></tr>
 <tr><td>To knapper for samme mappe i filvælgeren</td><td>Hold musen over knappen for at se stien. Er de forskellige, er det to forskellige mapper.</td></tr>
@@ -2405,8 +2503,8 @@ const MANUAL_HTML_DA=`
 <ul>
 <li>Dashboardet gemmer kun stier og dine oplysninger om filerne. Det viser ikke filernes indhold.</li>
 <li>En fil kan kun ligge i én hub, og hubs kan ikke have underhubs. Brug tags til en mere detaljeret opdeling.</li>
-<li>Det er lavet til Windows og til én bruger. Brug kun ét browservindue ad gangen, ellers kan det ene overskrive det andet.</li>
-<li>Hjælperen kan kun nås fra din egen pc. Den åbner kun stier, der er lagt ind i dashboardet, og aldrig programfiler.</li>
+<li>Det er lavet til Windows og til én bruger. Appen sørger selv for kun at køre i én instans ad gangen.</li>
+<li>Appen har ingen lyttende netværksport – siden taler kun med appen via interne beskeder, aldrig via nettet. Den åbner kun stier, der er lagt ind i dashboardet, og aldrig programfiler.</li>
 <li>Ændringer i filerne uden for dashboardet (flytning, omdøbning) opdages ved næste kontrol og vises som rød status.</li>
 </ul>
 
@@ -2425,18 +2523,11 @@ const MANUAL_HTML_DA=`
 const MANUAL_HTML_EN=`
 <h2 id="m-start">Getting started</h2>
 <p>File Command Center brings together access to all your files (documents, folders, links, anything at all) in one place, wherever they live. The dashboard only stores the <b>path</b> to each file. Your files are never moved or copied.</p>
-<p class="muted sm">This manual was last updated 22 September 2026. The "Print or save as PDF" button in the top right gives you a printout without the sidebar.</p>
+<p class="muted sm">This manual was last updated 23 September 2026. The "Print or save as PDF" button in the top right gives you a printout without the sidebar.</p>
 <h3>Starting and stopping</h3>
-<ol>
-<li>The folder needs three files: <code>index.html</code>, <code>dashboard-server.ps1</code> and <code>start-dashboard.bat</code>. The file <code>data.json</code> and the <code>backups</code> folder are created automatically.</li>
-<li>Double-click <code>start-dashboard.bat</code>. A black window opens (the helper), and the dashboard opens in your browser at <code>http://localhost:8787</code>.</li>
-<li>Leave the black window open while you use the dashboard. Close it to stop.</li>
-</ol>
-<div class="note">Don't open <code>index.html</code> by double-clicking it directly. The page needs to be opened via the helper, otherwise it can neither save nor open files.</div>
-<h3>Why a helper?</h3>
-<p>A browser isn't allowed to launch programs or see where files are on your PC. The small helper does that for the dashboard. It only listens on your own PC, can only open paths you've added to the dashboard yourself, and never opens program files such as .exe, .bat, .cmd and .ps1.</p>
-<h3>Updating the files</h3>
-<p>Replace the files in the folder. If only <code>index.html</code> has changed, reloading the page (F5) is enough. If <code>dashboard-server.ps1</code> has changed, close the black window and start <code>start-dashboard.bat</code> again.</p>
+<p>Start the app from the Start menu (installed version) or by double-clicking <code>FileCommandCenter.exe</code> (portable version). Close the window to stop – your changes are already saved as you go.</p>
+<h3>Updating</h3>
+<p>The app checks for new versions itself. If one is available, a banner appears at the top with "Install now", which downloads and launches the new installer.</p>
 <h3>Sample data</h3>
 <p>The first time you run it, four sample hubs are created: Affaldsdata, Økonomi, Stamdata and Diverse. You can rename, change or delete them freely.</p>
 
@@ -2450,7 +2541,6 @@ const MANUAL_HTML_EN=`
 <tr><td>Shortcut</td><td>The word is used in two places. On a hub's page, "Shortcuts" are the hub's favorites shown as buttons. In the file picker, a shortcut is a saved folder (📌).</td></tr>
 <tr><td>Archive</td><td>Hides a file from everyday view without deleting the entry.</td></tr>
 <tr><td>Deadline</td><td>A date on a file, shown on the Overview, on the card and on the hub's page.</td></tr>
-<tr><td>The helper</td><td>The black window that runs while you use the dashboard.</td></tr>
 </table>
 
 <h2 id="m-arbejdsgang">A typical workflow</h2>
@@ -2474,7 +2564,7 @@ const MANUAL_HTML_EN=`
 <li><b>Recently opened</b> and <b>Most used</b> sit at the bottom and are built from the files you open via the dashboard.</li>
 </ul>
 <h3>The sidebar</h3>
-<p>Overview, All files, Favorites, Archive, Manual, and below that your hubs. The number next to each hub is the count of active files. Press + next to the heading to create a new hub. Hover over a hub and press ✎ to edit it. At the bottom you can see whether the helper is running, whether things are saved, and switch between dark and light theme.</p>
+<p>Overview, All files, Favorites, Archive, Manual, and below that your hubs. The number next to each hub is the count of active files. Press + next to the heading to create a new hub. Hover over a hub and press ✎ to edit it. At the bottom you can see whether the app is responding, whether things are saved, and switch between dark and light theme.</p>
 
 <h2 id="m-tilfoej">Adding files and folders</h2>
 <p>Press <b>Add</b> in the top right. You can choose between:</p>
@@ -2559,7 +2649,7 @@ const MANUAL_HTML_EN=`
 <p>Press <kbd>Ctrl</kbd>+<kbd>K</kbd> (or <kbd>/</kbd> when you're not typing in a field). Type a few letters, use ↑↓ and press Enter to open. <kbd>Shift</kbd>+<kbd>Enter</kbd> shows the file in File Explorer. With no text, your hubs, favorites and recently opened files are shown. Hubs can also be selected, taking you straight to them.</p>
 
 <h2 id="m-aabn">Opening files and folders</h2>
-<p>Click the card's title or icon, the <b>Open</b> button, or a shortcut button. The file opens in the program Windows has associated with that file type (typically Excel). Folders open in File Explorer. After opening, the helper tries to bring the Excel or File Explorer window in front of the browser.</p>
+<p>Click the card's title or icon, the <b>Open</b> button, or a shortcut button. The file opens in the program Windows has associated with that file type (typically Excel). Folders open in File Explorer. After opening, the app tries to bring the Excel or File Explorer window in front of itself.</p>
 <h3>The ⋯ menu on a card</h3>
 <table>
 <tr><th>Option</th><th>Effect</th></tr>
@@ -2584,11 +2674,11 @@ const MANUAL_HTML_EN=`
 
 <h2 id="m-data">Data and backups</h2>
 <ul>
-<li><b>Where:</b> everything is saved in <code>data.json</code> in the same folder as the helper. Changes are saved automatically a moment after you make them. "Saved" is shown at the bottom of the sidebar. This is also where your hubs and their notes, saved folder shortcuts, and settings (theme, view and sort order) live.</li>
+<li><b>Where:</b> everything is saved in <code>data.json</code> in <code>%LOCALAPPDATA%\FileCommandCenter\</code>. Changes are saved automatically a moment after you make them. "Saved" is shown at the bottom of the sidebar. This is also where your hubs and their notes, saved folder shortcuts, and settings (theme, view and sort order) live.</li>
 <li><b>Daily:</b> on the day's first change, a copy of the old <code>data.json</code> is placed in the <code>backups</code> folder (<code>data-YYYYMMDD.json</code>). The last 30 are kept. The copy therefore shows the state from before that day's changes.</li>
 <li><b>Before a deletion:</b> if saving would result in fewer files than before, a copy is placed in <code>backups</code> first, as <code>gemt-foer-sletning-…</code> ("saved-before-deletion"). The last 20 are kept.</li>
 <li><b>Manually:</b> "Backup" at the bottom of the sidebar has "Get backup" (a .json file), "Load backup…" (replaces everything in the dashboard, and you're asked to confirm first) and "Reset usage statistics" (resets recently opened and most used).</li>
-<li><b>Restoring a copy:</b> close the helper, copy a file from <code>backups</code> over <code>data.json</code>, and start again. Or use "Load backup…".</li>
+<li><b>Restoring a copy:</b> close the app, copy a file from <code>backups</code> over <code>data.json</code>, and start again. Or use "Load backup…".</li>
 <li><b>Moving to another PC:</b> copy the whole folder including <code>data.json</code>. The paths need to exist on the new PC to show green.</li>
 </ul>
 <div class="note">If you use the dashboard from several folders or several PCs, each has its own <code>data.json</code>. If you've recently moved the files to a new folder and are missing your data, look for <code>data.json</code> in the old folder.</div>
@@ -2609,14 +2699,13 @@ const MANUAL_HTML_EN=`
 <h2 id="m-fejl">Troubleshooting</h2>
 <table>
 <tr><th>Problem</th><th>Solution</th></tr>
-<tr><td>The page says "The helper is not responding", or you see "NetworkError" and "Could not save"</td><td>The helper isn't running. Start <code>start-dashboard.bat</code>. Don't reload the page until it's running, then make a small change so everything gets saved.</td></tr>
-<tr><td>The black window says the port is in use</td><td>The dashboard is probably already running. Open <code>http://localhost:8787</code> in your browser.</td></tr>
-<tr><td>The black window opens and closes again with an error about scripts</td><td>Your PC may be blocking PowerShell scripts. This can be a setting your IT department controls.</td></tr>
-<tr><td>The file doesn't open</td><td>Is the status dot red or yellow? Then the file doesn't exist, or the drive isn't connected. Otherwise, read the error text in the browser and in the black window, where it says "Åbner: …" ("Opening: …") for each file.</td></tr>
-<tr><td>Excel or the folder opens, but sits behind the browser</td><td>The helper tries to bring the window forward and writes to the black window whether it succeeded. If it didn't, you can find the window on the taskbar.</td></tr>
+<tr><td>The page says "Not responding", or you see "Could not save"</td><td>Try closing and reopening the app. Then make a small change so everything gets saved.</td></tr>
+<tr><td>The app says it's already running</td><td>Only one instance can run at a time. Look for the existing window – check the taskbar, it may be minimized.</td></tr>
+<tr><td>The file doesn't open</td><td>Is the status dot red or yellow? Then the file doesn't exist, or the drive isn't connected. Otherwise, read the error text shown in the app.</td></tr>
+<tr><td>Excel or the folder opens, but sits behind the app</td><td>The app tries to bring the window forward. If it didn't work, you can find the window on the taskbar.</td></tr>
 <tr><td>The file picker isn't showing what you're looking for</td><td>Clear the "Show only Excel and CSV files" checkbox if it's checked. Hidden and system files aren't shown. Type or paste a network path into the address field.</td></tr>
 <tr><td>A file is "gone"</td><td>Check the filters (set Active/Archive/All to "All"), and see if it's in the Archive. Otherwise look in <code>backups</code>.</td></tr>
-<tr><td>The "Try Windows dialog" button opens nothing</td><td>Windows' regular dialog can occasionally fail to appear when started from the helper. Use the dashboard's own file picker, which doesn't depend on it.</td></tr>
+<tr><td>The "Try Windows dialog" button opens nothing</td><td>Windows' regular dialog can occasionally fail to appear when started from the app. Use the dashboard's own file picker, which doesn't depend on it.</td></tr>
 <tr><td>The file picker says "The folder does not exist or cannot be reached"</td><td>Check the spelling, and that the network drive is connected. Try opening the path in File Explorer.</td></tr>
 <tr><td>A click doesn't open the file, but selects it instead</td><td>You're in selection mode. Press "Done" or <kbd>Esc</kbd>.</td></tr>
 <tr><td>Two buttons for the same folder in the file picker</td><td>Hover over the button to see the path. If they differ, they're two different folders.</td></tr>
@@ -2626,8 +2715,8 @@ const MANUAL_HTML_EN=`
 <ul>
 <li>The dashboard only stores paths and your information about the files. It does not show the files' content.</li>
 <li>A file can only belong to one hub, and hubs can't have sub-hubs. Use tags for finer-grained grouping.</li>
-<li>It's built for Windows and for one user. Use only one browser window at a time, or one can overwrite the other.</li>
-<li>The helper can only be reached from your own PC. It only opens paths that have been added to the dashboard, and never program files.</li>
+<li>It's built for Windows and for one user. The app only allows one instance to run at a time.</li>
+<li>The app has no listening network port – the page only talks to the app through internal messages, never over the network. It only opens paths that have been added to the dashboard, and never program files.</li>
 <li>Changes to files outside the dashboard (moving, renaming) are detected on the next check and shown as a red status.</li>
 </ul>
 
@@ -2696,7 +2785,6 @@ function updateBanner(){
 }
 
 async function init(){
-  if(location.protocol==='file:'){showMessage(t('init.startHelperFirstTitle'),t('init.startHelperFirstBody'));return}
   try{const s=await api('/api/state');if(s&&Array.isArray(s.files)) S=migrate(s);else{S=defaultState();save()}}
   catch(e){showMessage(t('init.helperNotRespondingTitle'),t('init.helperNotRespondingBody',e.message));return}
   resetUI(parseRoute());render();checkHealth();initPaneResize();
@@ -2704,6 +2792,9 @@ async function init(){
   setInterval(()=>{if(!document.hidden) checkHealth()},5*60*1000);
   setInterval(()=>{const c=$('#clock');if(c) c.textContent=new Date().toLocaleTimeString(dateLocale(),{hour:'2-digit',minute:'2-digit'})},20000);
   if(native){setTimeout(checkForUpdate,4000);setInterval(checkForUpdate,6*60*60*1000)}
+  if(!S.team.displayName) api('/api/whoami').then(r=>{if(r&&r.name){S.team.displayName=r.name;save()}}).catch(()=>{});
+  if(S.team.folder) teamSync();
+  setInterval(()=>{if(!document.hidden&&S.team.folder) teamSync()},30000);
 }
 init();
 </script>
