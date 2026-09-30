@@ -61,6 +61,13 @@ static class Api
             case "/api/scan":
                 return Json(await Task.Run(() => FileOps.Scan(Str(body, "folder"), Bool(body, "recurse"))));
 
+            case "/api/find":
+            {
+                var names = body.TryGetProperty("names", out var arr) && arr.ValueKind == JsonValueKind.Array
+                    ? arr.EnumerateArray().Where(x => x.ValueKind == JsonValueKind.String).Select(x => x.GetString()!).ToList() : [];
+                return Json(await Task.Run(() => FileOps.Find(Str(body, "folder"), names)));
+            }
+
             case "/api/pick":
             {
                 using var dlg = new OpenFileDialog
