@@ -28,5 +28,5 @@ Begge er selvstændige builds (intet .NET skal være installeret i forvejen).
 
 ## Ikke gjort endnu
 
-- **Kodesignering.** Installeren er usigneret, så Windows vil advare (SmartScreen/Defender). IT skal godkende eller signere den, før den bredt kan installeres på arbejdscomputere.
+- **Kodesignering.** Installeren er usigneret, så Windows vil advare (SmartScreen/Defender).
 - Se `desktop/README.md` og `desktop/installer/README.md` for flere detaljer om, hvad der mangler.
