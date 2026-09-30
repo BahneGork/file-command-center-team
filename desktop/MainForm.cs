@@ -32,7 +32,7 @@ sealed class MainForm : Form
         }
         catch (WebView2RuntimeNotFoundException)
         {
-            MessageBox.Show("Microsoft Edge WebView2 Runtime mangler på denne pc, så dashboardet kan ikke vises.\nKontakt IT, eller installér 'WebView2 Runtime' fra Microsoft.",
+            MessageBox.Show("Microsoft Edge WebView2 Runtime mangler på denne pc, så dashboardet kan ikke vises.\nInstallér 'WebView2 Runtime' fra Microsoft.",
                 Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
             closeNow = true; Close();
             return;
