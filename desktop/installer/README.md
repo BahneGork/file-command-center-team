@@ -57,8 +57,7 @@ opdateringsbjælken. En bruger på en ældre, manuelt kopieret build skal opdate
 
 ## Ikke gjort endnu
 
-- **Signering.** MSI'en er usigneret, så Windows SmartScreen/Defender vil advare, og virksomhedens IT skal
-  sandsynligvis godkende eller signere den, før den kan installeres på arbejdscomputere. Se overvejelserne i
+- **Signering.** MSI'en er usigneret, så Windows SmartScreen/Defender vil advare. Se overvejelserne i
   `../README.md`.
 - Ingen skrivebordsgenvej eller "Reparér/Afinstallér"-genvej i Start-menuen ud over standard Windows-håndtering
   (Indstillinger → Apps).
