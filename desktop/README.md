@@ -58,5 +58,6 @@ differs.
 
 ## Not done yet
 - Code signing — the installer (`installer/`) is unsigned, so Windows SmartScreen/Defender will warn.
+
 ## Third-party components
 - `Microsoft.Web.WebView2` (NuGet) — the only package.
