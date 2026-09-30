@@ -661,7 +661,7 @@ da:{
 'fld.folders':'Mapper',
 'scan.findAllHint':'Find alle filer i de valgte mapper.',
 'scan.includeSubfolders':'Medtag undermapper (kan tage tid på netværksdrev)',
-'cat.namePlaceholder':'Fx Affaldsdata',
+'cat.namePlaceholder':'Fx Økonomi',
 'cat.confirmDelete':name=>'Slette "'+name+'"?\nFilerne beholdes, men mister deres hub.',
 'common.delete':'Slet',
 'cat.moveUp':'Flyt op i listen',
@@ -1039,7 +1039,7 @@ da:{
 'fld.folders':'Folders',
 'scan.findAllHint':'Find all files in the selected folders.',
 'scan.includeSubfolders':'Include subfolders (can take time on a network drive)',
-'cat.namePlaceholder':'E.g. Waste data',
+'cat.namePlaceholder':'E.g. Finance',
 'cat.confirmDelete':name=>'Delete "'+name+'"?\nThe files will be kept, but will lose their hub.',
 'common.delete':'Delete',
 'cat.moveUp':'Move up in the list',
@@ -1112,7 +1112,6 @@ let UPDATE=null,updateProgress=null,updateInstalling=false,updateError='';
 const UI={q:'',tags:new Set(),tagMode:'and',status:'aktiv',fav:false,cat:'',problem:false,allTags:false,select:false,sel:new Set(),order:[],last:null,pv:null};
 
 function defaultState(){return{version:1,categories:[
-  {id:'affaldsdata',name:'Affaldsdata',icon:'♻️',color:'#5eead4',hub:true,description:'',notes:''},
   {id:'oekonomi',name:'Økonomi',icon:'💰',color:'#ffb02e',hub:true,description:'',notes:''},
   {id:'stamdata',name:'Stamdata',icon:'🗂️',color:'#7cc4ff',hub:true,description:'',notes:''},
   {id:'diverse',name:'Diverse',icon:'📎',color:'#b7a4ff',hub:true,description:'',notes:''}],
@@ -2317,7 +2316,7 @@ const MANUAL_HTML_DA=`
 <h3>Opdatering</h3>
 <p>Appen tjekker selv for nye versioner. Er der en, vises en bjælke øverst med "Opdater nu", som henter og starter den nye installer.</p>
 <h3>Eksempeldata</h3>
-<p>Første gang oprettes fire eksempelhubs: Affaldsdata, Økonomi, Stamdata og Diverse. Du kan omdøbe, ændre og slette dem frit.</p>
+<p>Første gang oprettes tre eksempelhubs: Økonomi, Stamdata og Diverse. Du kan omdøbe, ændre og slette dem frit.</p>
 
 <h2 id="m-begreber">Begreber</h2>
 <table>
@@ -2333,7 +2332,7 @@ const MANUAL_HTML_DA=`
 
 <h2 id="m-arbejdsgang">Typisk arbejdsgang</h2>
 <ol>
-<li><b>Opret en hub</b> for et område, fx Affaldsdata (<b>Tilføj → Ny hub…</b>).</li>
+<li><b>Opret en hub</b> for et område, fx Økonomi (<b>Tilføj → Ny hub…</b>).</li>
 <li><b>Tilføj filerne</b> med <b>Tilføj → Vælg filer…</b> (eller Scan mapper…). Vælg hubben og skriv evt. fælles tags i dialogen.</li>
 <li><b>Finpuds med markér:</b> tryk på ☑ Markér, markér de filer, der hører sammen, og brug <b>Tilføj tag…</b>.</li>
 <li><b>Fastgør</b> de filer, du bruger til daglig, med ☆. De bliver til genveje øverst på hubben.</li>
@@ -2385,7 +2384,7 @@ const MANUAL_HTML_DA=`
 
 <h2 id="m-organiser">Organiser: hubs, tags og frister</h2>
 <h3>Hubs</h3>
-<p>Hver fil kan ligge i én <b>hub</b>, fx Affaldsdata eller Økonomi. En hub har sin egen side med:</p>
+<p>Hver fil kan ligge i én <b>hub</b>, fx Økonomi eller Stamdata. En hub har sin egen side med:</p>
 <ul>
 <li>en beskrivelse og nøgletal (antal filer, favoritter, filer der mangler, sidst åbnet),</li>
 <li><b>Genveje</b>: hubbens favoritter som store knapper, der åbner filen med ét klik (op til 14),</li>
@@ -2529,7 +2528,7 @@ const MANUAL_HTML_EN=`
 <h3>Updating</h3>
 <p>The app checks for new versions itself. If one is available, a banner appears at the top with "Install now", which downloads and launches the new installer.</p>
 <h3>Sample data</h3>
-<p>The first time you run it, four sample hubs are created: Affaldsdata, Økonomi, Stamdata and Diverse. You can rename, change or delete them freely.</p>
+<p>The first time you run it, three sample hubs are created: Økonomi, Stamdata and Diverse. You can rename, change or delete them freely.</p>
 
 <h2 id="m-begreber">Concepts</h2>
 <table>
@@ -2545,7 +2544,7 @@ const MANUAL_HTML_EN=`
 
 <h2 id="m-arbejdsgang">A typical workflow</h2>
 <ol>
-<li><b>Create a hub</b> for an area, e.g. Waste data (<b>Add → New hub…</b>).</li>
+<li><b>Create a hub</b> for an area, e.g. Finance (<b>Add → New hub…</b>).</li>
 <li><b>Add the files</b> with <b>Add → Pick files…</b> (or Scan folders…). Choose the hub and optionally write shared tags in the dialog.</li>
 <li><b>Fine-tune with Select:</b> press ☑ Select, select the files that belong together, and use <b>Add tag…</b>.</li>
 <li><b>Pin</b> the files you use daily with ☆. They become shortcuts at the top of the hub.</li>
@@ -2597,7 +2596,7 @@ const MANUAL_HTML_EN=`
 
 <h2 id="m-organiser">Organizing: hubs, tags and deadlines</h2>
 <h3>Hubs</h3>
-<p>Each file can belong to one <b>hub</b>, e.g. Waste data or Finance. A hub has its own page with:</p>
+<p>Each file can belong to one <b>hub</b>, e.g. Finance or Master data. A hub has its own page with:</p>
 <ul>
 <li>a description and key numbers (file count, favorites, missing files, last opened),</li>
 <li><b>Shortcuts</b>: the hub's favorites as large buttons that open the file with one click (up to 14),</li>
