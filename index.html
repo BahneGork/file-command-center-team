@@ -606,6 +606,89 @@ da:{
 'fld.description':'Beskrivelse',
 'fld.deadlineOptional':'Frist (valgfri)',
 'fld.whatIsDeadline':'Hvad er fristen?',
+'fld.recur':'Gentagelse',
+'fld.recurHint':'Når du trykker ✓ ved en frist, sættes den automatisk til den næste dato.',
+'recur.none':'Ingen',
+'recur.daily':'Dagligt',
+'recur.weekdays':'Hver hverdag (man-fre)',
+'recur.weekly':'Ugentligt',
+'recur.biweekly':'Hver 2. uge',
+'recur.monthly':'Månedligt (samme dato)',
+'recur.quarterly':'Kvartalsvis',
+'recur.yearly':'Årligt',
+'recur.custom':'Tilpasset…',
+'recur.every':'Hver',
+'recur.unit.day':'dag(e)',
+'recur.unit.week':'uge(r)',
+'recur.unit.month':'måned(er)',
+'recur.unit.year':'år',
+'recur.onDays':'På ugedage (tom = fristens ugedag)',
+'recur.inMonth':'Dag i måneden',
+'recur.monthHint':'Fx 3 + Hverdag + fra månedens slutning = tredjesidste hverdag. Ved "år" bruges fristens måned.',
+'recur.of.date':'Dato',
+'recur.of.workday':'Hverdag',
+'recur.fromStart':'fra månedens start',
+'recur.fromEnd':'fra månedens slutning',
+'recur.shift':'Hvis datoen er en fridag',
+'recur.shift.none':'Behold datoen',
+'recur.shift.before':'Flyt til hverdagen før',
+'recur.shift.after':'Flyt til hverdagen efter',
+'recur.from':'Regn fra',
+'recur.from.schedule':'Planen (faste datoer)',
+'recur.from.done':'Den dag, jeg markerer udført',
+'recur.until':'Slutter (valgfri)',
+'recur.preview':d=>'Næste dato efter ✓: '+d,
+'recur.previewNone':'Ingen flere datoer - gentagelsen er slut',
+'recur.needDate':'Sæt en frist for at bruge gentagelse',
+'recur.ended':'Gentagelsen er slut - fristen er fjernet',
+'recur.markDoneTitle':'Udført - sæt næste dato',
+'recur.advanced':d=>'Næste dato sat til '+d,
+'common.undo':'Fortryd',
+'nav.deadlines':'Frister',
+'dv.view.day':'Dag',
+'dv.view.week':'Uge',
+'dv.view.month':'Måned',
+'dv.view.quarter':'Kvartal',
+'dv.view.year':'År',
+'dv.weekTitle':(w,a,b)=>'Uge '+w+' · '+a+' – '+b,
+'dv.weekN':w=>'Uge '+w,
+'dv.quarterTitle':(q,y)=>q+'. kvartal '+y,
+'dv.prev':'Forrige',
+'dv.next':'Næste',
+'dv.today':'I dag',
+'dv.overdue':'Overskredet',
+'dv.upcomingTitle':'Kommende gentagelse (beregnet ud fra reglen)',
+'dv.seeAll':'Alle frister',
+'dv.nonePeriod':'Ingen frister i denne periode.',
+'dv.noneAtAll':'Ingen filer har en frist endnu.',
+'dv.export':'Eksportér til kalender',
+'dv.exportTitle':'Henter en .ics-fil med alle frister, som kan importeres i Outlook og andre kalendere',
+'dv.exported':n=>n+(n===1?' frist':' frister')+' eksporteret som .ics-fil',
+'relink.open':'Genfind…',
+'relink.title':'Genfind filer, der mangler',
+'relink.body':n=>n+(n===1?' fil kan':' filer kan')+' ikke findes. Find de nye placeringer på en af to måder, og vælg så, hvilke stier der skal opdateres. Selve filerne røres ikke.',
+'relink.movedLabel':'En mappe er flyttet eller omdøbt',
+'relink.movedHint':'Den første del af stien udskiftes i alle manglende filer, der ligger under den gamle mappe.',
+'relink.newPlaceholder':'Ny mappe',
+'relink.browse':'Vælg…',
+'relink.suggest':'Foreslå',
+'relink.searchBtn':'Søg efter filnavnene i en mappe…',
+'relink.searchHint':'Leder i mappen og dens undermapper efter filer med samme navn.',
+'relink.pickFolder':'Vælg mappe',
+'relink.noMatch':'Ingen ny placering fundet endnu',
+'relink.moreMatches':n=>'(+'+n+' andre med samme navn)',
+'relink.giveBoth':'Udfyld både den gamle og den nye mappe',
+'relink.foundN':n=>n+(n===1?' fil':' filer')+' fundet',
+'relink.foundNone':'Ingen af filerne blev fundet der',
+'relink.truncated':'Søgningen blev afbrudt, fordi mappen er meget stor. Prøv en mere præcis mappe.',
+'relink.apply':n=>'Opdatér '+n+(n===1?' sti':' stier'),
+'relink.updatedN':n=>n+(n===1?' sti':' stier')+' opdateret',
+'relink.noneMissing':'Ingen filer mangler',
+'settings.holidays':'Fridage…',
+'hol.title':'Fridage',
+'hol.body':'Én dato pr. linje (ÅÅÅÅ-MM-DD), evt. efterfulgt af et navn. Fridage tælles ikke som hverdage i gentagne frister. Lørdag og søndag er altid fridage.',
+'hol.addDanish':'Tilføj danske helligdage (i år og næste år)',
+'hol.skipped':n=>n+(n===1?' linje':' linjer')+' uden gyldig dato blev sprunget over',
 'fdlg.pinAsFavorite':'Fastgør som favorit',
 'imp.noValidPaths':'Ingen gyldige stier',
 'imp.addN':n=>'Tilføj '+t('noun.files',n),
@@ -984,6 +1067,89 @@ da:{
 'fld.description':'Description',
 'fld.deadlineOptional':'Deadline (optional)',
 'fld.whatIsDeadline':'What is the deadline?',
+'fld.recur':'Recurrence',
+'fld.recurHint':'Pressing ✓ on a deadline automatically sets it to the next date.',
+'recur.none':'None',
+'recur.daily':'Daily',
+'recur.weekdays':'Every workday (Mon-Fri)',
+'recur.weekly':'Weekly',
+'recur.biweekly':'Every 2 weeks',
+'recur.monthly':'Monthly (same date)',
+'recur.quarterly':'Quarterly',
+'recur.yearly':'Yearly',
+'recur.custom':'Custom…',
+'recur.every':'Every',
+'recur.unit.day':'day(s)',
+'recur.unit.week':'week(s)',
+'recur.unit.month':'month(s)',
+'recur.unit.year':'year(s)',
+'recur.onDays':'On weekdays (empty = the deadline\'s weekday)',
+'recur.inMonth':'Day of the month',
+'recur.monthHint':'E.g. 3 + Workday + from the end of the month = third-last workday. For "year", the deadline\'s month is used.',
+'recur.of.date':'Date',
+'recur.of.workday':'Workday',
+'recur.fromStart':'from the start of the month',
+'recur.fromEnd':'from the end of the month',
+'recur.shift':'If the date is a day off',
+'recur.shift.none':'Keep the date',
+'recur.shift.before':'Move to the workday before',
+'recur.shift.after':'Move to the workday after',
+'recur.from':'Count from',
+'recur.from.schedule':'The schedule (fixed dates)',
+'recur.from.done':'The day I mark it done',
+'recur.until':'Ends (optional)',
+'recur.preview':d=>'Next date after ✓: '+d,
+'recur.previewNone':'No more dates - the recurrence has ended',
+'recur.needDate':'Set a deadline to use recurrence',
+'recur.ended':'The recurrence has ended - the deadline was removed',
+'recur.markDoneTitle':'Done - set next date',
+'recur.advanced':d=>'Next date set to '+d,
+'common.undo':'Undo',
+'nav.deadlines':'Deadlines',
+'dv.view.day':'Day',
+'dv.view.week':'Week',
+'dv.view.month':'Month',
+'dv.view.quarter':'Quarter',
+'dv.view.year':'Year',
+'dv.weekTitle':(w,a,b)=>'Week '+w+' · '+a+' – '+b,
+'dv.weekN':w=>'Week '+w,
+'dv.quarterTitle':(q,y)=>'Q'+q+' '+y,
+'dv.prev':'Previous',
+'dv.next':'Next',
+'dv.today':'Today',
+'dv.overdue':'Overdue',
+'dv.upcomingTitle':'Upcoming occurrence (calculated from the rule)',
+'dv.seeAll':'All deadlines',
+'dv.nonePeriod':'No deadlines in this period.',
+'dv.noneAtAll':'No files have a deadline yet.',
+'dv.export':'Export to calendar',
+'dv.exportTitle':'Downloads an .ics file with all deadlines, which can be imported into Outlook and other calendars',
+'dv.exported':n=>n+(n===1?' deadline':' deadlines')+' exported as an .ics file',
+'relink.open':'Find again…',
+'relink.title':'Find missing files again',
+'relink.body':n=>n+(n===1?' file cannot':' files cannot')+' be found. Locate the new places in one of two ways, then choose which paths to update. The files themselves are not touched.',
+'relink.movedLabel':'A folder was moved or renamed',
+'relink.movedHint':'The first part of the path is replaced in every missing file under the old folder.',
+'relink.newPlaceholder':'New folder',
+'relink.browse':'Pick…',
+'relink.suggest':'Suggest',
+'relink.searchBtn':'Search a folder for the file names…',
+'relink.searchHint':'Looks in the folder and its subfolders for files with the same name.',
+'relink.pickFolder':'Pick folder',
+'relink.noMatch':'No new location found yet',
+'relink.moreMatches':n=>'(+'+n+' more with the same name)',
+'relink.giveBoth':'Fill in both the old and the new folder',
+'relink.foundN':n=>n+(n===1?' file':' files')+' found',
+'relink.foundNone':'None of the files were found there',
+'relink.truncated':'The search was cut short because the folder is very large. Try a more specific folder.',
+'relink.apply':n=>'Update '+n+(n===1?' path':' paths'),
+'relink.updatedN':n=>n+(n===1?' path':' paths')+' updated',
+'relink.noneMissing':'No files are missing',
+'settings.holidays':'Days off…',
+'hol.title':'Days off',
+'hol.body':'One date per line (YYYY-MM-DD), optionally followed by a name. Days off are not counted as workdays in recurring deadlines. Saturday and Sunday are always days off.',
+'hol.addDanish':'Add Danish public holidays (this year and next)',
+'hol.skipped':n=>n+(n===1?' line':' lines')+' without a valid date '+(n===1?'was':'were')+' skipped',
 'fdlg.pinAsFavorite':'Pin as favorite',
 'imp.noValidPaths':'No valid paths',
 'imp.addN':n=>'Add '+t('noun.files',n),
@@ -1122,7 +1288,7 @@ function migrate(s){s.categories=Array.isArray(s.categories)?s.categories:[];s.c
   s.team=Object.assign({folder:null,displayName:'',files:[],rev:0,lastSync:null},s.team||{});
   s.team.files=Array.isArray(s.team.files)?s.team.files:[];
   const ids=new Set();
-  s.files.forEach(f=>{f.tags=f.tags||[];f.status=f.status||'aktiv';f.opens=f.opens||0;f.category=f.category||'';if(!f.id||ids.has(f.id)) f.id=uid();ids.add(f.id)});return s}
+  s.files.forEach(f=>{f.tags=f.tags||[];f.status=f.status||'aktiv';f.opens=f.opens||0;f.category=f.category||'';f.recur=normRecur(f.recur,f.due);if(!f.id||ids.has(f.id)) f.id=uid();ids.add(f.id)});return s}
 
 /* ================= Hjælpefunktioner ================= */
 function h(tag,props,...kids){
@@ -1153,6 +1319,129 @@ function daysUntil(due){const t=new Date();t.setHours(0,0,0,0);return Math.round
 function dueInfo(f){if(!f.due) return null;const n=daysUntil(f.due);let k='ok',tt;
   if(n<0){k='bad';tt=t('due.overdue',n)}else if(n===0){k='warn';tt=t('due.today')}else if(n===1){k='warn';tt=t('due.tomorrow')}else{k=n<=7?'warn':'ok';tt=t('due.inDays',n)}
   return{n,k,t:tt}}
+const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+/* -- gentagne frister --
+   En regel: {unit:'day'|'week'|'month'|'year', every:N, days:[0-6] (uge), of:'date'|'workday'|0-6 + pos:±n (måned/år),
+   shift:'before'|'after' (flyt væk fra fridage), from:'done' (regn fra udført-dagen), until:'ÅÅÅÅ-MM-DD',
+   anchor: den planlagte dato før evt. flytning, så planen ikke skrider}. */
+const pd=s=>new Date(s+'T00:00:00');
+const addDays=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
+const holidaySet=()=>new Set(((S&&S.settings&&S.settings.holidays)||[]).map(x=>x.slice(0,10)));
+const isWorkday=(d,hol)=>d.getDay()!==0&&d.getDay()!==6&&!hol.has(ymd(d));
+function monthOcc(y,m,of,pos,hol){
+  const last=new Date(y,m+1,0).getDate();
+  if(of==='date') return new Date(y,m,Math.min(last,Math.max(1,pos>0?pos:last+pos+1)));
+  const list=[];
+  for(let i=1;i<=last;i++){const d=new Date(y,m,i);if(of==='workday'?isWorkday(d,hol):d.getDay()===of) list.push(d)}
+  return list.length?list[Math.min(list.length-1,Math.max(0,pos>0?pos-1:list.length+pos))]:null;
+}
+function shiftDay(d,shift,hol){
+  if(!shift) return d;
+  for(let n=0;n<31&&!isWorkday(d,hol);n++) d=addDays(d,shift==='before'?-1:1);
+  return d;
+}
+/* Næste forekomst efter både i dag og den nuværende frist; null hvis reglen er slut */
+function nextOcc(dateStr,r,today){
+  if(!today){today=new Date();today.setHours(0,0,0,0)}
+  const hol=holidaySet(),done=r.from==='done',cur=pd(dateStr),d0=done?today:pd(r.anchor||dateStr),floor=done||today>cur?today:cur;
+  const every=Math.max(1,r.every|0),of=r.of==null?'date':r.of,pos=of==='date'&&(done||!r.pos)?d0.getDate():(r.pos||1);
+  const days=r.days&&r.days.length?r.days:[d0.getDay()],mon=addDays(d0,-((d0.getDay()+6)%7));
+  for(let k=0;k<20000;k++){
+    let c;
+    if(r.unit==='day') c=[addDays(d0,k*every)];
+    else if(r.unit==='week') c=days.map(w=>addDays(mon,7*every*k+(w+6)%7));
+    else c=[monthOcc(d0.getFullYear(),d0.getMonth()+(r.unit==='year'?12:1)*every*k,of,pos,hol)].filter(Boolean);
+    const hit=c.map(a=>({a,d:shiftDay(a,r.shift,hol)})).sort((x,y)=>x.d-y.d).find(x=>x.d>floor);
+    if(hit) return r.until&&ymd(hit.d)>r.until?null:{due:ymd(hit.d),anchor:ymd(hit.a)};
+  }
+  return null;
+}
+function easter(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),i=(19*a+b-d-g+15)%30,k=Math.floor(c/4),l=c%4,m=(32+2*e+2*k-i-l)%7,n=Math.floor((a+11*i+22*m)/451),p=i+m-7*n+114;return new Date(y,Math.floor(p/31)-1,p%31+1)}
+function danishHolidays(y){
+  const e=easter(y),rel=(n,name)=>ymd(addDays(e,n))+' '+name;
+  return[y+'-01-01 Nytårsdag',rel(-3,'Skærtorsdag'),rel(-2,'Langfredag'),rel(1,'2. påskedag'),rel(39,'Kristi himmelfartsdag'),rel(50,'2. pinsedag'),y+'-12-25 Juledag',y+'-12-26 2. juledag'];
+}
+/* Ældre formater ('daily' eller {kind,n}) oversættes til en regel */
+function normRecur(r,due){
+  if(!r) return '';
+  if(typeof r==='object'&&r.unit) return r;
+  const k=typeof r==='string'?r:r.kind,n=+r.n||1;
+  return k==='daily'?{unit:'day',every:1}:k==='weekly'?{unit:'week',every:1}:k==='everyNDays'?{unit:'day',every:n}
+    :k==='monthly'?{unit:'month',every:1,of:'date',pos:due?pd(due).getDate():1}
+    :k==='nthWorkday'?{unit:'month',every:1,of:'workday',pos:n}:k==='lastWorkday'?{unit:'month',every:1,of:'workday',pos:-1}:'';
+}
+function advanceRecurrence(f){
+  const prev={due:f.due,recur:f.recur},o=nextOcc(f.due,f.recur);
+  const undo=h('button',{class:'btn sm',style:{marginLeft:'10px',pointerEvents:'auto'},onClick:e=>{f.due=prev.due;f.recur=prev.recur;save();render();e.currentTarget.closest('.toast').remove()}},t('common.undo'));
+  if(!o){f.due='';f.recur='';save();render();toast([t('recur.ended'),undo],'ok',10000);return}
+  const r={...f.recur};if(o.anchor!==o.due) r.anchor=o.anchor;else delete r.anchor;
+  f.due=o.due;f.recur=r;save();render();toast([t('recur.advanced',fmtDate(f.due+'T00:00:00')),undo],'ok',10000);
+}
+/* Alle forekomster af en fils frist i [from;to]: den nuværende frist og derefter reglens kommende datoer */
+function occurrences(f,from,to,today){
+  const out=[];if(!f.due) return out;
+  if(!today){today=new Date();today.setHours(0,0,0,0)}
+  const lo=ymd(from),hi=ymd(to);
+  let cur=f.due,r=f.recur&&f.recur.unit?f.recur:null,actual=true;
+  for(let i=0;i<3000&&cur<=hi;i++){
+    if(cur>=lo) out.push({f,date:cur,actual});
+    if(!r) break;
+    const base=pd(cur),o=nextOcc(cur,r,base>today?base:today);
+    if(!o) break;
+    cur=o.due;r={...r,anchor:o.anchor};actual=false;
+  }
+  return out;
+}
+/* RRULE for regler, som kalenderstandarden udtrykker præcist som appen; ellers null (så eksporteres enkeltdatoer) */
+function icsRule(f){
+  const r=f.recur,d=pd(f.due),BY=['SU','MO','TU','WE','TH','FR','SA'],parts=[];
+  if(r.shift||r.from==='done') return null;
+  if(r.unit==='day') parts.push('FREQ=DAILY');
+  else if(r.unit==='week'){
+    const days=r.days&&r.days.length?r.days:null;
+    if(days&&!days.includes(d.getDay())) return null;
+    parts.push('FREQ=WEEKLY');
+    if(days) parts.push('BYDAY='+[1,2,3,4,5,6,0].filter(w=>days.includes(w)).map(w=>BY[w]).join(','),'WKST=MO');
+  }else{
+    const of=r.of==null?'date':r.of,pos=of==='date'&&!r.pos?d.getDate():(r.pos||1);
+    if(of==='workday'&&(holidaySet().size||Math.abs(pos)>20)) return null;
+    if(typeof of==='number'&&Math.abs(pos)>4) return null;
+    if(of==='date'&&pos<-28) return null;
+    const occ=monthOcc(d.getFullYear(),d.getMonth(),of,pos,new Set());
+    if(!occ||ymd(occ)!==f.due) return null;
+    parts.push(r.unit==='year'?'FREQ=YEARLY':'FREQ=MONTHLY');
+    if(r.unit==='year') parts.push('BYMONTH='+(d.getMonth()+1));
+    if(of==='date'){
+      if(pos>28){const ds=[];for(let i=28;i<=pos;i++) ds.push(i);parts.push('BYMONTHDAY='+ds.join(','),'BYSETPOS=-1')}
+      else parts.push('BYMONTHDAY='+pos);
+    }else if(of==='workday') parts.push('BYDAY=MO,TU,WE,TH,FR','BYSETPOS='+pos);
+    else parts.push('BYDAY='+pos+BY[of]);
+  }
+  const every=Math.max(1,r.every|0);
+  if(every>1) parts.splice(1,0,'INTERVAL='+every);
+  if(r.until) parts.push('UNTIL='+r.until.replace(/-/g,''));
+  return parts.join(';');
+}
+function icsText(files,today){
+  if(!today){today=new Date();today.setHours(0,0,0,0)}
+  const esc=x=>String(x).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n');
+  const enc=new TextEncoder();
+  const fold=line=>{let out='',cur='',n=0;for(const ch of line){const b=enc.encode(ch).length;if(n+b>73){out+=cur+'\r\n ';cur='';n=1}cur+=ch;n+=b}return out+cur};
+  const stamp=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
+  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//File Command Center//Deadlines//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
+  const ev=(f,date,rule,uid)=>L.push('BEGIN:VEVENT','UID:'+uid+'@filecommandcenter','DTSTAMP:'+stamp,
+    'DTSTART;VALUE=DATE:'+date.replace(/-/g,''),'DTEND;VALUE=DATE:'+ymd(addDays(pd(date),1)).replace(/-/g,''),
+    'SUMMARY:'+esc((f.dueLabel?f.dueLabel+': ':'')+f.title),'DESCRIPTION:'+esc(f.path),...(rule?['RRULE:'+rule]:[]),'TRANSP:TRANSPARENT','END:VEVENT');
+  files.filter(f=>f.due&&f.status!=='arkiv').forEach(f=>{
+    const r=f.recur&&f.recur.unit?f.recur:null,rule=r?icsRule(f):null;
+    if(!r||rule) ev(f,f.due,rule,f.id);
+    else occurrences(f,pd(f.due),addDays(today,366),today).slice(0,120).forEach(o=>ev(f,o.date,null,f.id+'-'+o.date));
+  });
+  L.push('END:VCALENDAR');
+  return L.map(fold).join('\r\n')+'\r\n';
+}
+function recurBtn(f){return f.recur&&f.due?h('button',{class:'ib',title:t('recur.markDoneTitle'),onClick:e=>{e.stopPropagation();advanceRecurrence(f)}},'✓'):null}
+/* -- /gentagne frister -- */
 function isoWeek(d){const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=t.getUTCDay()||7;t.setUTCDate(t.getUTCDate()+4-day);const y0=new Date(Date.UTC(t.getUTCFullYear(),0,1));return Math.ceil(((t-y0)/864e5+1)/7)}
 function fileType(p){
   const hx=H[p];if(hx&&hx.isDir) return 'folder';
@@ -1235,10 +1524,10 @@ function copyPath(f){navigator.clipboard.writeText(f.path).then(()=>toast(t('toa
 function togglePin(f){f.pinned=!f.pinned;save();render()}
 
 /* ================= Toast / menu / dialog ================= */
-function toast(msg,kind=''){
+function toast(msg,kind='',ms){
   const host=document.querySelector('dialog[open]')||document.body;
   let box=host.querySelector(':scope>.toasts');if(!box){box=h('div',{class:'toasts'});host.append(box)}
-  const t=h('div',{class:'toast '+kind},msg);box.append(t);setTimeout(()=>{t.remove();if(!box.children.length) box.remove()},kind==='bad'?6000:3200);
+  const t=h('div',{class:'toast '+kind},msg);box.append(t);setTimeout(()=>{t.remove();if(!box.children.length) box.remove()},ms||(kind==='bad'?6000:3200));
 }
 let openMenu=null;
 function closeMenu(){if(openMenu){openMenu.remove();openMenu=null}}
@@ -1322,6 +1611,7 @@ function render(){
   else if(hubCat) main.append(...hubView(hubCat));
   else if(r.parts[0]==='help') main.append(...helpView());
   else if(r.parts[0]==='team') main.append(...teamView());
+  else if(r.parts[0]==='due') main.append(...dueView());
   else if(r.parts[0]==='cat') location.hash=cat(r.parts[1])?'#/hub/'+r.parts[1]:'#/all';
   else main.append(...libraryView(r));
   scrollTo(0,y);
@@ -1342,6 +1632,7 @@ function renderSide(){
     nav('#/','🏠',t('nav.overview')),
     nav('#/all','📚',t('nav.allFiles'),act.length),
     nav('#/all?fav=1','⭐',t('nav.favorites'),act.filter(f=>f.pinned).length),
+    nav('#/due','📅',t('nav.deadlines'),act.filter(f=>f.due&&daysUntil(f.due)<=0).length||null),
     nav('#/all?status=arkiv','🗄️',t('nav.archive'),S.files.length-act.length),
     nav('#/help','📖',t('nav.manual')),
     nav('#/team','👥',t('nav.team'),S.team.folder?S.team.files.filter(f=>!f.deleted).length:null),
@@ -1416,8 +1707,8 @@ function homeView(){
   const most=act.filter(f=>f.opens>0).sort((a,b)=>b.opens-a.opens).slice(0,6);
   const due=act.filter(f=>f.due).sort((a,b)=>a.due.localeCompare(b.due)).slice(0,8);
   const urgent=[];
-  if(due.length) urgent.push(h('section',{class:'panel'},h('h3',{class:'h2'},t('home.deadlines')),due.map(f=>{const d=dueInfo(f);return miniRow(f,h('span',{class:'x '+d.k},(f.dueLabel?f.dueLabel+': ':'')+d.t))})));
-  if(bad.length) urgent.push(h('section',{class:'panel'},h('h3',{class:'h2'},t('home.needsAttention')),bad.slice(0,8).map(f=>miniRow(f,h('button',{class:'btn sm',onClick:e=>{e.stopPropagation();fileDialog(f)}},t('home.fixPath'))))));
+  if(due.length) urgent.push(h('section',{class:'panel'},h('h3',{class:'h2'},t('home.deadlines'),h('span',{class:'spacer'}),h('a',{class:'btn sm',href:'#/due'},t('dv.seeAll'))),due.map(f=>{const d=dueInfo(f);return miniRow(f,[h('span',{class:'x '+d.k},(f.dueLabel?f.dueLabel+': ':'')+d.t),recurBtn(f)])})));
+  if(bad.length) urgent.push(h('section',{class:'panel'},h('h3',{class:'h2'},t('home.needsAttention'),h('span',{class:'spacer'}),h('button',{class:'btn sm',onClick:relinkDialog},t('relink.open'))),bad.slice(0,8).map(f=>miniRow(f,h('button',{class:'btn sm',onClick:e=>{e.stopPropagation();fileDialog(f)}},t('home.fixPath'))))));
   if(urgent.length) out.push(h('div',{class:'cols',style:{marginBottom:'28px'}},urgent));
   out.push(...homeGrid(act));
   const low=[];
@@ -1449,6 +1740,110 @@ function onboarding(){
       h('button',{class:'btn pri',onClick:()=>pickFlow({})},t('onboard.pickFiles')),
       h('button',{class:'btn',onClick:()=>scanDialog({})},t('onboard.scanFolders')),
       h('button',{class:'btn',onClick:()=>pasteDialog({})},t('onboard.pasteLinks'))));
+}
+
+/* ---------- Frister ---------- */
+const DUE_VIEWS=['day','week','month','quarter','year'];
+function duePeriod(view,ref){
+  const y=ref.getFullYear(),m=ref.getMonth(),fmt=(d,o)=>d.toLocaleDateString(dateLocale(),o);
+  if(view==='day') return{from:ref,to:ref,title:fmt(ref,{weekday:'long',day:'numeric',month:'long',year:'numeric'})};
+  if(view==='week'){const a=addDays(ref,-((ref.getDay()+6)%7)),b=addDays(a,6);return{from:a,to:b,title:t('dv.weekTitle',isoWeek(a),fmt(a,{day:'numeric',month:'short'}),fmt(b,{day:'numeric',month:'short',year:'numeric'}))}}
+  if(view==='month') return{from:new Date(y,m,1),to:new Date(y,m+1,0),title:fmt(ref,{month:'long',year:'numeric'})};
+  if(view==='quarter'){const q=Math.floor(m/3);return{from:new Date(y,q*3,1),to:new Date(y,q*3+3,0),title:t('dv.quarterTitle',q+1,y)}}
+  return{from:new Date(y,0,1),to:new Date(y,11,31),title:String(y)};
+}
+const dueStep=(view,ref,n)=>view==='day'?addDays(ref,n):view==='week'?addDays(ref,7*n):new Date(ref.getFullYear(),ref.getMonth()+(view==='month'?1:view==='quarter'?3:12)*n,1);
+function dueView(){
+  const view=DUE_VIEWS.includes(S.settings.dueView)?S.settings.dueView:'week',today=new Date();today.setHours(0,0,0,0);
+  const ref=UI.dueRef||today,p=duePeriod(view,ref),act=S.files.filter(f=>f.status!=='arkiv'&&f.due),L=dateLocale();
+  const items=act.flatMap(f=>occurrences(f,p.from,p.to,today)).sort((a,b)=>a.date.localeCompare(b.date)||a.f.title.localeCompare(b.f.title,'da'));
+  // Overskredne frister fra før perioden vises øverst, når perioden indeholder i dag
+  const late=p.from<=today&&today<=p.to?act.filter(f=>f.due<ymd(p.from)).sort((a,b)=>a.due.localeCompare(b.due)):[];
+  const group=d=>view==='day'||view==='week'?d.toLocaleDateString(L,{weekday:'long',day:'numeric',month:'long'}):view==='month'?t('dv.weekN',isoWeek(d)):d.toLocaleDateString(L,{month:'long',year:'numeric'});
+  const row=(f,date,actual,late)=>{
+    const di=actual?dueInfo(f):null,inHead=!late&&(view==='day'||view==='week');
+    const txt=[f.dueLabel,inHead?null:pd(date).toLocaleDateString(L,{weekday:'short',day:'numeric',month:'short'}),di&&di.n<=1?di.t:null].filter(Boolean).join(' · ');
+    return miniRow(f,[actual?null:h('span',{class:'x',title:t('dv.upcomingTitle')},'↻'),h('span',{class:'x '+(di?di.k:'')},txt),actual?recurBtn(f):null]);
+  };
+  const go=d=>{UI.dueRef=d;render()};
+  const head=h('div',{class:'gridhead'},
+    h('div',{class:'seg'},DUE_VIEWS.map(v=>h('button',{class:v===view?'on':'',onClick:()=>{S.settings.dueView=v;save();render()}},t('dv.view.'+v)))),
+    h('button',{class:'btn',title:t('dv.prev'),disabled:p.from<=today,onClick:()=>go(dueStep(view,ref,-1))},'◀'),
+    h('button',{class:'btn',onClick:()=>go(today)},t('dv.today')),
+    h('button',{class:'btn',title:t('dv.next'),onClick:()=>go(dueStep(view,ref,1))},'▶'),
+    h('h2',{class:'h2',style:{margin:'0 0 0 6px'}},p.title,h('span',{class:'ct'},items.length)),
+    h('span',{class:'spacer'}),
+    h('button',{class:'btn',title:t('dv.exportTitle'),onClick:exportIcs},t('dv.export')));
+  const secs=[];
+  if(late.length) secs.push(h('section',{class:'panel'},h('h3',{class:'h2'},t('dv.overdue'),h('span',{class:'ct'},late.length)),late.map(f=>row(f,f.due,true,true))));
+  const groups=new Map();items.forEach(o=>{const k=group(pd(o.date));if(!groups.has(k)) groups.set(k,[]);groups.get(k).push(o)});
+  groups.forEach((list,k)=>secs.push(h('section',{class:'panel'},h('h3',{class:'h2'},k,h('span',{class:'ct'},list.length)),list.map(o=>row(o.f,o.date,o.actual)))));
+  if(!secs.length) secs.push(h('div',{class:'hint'},act.length?t('dv.nonePeriod'):t('dv.noneAtAll')));
+  return[topbar(t('nav.deadlines')),head,h('div',{style:{display:'grid',gap:'14px',maxWidth:'900px'}},secs)];
+}
+function exportIcs(){
+  const n=S.files.filter(f=>f.due&&f.status!=='arkiv').length;
+  if(!n){toast(t('dv.noneAtAll'),'bad');return}
+  h('a',{href:URL.createObjectURL(new Blob([icsText(S.files)],{type:'text/calendar'})),download:'file-command-center-'+ymd(new Date())+'.ics'}).click();
+  toast(t('dv.exported',n),'ok');
+}
+
+/* ---------- Genfind filer, der mangler ---------- */
+function relinkDialog(){
+  const missing=S.files.filter(f=>!isUrl(f.path)&&H[f.path]&&H[f.path].exists===false);
+  if(!missing.length){toast(t('relink.noneMissing'),'ok');return}
+  let d;const prop=new Map(),extra=new Map(),checked=new Set();
+  const trim=x=>cleanPath(x).replace(/[\\/]+$/,''),norm=x=>x.replace(/\//g,'\\').toLowerCase();
+  const nameOf=x=>trim(x).split(/[\\/]/).pop(),dirOf=x=>trim(x).replace(/[\\/][^\\/]*$/,'');
+  // Fælles start på de manglende filers mapper, som forslag til den gamle mappe
+  const dirs=missing.map(f=>dirOf(f.path).split(/[\\/]/));let ci=0;
+  while(dirs.every(a=>ci<a.length&&a[ci].toLowerCase()===dirs[0][ci].toLowerCase())) ci++;
+  const oldP=h('input',{class:'mono',value:dirs[0].slice(0,ci).join('\\')}),newP=h('input',{class:'mono',placeholder:t('relink.newPlaceholder')});
+  const list=h('div',{class:'bl',style:{height:'34vh',padding:'8px 12px'}});
+  const apply=h('button',{class:'btn pri'});
+  const upd=()=>{apply.disabled=!checked.size;apply.textContent=t('relink.apply',checked.size)};
+  const draw=()=>{list.replaceChildren(...missing.map(f=>{
+    const np=prop.get(f.id);
+    const cb=h('input',{type:'checkbox',checked:checked.has(f.id),disabled:!np,onChange:e=>{e.target.checked?checked.add(f.id):checked.delete(f.id);upd()}});
+    return h('label',{class:'chk',style:{alignItems:'flex-start'}},cb,h('div',{style:{minWidth:0}},h('b',{},f.title),
+      h('div',{class:'mono muted',style:{overflowWrap:'anywhere'}},f.path),
+      h('div',{class:'mono',style:{overflowWrap:'anywhere',color:np?'var(--ok)':'var(--dim)'}},np?'→ '+np+(extra.get(f.id)?'  '+t('relink.moreMatches',extra.get(f.id)):''):t('relink.noMatch'))));
+  }));upd()};
+  // Behold kun forslag, der findes på disken og ikke allerede står på dashboardet
+  const propose=async cands=>{
+    const have=new Set(S.files.map(f=>f.path.toLowerCase()));
+    cands=cands.filter(c=>c[1]&&!have.has(c[1].toLowerCase()));
+    const res={};
+    for(let i=0;i<cands.length;i+=24) Object.assign(res,(await api('/api/check',{paths:cands.slice(i,i+24).map(c=>c[1])})).results);
+    let n=0;cands.forEach(([f,np])=>{if(res[np]&&res[np].exists){prop.set(f.id,np);checked.add(f.id);n++}});
+    draw();toast(n?t('relink.foundN',n):t('relink.foundNone'),n?'ok':'bad');
+  };
+  const run=fn=>fn().catch(e=>toast(e.message,'bad'));
+  const byFolder=()=>run(async()=>{
+    const o=trim(oldP.value),nw=trim(newP.value);if(!o||!nw){toast(t('relink.giveBoth'),'bad');return}
+    const no=norm(o);extra.clear();
+    await propose(missing.filter(f=>{const x=norm(f.path);return x===no||x.startsWith(no+'\\')}).map(f=>[f,nw+f.path.slice(o.length)]));
+  });
+  const byName=folder=>run(async()=>{
+    const r=await api('/api/find',{folder,names:[...new Set(missing.map(f=>nameOf(f.path)))]});
+    extra.clear();missing.forEach(f=>{const m=r.matches[nameOf(f.path).toLowerCase()]||[];if(m.length>1) extra.set(f.id,m.length-1)});
+    await propose(missing.map(f=>[f,(r.matches[nameOf(f.path).toLowerCase()]||[])[0]]));
+    if(r.truncated) toast(t('relink.truncated'),'warn',6000);
+  });
+  const pickFolder=onPick=>browseDialog({mode:'folder',multi:false,title:t('relink.pickFolder'),start:'',onPick:ps=>{if(ps[0]) onPick(ps[0])}});
+  apply.addEventListener('click',()=>{
+    const changed=[];missing.forEach(f=>{const np=prop.get(f.id);if(np&&checked.has(f.id)){f.path=np;changed.push(np)}});
+    save();d.close();render();checkHealth(changed);toast(t('relink.updatedN',changed.length),'ok');
+  });
+  d=dialog(t('relink.title'),[
+    h('p',{class:'muted',style:{marginTop:0}},t('relink.body',missing.length)),
+    fld(t('relink.movedLabel'),h('div',{class:'inl'},oldP,h('span',{style:{alignSelf:'center'}},'→'),newP,
+      h('button',{class:'btn',type:'button',onClick:()=>pickFolder(x=>{newP.value=x})},t('relink.browse')),
+      h('button',{class:'btn',type:'button',onClick:byFolder},t('relink.suggest'))),t('relink.movedHint')),
+    h('div',{class:'inl',style:{alignItems:'center'}},h('button',{class:'btn',type:'button',onClick:()=>pickFolder(byName)},t('relink.searchBtn')),h('small',{class:'muted'},t('relink.searchHint'))),
+    list],
+    [h('span',{class:'spacer'}),h('button',{class:'btn',onClick:()=>d.close()},t('common.cancel')),apply]);
+  draw();
 }
 
 /* ---------- Bibliotek ---------- */
@@ -1516,7 +1911,7 @@ function fileCard(f){
       sm?null:h('button',{class:'ib',title:t('card.moreOptions'),onClick:e=>fileMenu(e.currentTarget,f)},'⋯')),
     h('div',{class:'path mono',title:f.path},midEllipsis(f.path,70)),
     f.desc?h('p',{class:'desc'},f.desc):null,
-    di?h('div',{class:'due '+di.k},'⏰ '+(f.dueLabel||t('deadline'))+' '+fmtDate(f.due)+', '+di.t):null,
+    di?h('div',{class:'due '+di.k},'⏰ '+(f.dueLabel||t('deadline'))+' '+fmtDate(f.due+'T00:00:00')+', '+di.t,recurBtn(f)):null,
     f.tags&&f.tags.length?h('div',{class:'tags'},f.tags.map(tagChip)):null,
     h('div',{class:'foot'},h('span',{class:'led '+st.k,title:st.t}),h('span',{class:'meta'},metaText(f)),sm?null:h('button',{class:'btn sm pri',onClick:()=>openFile(f)},fileType(f.path)==='folder'?t('card.openFolder'):t('card.open'))));
 }
@@ -1615,6 +2010,7 @@ function fileMenu(anchor,f){
     ...(canPreview(f)?[{label:t('menu.preview'),fn:()=>showInPane(f)}]:[]),
     ...(fileType(f.path)==='folder'?[]:[{label:isUrl(f.path)?t('menu.openInBrowser'):t('menu.showInFolder'),fn:()=>openFile(f,true)}]),
     {label:t('menu.copyPath'),fn:()=>copyPath(f)},
+    ...(H[f.path]&&H[f.path].exists===false?[{label:t('relink.open'),fn:relinkDialog}]:[]),
     {label:t('common.edit'),fn:()=>fileDialog(f)},
     {label:f.pinned?t('card.favRemove'):t('card.favAdd'),fn:()=>togglePin(f)},
     {label:f.status==='arkiv'?t('menu.restoreFromArchive'):t('menu.moveToArchive'),fn:()=>{f.status=f.status==='arkiv'?'aktiv':'arkiv';save();render()}},
@@ -1927,7 +2323,7 @@ function selectFile(f,e){
 }
 function revokePaneBlob(){if(PANE.blobUrl){URL.revokeObjectURL(PANE.blobUrl);PANE.blobUrl=null}}
 async function fillPane(){
-  const pane=$('#paneinner'),on=paneOn(),app=document.querySelector('.app');
+  const pane=$('#paneinner'),on=!!paneOn(),app=document.querySelector('.app');
   app.classList.toggle('haspane',on);
   app.style.setProperty('--pane-w',(S.settings.paneWidth||420)+'px');
   if(!on){PANE.key='';revokePaneBlob();pane.replaceChildren();return}
@@ -2021,7 +2417,7 @@ function hubView(c){
 /* ================= Dialoger ================= */
 function fileDialog(f,preset={}){
   const isNew=!f;
-  const m=f?{...f,tags:[...(f.tags||[])]}:{id:uid(),title:preset.path?titleFromPath(preset.path):'',path:preset.path||'',desc:'',category:preset.category||UI.cat||'',tags:[],pinned:false,status:'aktiv',due:'',dueLabel:'',added:new Date().toISOString(),opens:0};
+  const m=f?{...f,tags:[...(f.tags||[])]}:{id:uid(),title:preset.path?titleFromPath(preset.path):'',path:preset.path||'',desc:'',category:preset.category||UI.cat||'',tags:[],pinned:false,status:'aktiv',due:'',dueLabel:'',recur:'',added:new Date().toISOString(),opens:0};
   let d;
   const title=h('input',{value:m.title,placeholder:t('fdlg.titlePlaceholder')});
   const path=h('input',{class:'mono',value:m.path,placeholder:t('fdlg.pathPlaceholder')});
@@ -2029,12 +2425,57 @@ function fileDialog(f,preset={}){
   const pick=kind=>browseDialog({mode:kind==='dir'?'folder':'files',multi:false,start:(path.value&&!isUrl(path.value))?(kind==='dir'?path.value:path.value.replace(/[\\/][^\\/]*$/,'')):'',onPick:ps=>{const p=ps[0];if(p){path.value=p;if(!title.value) title.value=titleFromPath(p)}}});
   const catSel=catSelect(m.category),tags=tagInput(m.tags);
   const desc=h('textarea',{},m.desc||''),due=h('input',{type:'date',value:m.due||''}),dueL=h('input',{value:m.dueLabel||'',placeholder:t('fdlg.dueLabelPlaceholder')});
+  /* Gentagelse: faste valg + "Tilpasset…", som viser hele reglen */
+  const R=m.recur&&m.recur.unit?m.recur:null,c=R||{unit:'week',every:1};
+  const dueDay=()=>due.value?pd(due.value).getDate():1;
+  const PRESETS={daily:()=>({unit:'day',every:1}),weekdays:()=>({unit:'week',every:1,days:[1,2,3,4,5]}),weekly:()=>({unit:'week',every:1}),biweekly:()=>({unit:'week',every:2}),
+    monthly:()=>({unit:'month',every:1,of:'date',pos:dueDay()}),quarterly:()=>({unit:'month',every:3,of:'date',pos:dueDay()}),yearly:()=>({unit:'year',every:1,of:'date',pos:dueDay()})};
+  const recurKey=r=>JSON.stringify([r.unit,r.every,r.days||[],r.of==null?'':r.of,r.pos||0,r.shift||'',r.from||'',r.until||'']);
+  const presetOf=r=>!r?'':Object.keys(PRESETS).find(k=>recurKey(PRESETS[k]())===recurKey(r))||'custom';
+  const wdName=(i,len)=>new Date(2024,0,i||7).toLocaleDateString(dateLocale(),{weekday:len});
+  const recurSel=h('select',{},['',...Object.keys(PRESETS),'custom'].map(k=>h('option',{value:k,selected:presetOf(R)===k},t('recur.'+(k||'none')))));
+  const rEvery=h('input',{type:'number',min:1,max:999,value:c.every||1,style:{width:'80px',flex:'none'}});
+  const rUnit=h('select',{},['day','week','month','year'].map(u=>h('option',{value:u,selected:c.unit===u},t('recur.unit.'+u))));
+  const rCbs=[1,2,3,4,5,6,0].map(i=>h('input',{type:'checkbox',value:i,checked:!!(c.days&&c.days.includes(i)),style:{width:'auto',flex:'none'}}));
+  const rPos=h('input',{type:'number',min:1,max:31,value:Math.abs(c.pos||dueDay()),style:{width:'80px',flex:'none'}});
+  const rOf=h('select',{},[['date',t('recur.of.date')],['workday',t('recur.of.workday')],...[1,2,3,4,5,6,0].map(i=>[String(i),wdName(i,'long')])].map(([v,l])=>h('option',{value:v,selected:String(c.of==null?'date':c.of)===v},l)));
+  const rEnd=h('select',{},h('option',{value:'1',selected:!(c.pos<0)},t('recur.fromStart')),h('option',{value:'-1',selected:c.pos<0},t('recur.fromEnd')));
+  const rShift=h('select',{},['','before','after'].map(v=>h('option',{value:v,selected:(c.shift||'')===v},t('recur.shift.'+(v||'none')))));
+  const rFrom=h('select',{},['schedule','done'].map(v=>h('option',{value:v,selected:(c.from||'schedule')===v},t('recur.from.'+v))));
+  const rUntil=h('input',{type:'date',value:c.until||''});
+  const readRecur=()=>{
+    const k=recurSel.value;if(!k) return '';if(k!=='custom') return PRESETS[k]();
+    const u=rUnit.value,r={unit:u,every:Math.max(1,+rEvery.value|0)};
+    if(u==='week'){const ds=rCbs.filter(x=>x.checked).map(x=>+x.value);if(ds.length) r.days=ds}
+    if(u==='month'||u==='year'){r.of=/^\d$/.test(rOf.value)?+rOf.value:rOf.value;r.pos=Math.max(1,+rPos.value|0)*(+rEnd.value)}
+    if(rShift.value) r.shift=rShift.value;if(rFrom.value==='done') r.from='done';if(rUntil.value) r.until=rUntil.value;
+    return r;
+  };
+  const rWeekRow=h('div',{class:'fld'},h('span',{},t('recur.onDays')),h('div',{class:'inl',style:{flexWrap:'wrap',gap:'14px'}},rCbs.map((cb,i)=>h('label',{class:'chk',style:{marginBottom:0}},cb,wdName([1,2,3,4,5,6,0][i],'short')))));
+  const rMonthRow=fld(t('recur.inMonth'),h('div',{class:'inl'},rPos,rOf,rEnd),t('recur.monthHint'));
+  const recurBox=h('div',{},
+    h('div',{class:'two'},fld(t('recur.every'),h('div',{class:'inl'},rEvery,rUnit)),fld(t('recur.from'),rFrom)),
+    rWeekRow,rMonthRow,
+    h('div',{class:'two'},fld(t('recur.shift'),rShift),fld(t('recur.until'),rUntil)));
+  const recurPreview=h('div',{class:'hint',style:{padding:'0 0 10px'}});
+  const updateRecur=()=>{
+    recurBox.style.display=recurSel.value==='custom'?'':'none';
+    rWeekRow.style.display=rUnit.value==='week'?'':'none';
+    rMonthRow.style.display=rUnit.value==='month'||rUnit.value==='year'?'':'none';
+    let txt='';
+    if(recurSel.value&&due.value){const o=nextOcc(due.value,readRecur());txt=o?t('recur.preview',fmtDate(o.due+'T00:00:00')):t('recur.previewNone')}
+    recurPreview.textContent=txt;
+  };
+  [recurSel,rEvery,rUnit,rPos,rOf,rEnd,rShift,rFrom,rUntil,due,...rCbs].forEach(x=>{x.addEventListener('change',updateRecur);x.addEventListener('input',updateRecur)});updateRecur();
   const stat=h('select',{},h('option',{value:'aktiv',selected:m.status!=='arkiv'},t('fdlg.active')),h('option',{value:'arkiv',selected:m.status==='arkiv'},t('fdlg.archive')));
   const pin=h('input',{type:'checkbox',checked:!!m.pinned});
   const doSave=()=>{
     const p=cleanPath(path.value);if(!p){toast(t('fdlg.giveAPath'),'bad');path.focus();return}
     if(S.files.some(x=>x!==f&&x.path.toLowerCase()===p.toLowerCase())&&!confirm(t('fdlg.pathExistsConfirm'))) return;
-    Object.assign(m,{title:title.value.trim()||titleFromPath(p),path:p,category:catSel.value,tags:tags.get(),desc:desc.value.trim(),due:due.value,dueLabel:dueL.value.trim(),status:stat.value,pinned:pin.checked});
+    const recurVal=readRecur();
+    if(recurVal&&!due.value){toast(t('recur.needDate'),'bad');due.focus();return}
+    if(recurVal&&R&&R.anchor&&f&&due.value===f.due&&recurKey(recurVal)===recurKey(R)) recurVal.anchor=R.anchor;
+    Object.assign(m,{title:title.value.trim()||titleFromPath(p),path:p,category:catSel.value,tags:tags.get(),desc:desc.value.trim(),due:due.value,dueLabel:dueL.value.trim(),recur:recurVal,status:stat.value,pinned:pin.checked});
     if(isNew) S.files.push(m);else Object.assign(f,m);
     save();d.close();render();checkHealth([p]);
   };
@@ -2048,6 +2489,8 @@ function fileDialog(f,preset={}){
     fld(t('fld.tags'),tags,t('fld.tagsHint2')),
     fld(t('fld.description'),desc),
     h('div',{class:'two'},fld(t('fld.deadlineOptional'),due),fld(t('fld.whatIsDeadline'),dueL)),
+    fld(t('fld.recur'),recurSel,t('fld.recurHint')),
+    recurBox,recurPreview,
     h('label',{class:'chk'},pin,t('fdlg.pinAsFavorite'))],btns);
   (isNew?path:title).focus();
 }
@@ -2250,12 +2693,31 @@ function settingsDialog(){
       h('button',{class:'btn',onClick:()=>{const a=h('a',{href:URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'})),download:'file-hub-backup-'+new Date().toISOString().slice(0,10)+'.json'});a.click()}},t('settings.getBackup')),
       h('button',{class:'btn',onClick:()=>file.click()},t('settings.loadBackup')),file,
       h('button',{class:'btn',onClick:()=>{d.close();tagManager()}},t('settings.tagsAndColors')),
+      h('button',{class:'btn',onClick:()=>{d.close();holidaysDialog()}},t('settings.holidays')),
       h('button',{class:'btn',onClick:()=>{if(confirm(t('settings.confirmResetStats'))){S.files.forEach(f=>{f.opens=0;delete f.lastOpened});save();d.close();render()}}},t('settings.resetStats'))),
     h('h2',{class:'h2',style:{marginTop:'20px'}},t('team.settingsHeading')),
     h('p',{class:'muted sm'},S.team.folder?t('team.connectedTo',S.team.folder,S.team.files.filter(f=>!f.deleted).length):t('team.notConnected')),
     fld(t('team.displayName'),h('input',{value:S.team.displayName||'',onChange:e=>{S.team.displayName=e.target.value.trim();save()}})),
     h('div',{class:'inl'},h('button',{class:'btn',onClick:async()=>{await teamConnect();d.close();settingsDialog()}},t('team.chooseFolder')))],
     [h('span',{class:'spacer'}),h('button',{class:'btn pri',onClick:()=>d.close()},t('common.close'))]);
+}
+function holidaysDialog(){
+  let d;
+  const ta=h('textarea',{class:'mono',style:{width:'100%',minHeight:'220px'}},(S.settings.holidays||[]).join('\n'));
+  const addDanish=()=>{
+    const y=new Date().getFullYear(),have=new Set(ta.value.split(/\r?\n/).map(x=>x.trim().slice(0,10)));
+    const add=[...danishHolidays(y),...danishHolidays(y+1)].filter(x=>!have.has(x.slice(0,10)));
+    ta.value=[ta.value.trim(),...add].filter(Boolean).join('\n');
+  };
+  d=dialog(t('hol.title'),[
+    h('p',{class:'muted',style:{marginTop:0}},t('hol.body')),ta,
+    h('div',{class:'inl',style:{marginTop:'10px'}},h('button',{class:'btn',onClick:addDanish},t('hol.addDanish')))],
+    [h('span',{class:'spacer'}),h('button',{class:'btn',onClick:()=>d.close()},t('common.cancel')),h('button',{class:'btn pri',onClick:()=>{
+      const lines=ta.value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+      const ok=lines.filter(x=>/^\d{4}-\d{2}-\d{2}( |$)/.test(x)&&ymd(pd(x.slice(0,10)))===x.slice(0,10));
+      S.settings.holidays=[...new Set(ok)].sort();save();d.close();render();
+      if(ok.length<lines.length) toast(t('hol.skipped',lines.length-ok.length),'bad');
+    }},t('common.save'))]);
 }
 
 /* ---------- Hurtigsøg ---------- */
@@ -2415,6 +2877,10 @@ const MANUAL_HTML_DA=`
 <p>Tryk på ☆ på et kort for at gøre filen til favorit (★). Favoritter ligger først på Overblik og i listerne, og de vises som genveje på hubbens side.</p>
 <h3>Frister</h3>
 <p>Under redigering kan du sætte en frist og skrive, hvad fristen er. Frister vises på Overblik, på kortet og på hubbens side. Fristen bliver gul, når der er 7 dage eller mindre, og rød, når den er overskredet.</p>
+<p>En frist kan <b>gentages</b>. Vælg et fast mønster (dagligt, hver hverdag, ugentligt, hver 2. uge, månedligt, kvartalsvis, årligt) eller "Tilpasset…", hvor du selv sætter interval, ugedage, dag i måneden (fx 2. hverdag eller sidste fredag), hvad der skal ske, hvis datoen er en fridag, og en evt. slutdato. Tryk ✓ ved fristen, når opgaven er udført - så sættes fristen til næste dato, også selvom du er flere gange bagud. Under redigering kan du se, hvilken dato ✓ vil give. Helligdage og andre fridage tilføjer du under "Backup" nederst i sidebaren → "Fridage…"; de tælles ikke som hverdage. Kom du til at trykke ✓ ved en fejl, så tryk "Fortryd" i beskeden, der vises bagefter.</p>
+<p>Siden <b>Frister</b> i sidebaren viser fristerne for en dag, uge, måned, et kvartal eller et år ad gangen. Gentagne frister vises også med deres kommende datoer (markeret ↻), så du kan se, hvad der venter. Brug ▶ til at se fremad og ◀ og "I dag" til at komme tilbage. Perioder før i dag vises ikke, for appen gemmer ikke, hvad der er udført; overskredne frister står øverst i den aktuelle periode. "Eksportér til kalender" henter en .ics-fil med alle frister, som kan importeres i Outlook og andre kalendere.</p>
+<h3>Filer, der er flyttet</h3>
+<p>Kan en fil ikke findes, vises den under "Kræver opmærksomhed" på Overblik. Tryk "Genfind…" for at finde de nye placeringer for alle manglende filer på én gang: enten ved at angive, at en mappe er flyttet eller omdøbt (den første del af stien udskiftes), eller ved at lade appen lede efter filnavnene i en mappe og dens undermapper. Du vælger selv, hvilke stier der opdateres. Selve filerne røres ikke.</p>
 <h3>Arkiv</h3>
 <p>Arkiver filer, du ikke bruger lige nu, men som du vil beholde. Arkiverede filer forsvinder fra Overblik, hubbens tal, hurtigsøgning og statusrækken, men bevarer hub, tags og beskrivelse. Find dem under "Arkiv" i sidebaren. Vælg "Flyt til arkiv" eller "Gendan fra arkiv" i ⋯-menuen på kortet.</p>
 
@@ -2627,6 +3093,10 @@ const MANUAL_HTML_EN=`
 <p>Press ☆ on a card to make the file a favorite (★). Favorites are listed first on the Overview and in the lists, and are shown as shortcuts on the hub's page.</p>
 <h3>Deadlines</h3>
 <p>While editing you can set a deadline and write what it's for. Deadlines are shown on the Overview, on the card and on the hub's page. The deadline turns yellow when there are 7 days or fewer left, and red once it's passed.</p>
+<p>A deadline can <b>recur</b>. Pick a fixed pattern (daily, every workday, weekly, every 2 weeks, monthly, quarterly, yearly) or "Custom…", where you set the interval, weekdays, day of the month (e.g. 2nd workday or last Friday), what happens if the date is a day off, and an optional end date. Press ✓ next to the deadline when the task is done - the deadline moves to the next date, even if you are several occurrences behind. While editing you can see which date ✓ will give. Add public holidays and other days off under "Backup" at the bottom of the sidebar → "Days off…"; they are not counted as workdays. If you press ✓ by mistake, press "Undo" in the message shown afterwards.</p>
+<p>The <b>Deadlines</b> page in the sidebar shows the deadlines for a day, week, month, quarter or year at a time. Recurring deadlines are also shown with their upcoming dates (marked ↻), so you can see what is coming. Use ▶ to look ahead, and ◀ and "Today" to come back. Periods before today are not shown, since the app does not keep a record of what was done; overdue deadlines are listed at the top of the current period. "Export to calendar" downloads an .ics file with all deadlines, which can be imported into Outlook and other calendars.</p>
+<h3>Files that have moved</h3>
+<p>If a file cannot be found, it is shown under "Needs attention" on the Overview. Press "Find again…" to locate the new places for all missing files at once: either by stating that a folder was moved or renamed (the first part of the path is replaced), or by letting the app search a folder and its subfolders for the file names. You choose which paths are updated. The files themselves are not touched.</p>
 <h3>Archive</h3>
 <p>Archive files you're not using right now but want to keep. Archived files disappear from the Overview, the hub's counts, quick search and the status row, but keep their hub, tags and description. Find them under "Archive" in the sidebar. Choose "Move to archive" or "Restore from archive" in the ⋯ menu on the card.</p>
 

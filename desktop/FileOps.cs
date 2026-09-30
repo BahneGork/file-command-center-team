@@ -127,6 +127,28 @@ static class FileOps
         return new { files = truncated ? list.Take(500).ToList() : list, truncated };
     }
 
+    // Leder efter bestemte fil- eller mappenavne under en mappe (til at genfinde flyttede filer).
+    // Stopper efter 200.000 poster eller 15 sek., så et stort netværksdrev ikke låser appen.
+    public static object Find(string folder, IEnumerable<string> names)
+    {
+        if (!Directory.Exists(folder)) throw new ApiError("Mappen findes ikke eller kan ikke nås");
+        var want = new HashSet<string>(names, StringComparer.OrdinalIgnoreCase);
+        var matches = new Dictionary<string, List<string>>();
+        var opt = new EnumerationOptions { IgnoreInaccessible = true, AttributesToSkip = Visible.AttributesToSkip, RecurseSubdirectories = true };
+        var sw = Stopwatch.StartNew();
+        var seen = 0;
+        var truncated = false;
+        foreach (var i in new DirectoryInfo(folder).EnumerateFileSystemInfos("*", opt))
+        {
+            if (++seen > 200000 || sw.ElapsedMilliseconds > 15000) { truncated = true; break; }
+            if (!want.Contains(i.Name)) continue;
+            var key = i.Name.ToLowerInvariant();
+            if (!matches.TryGetValue(key, out var list)) matches[key] = list = [];
+            if (list.Count < 5) list.Add(i.FullName);
+        }
+        return new { matches, truncated };
+    }
+
     static List<object> Places()
     {
         var up = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);

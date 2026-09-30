@@ -7,7 +7,12 @@ namespace CommandCenter;
 static class Store
 {
     static readonly UTF8Encoding Utf8 = new(false);
-    public static readonly string Dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FileCommandCenter");
+    // Kun til test: peg data-mappen på en isoleret testmappe i stedet for den rigtige %LOCALAPPDATA%.
+    // .NET's Environment.SpecialFolder løses via Windows' Known Folder-API, ikke miljøvariablen
+    // %LOCALAPPDATA% - at sætte den variabel på procesniveau (fx via ProcessStartInfo) ændrer intet.
+    public static readonly string Dir = Environment.GetEnvironmentVariable("FCC_DATA_DIR") is { Length: > 0 } testDir
+        ? testDir
+        : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FileCommandCenter");
     static string DataFile => Path.Combine(Dir, "data.json");
     static string BackupDir => Path.Combine(Dir, "backups");
 

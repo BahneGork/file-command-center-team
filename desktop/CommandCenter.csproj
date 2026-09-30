@@ -9,7 +9,7 @@
     <AssemblyName>FileCommandCenter</AssemblyName>
     <RootNamespace>CommandCenter</RootNamespace>
     <!-- Eneste sted app-versionen sættes. Skal matche Version i installer\Package.wxs og git-tagget (vX.Y.Z) ved en udgivelse. -->
-    <Version>1.0.2</Version>
+    <Version>1.0.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
