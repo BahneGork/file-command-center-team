@@ -58,7 +58,6 @@ differs.
 
 ## Not done yet
 - Code signing — the installer (`installer/`) is unsigned, so Windows SmartScreen/Defender will warn.
-- Migrating existing data: copy the old `data.json` to `%LOCALAPPDATA%\FileCommandCenter\`. If you're moving from a build made before 22 September 2026, note the folder itself was also renamed from `ExcelCommandCenter` to `FileCommandCenter`.
 
 ## Third-party components
 - `Microsoft.Web.WebView2` (NuGet) — the only package.
