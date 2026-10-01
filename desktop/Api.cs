@@ -29,6 +29,9 @@ static class Api
             case "/api/ping":
                 return "{\"ok\":true}";
 
+            case "/api/info":
+                return Json(new { version = UpdateCheck.CurrentVersion.ToString(3), portable = UpdateCheck.IsPortable });
+
             case "/api/state":
                 if (body.ValueKind == JsonValueKind.Object) { Store.Save(body.GetRawText()); return "{\"ok\":true}"; }
                 return Store.Load() ?? "null";

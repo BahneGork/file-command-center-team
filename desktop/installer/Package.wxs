@@ -8,7 +8,7 @@
      xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
   <Package Name="File Command Center"
            Manufacturer="File Command Center"
-           Version="1.0.5"
+           Version="1.0.7"
            UpgradeCode="dc319aa0-1725-4cc3-8c86-3dbd4fb3a308"
            Language="1033"
            Compressed="yes">

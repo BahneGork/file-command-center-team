@@ -9,8 +9,14 @@
     <AssemblyName>FileCommandCenter</AssemblyName>
     <RootNamespace>CommandCenter</RootNamespace>
     <!-- Eneste sted app-versionen sættes. Skal matche Version i installer\Package.wxs og git-tagget (vX.Y.Z) ved en udgivelse. -->
-    <Version>1.0.5</Version>
+    <Version>1.0.7</Version>
+    <!-- Udgave: "installer" (standard) eller "portable" (byg med -p:Flavor=portable). Bygges ind i exe'en, så appen ved, hvordan den skal opdatere sig selv. -->
+    <Flavor Condition="'$(Flavor)' == ''">installer</Flavor>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyMetadata Include="Flavor" Value="$(Flavor)" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4191.47" />

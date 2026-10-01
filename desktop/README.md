@@ -18,8 +18,10 @@ version: there is **no local web server and no open network port**.
 - Brings the Excel or Explorer window to the front after opening (uses `user32.dll` window APIs).
 - Only one instance can run per user (mutex).
 - Checks GitHub Releases for a newer version (a background HTTPS request, native C# only — see "Network access"
-  below) and, if you choose to update, downloads the installer and launches it, then closes itself. See
-  `UpdateCheck.cs` and `installer/README.md`.
+  below) and, if you choose to update, downloads the installer and launches it, then closes itself. The portable
+  build instead downloads the portable `.zip`, renames its own running `.exe` to `.old`, puts the new files in its
+  folder, starts the new version and closes; the new version deletes the `.old` file. See `UpdateCheck.cs` and
+  `installer/README.md`.
 
 ## What it does not do
 - No listener on any port.
@@ -32,7 +34,7 @@ blocked in the WebView (verified: fetches to the internet and to other localhost
 cancelled). The **native app code**, outside the page, makes two kinds of outbound HTTPS requests, both only when
 checking for or installing an update:
 - `GET api.github.com/repos/.../releases/latest` (small JSON, no data about you or your files is sent).
-- A download of the `.msi` asset from that release, if you click "Opdater nu".
+- A download of the `.msi` asset (or, for the portable build, the portable `.zip`) from that release, if you click "Opdater nu".
 
 Installing the downloaded update runs the standard Windows Installer, which asks for **admin rights (UAC)** — this
 is the one case where the app needs elevation and writes outside your profile (to `Program Files`). Nothing else
@@ -51,10 +53,12 @@ dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=
 Distribute the contents of `publish/`: `FileCommandCenter.exe` **and the `web` folder next to it**.
 Use `--self-contained false` for a ~1 MB exe that needs the .NET 8 Desktop Runtime.
 
-This same output is also what ships as the **portable** release asset — zip `publish/`'s contents directly (no
-extra nesting folder) as `FileCommandCenter-<version>-portable-win-x64.zip` and attach it to the GitHub release
-alongside the `.msi` (`installer/README.md` covers building that). Both are the same version; only the packaging
-differs.
+The **portable** release asset is a second build of the same version with `-p:Flavor=portable` added (it marks
+the `.exe` as portable, so it updates itself from the `.zip` instead of the `.msi`; the app also shows "Portable"
+at the bottom of the sidebar). Publish it to its own folder, zip that folder's contents directly (no extra nesting
+folder) as `FileCommandCenter-<version>-portable-win-x64.zip` and attach it to the GitHub release alongside the
+`.msi` (`installer/README.md` covers building that). Never put the portable `.exe` in the `.msi` or the other way
+round.
 
 ## Not done yet
 - Code signing — the installer (`installer/`) is unsigned, so Windows SmartScreen/Defender will warn.
