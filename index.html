@@ -2789,7 +2789,8 @@ const MANUAL_HTML_DA=`
 <tr><td>Favorit (★)</td><td>En fastgjort fil. Favoritter ligger først.</td></tr>
 <tr><td>Genvej</td><td>Ordet bruges to steder. På en hubs side er "Genveje" hubbens favoritter som knapper. I filvælgeren er en genvej en gemt mappe (📌).</td></tr>
 <tr><td>Arkiv</td><td>Skjuler en fil fra hverdagen uden at slette posten.</td></tr>
-<tr><td>Frist</td><td>En dato på en fil, som vises på Overblik, på kortet og på hubbens side.</td></tr>
+<tr><td>Frist</td><td>En dato på en fil, som vises på Overblik, på kortet, på hubbens side og på siden Frister. En frist kan gentages efter et mønster, fx hver måned.</td></tr>
+<tr><td>Fridag</td><td>En dato, der ikke tælles som hverdag i gentagne frister. Lørdag og søndag er altid fridage; helligdage og andre fridage lægger du selv ind.</td></tr>
 </table>
 
 <h2 id="m-arbejdsgang">Typisk arbejdsgang</h2>
@@ -2798,9 +2799,9 @@ const MANUAL_HTML_DA=`
 <li><b>Tilføj filerne</b> med <b>Tilføj → Vælg filer…</b> (eller Scan mapper…). Vælg hubben og skriv evt. fælles tags i dialogen.</li>
 <li><b>Finpuds med markér:</b> tryk på ☑ Markér, markér de filer, der hører sammen, og brug <b>Tilføj tag…</b>.</li>
 <li><b>Fastgør</b> de filer, du bruger til daglig, med ☆. De bliver til genveje øverst på hubben.</li>
-<li><b>Sæt frister</b> på filer til faste opgaver (Redigér…).</li>
+<li><b>Sæt frister</b> på filer til faste opgaver (Redigér…), og vælg en gentagelse, hvis opgaven kommer igen. Tryk ✓ ved fristen, når opgaven er udført.</li>
 <li><b>Hverdag:</b> tryk <kbd>Ctrl</kbd>+<kbd>K</kbd>, skriv et par bogstaver, og tryk Enter. Eller åbn filen fra Overblik eller hubben.</li>
-<li><b>Ryd op:</b> tryk på "Tjek filer", ret de røde stier, og arkivér det, du ikke bruger mere.</li>
+<li><b>Ryd op:</b> tryk på "Tjek filer", ret de røde stier (eller brug "Genfind…", hvis en mappe er flyttet), og arkivér det, du ikke bruger mere.</li>
 </ol>
 
 <h2 id="m-overblik">Overblik</h2>
@@ -2808,12 +2809,12 @@ const MANUAL_HTML_DA=`
 <ul>
 <li><b>Statuslinjen</b> øverst fortæller, om alle filer kan findes. Under den er der ét felt pr. aktiv fil. Farven viser status (se afsnittet <a href="#/help" onclick="return false">Status på filerne</a>), og den tynde streg under feltet har hubbens farve. Klik på et felt for at redigere filen, fx for at rette en sti.</li>
 <li><b>Hubs</b> vises som store felter med antal filer, hvor mange der mangler, og hubbens mest brugte tags. Klik på et for at gå til hubben.</li>
-<li><b>Frister</b> og <b>Kræver opmærksomhed</b> vises kun, når der er noget i dem. "Kræver opmærksomhed" viser filer, som ikke kan findes.</li>
+<li><b>Frister</b> og <b>Kræver opmærksomhed</b> vises kun, når der er noget i dem. Ved en gentagen frist står ✓, som sætter den til næste dato, og "Alle frister" åbner siden Frister. "Kræver opmærksomhed" viser filer, som ikke kan findes, og "Genfind…" hjælper med at finde dem igen.</li>
 <li><b>Alle filer</b> vises som kort. Favoritter ligger først, derefter er kortene grupperet efter hub i samme rækkefølge som i sidebaren. Farven på kortets øverste kant viser hubben. Knapperne over kortene filtrerer på én hub, og rullelisten vælger sorteringen inden for hver gruppe. "Filtre og tags" fører til det fulde bibliotek. Et klik på et tag på et kort åbner biblioteket med det tag valgt.</li>
 <li><b>Senest åbnet</b> og <b>Mest brugte</b> ligger nederst og bygger på de filer, du åbner via dashboardet.</li>
 </ul>
 <h3>Sidebaren</h3>
-<p>Overblik, Alle filer, Favoritter, Arkiv, Manual, og derunder dine hubs. Tallet ved hver hub er antallet af aktive filer. Tryk på + ved overskriften for at oprette en ny hub. Hold musen over en hub og tryk på ✎ for at redigere den. Nederst ser du, om appen svarer, om der er gemt, og du kan skifte mellem mørkt og lyst tema.</p>
+<p>Overblik, Alle filer, Favoritter, Frister, Arkiv, Manual, og derunder dine hubs. Tallet ved Frister er antallet af frister, der er overskredet eller skal klares i dag. Tallet ved hver hub er antallet af aktive filer. Tryk på + ved overskriften for at oprette en ny hub. Hold musen over en hub og tryk på ✎ for at redigere den. Nederst ser du, om appen svarer, om der er gemt, og du kan skifte mellem mørkt og lyst tema.</p>
 
 <h2 id="m-tilfoej">Tilføj filer og mapper</h2>
 <p>Tryk på <b>Tilføj</b> øverst til højre. Du kan vælge mellem:</p>
@@ -2866,6 +2867,7 @@ const MANUAL_HTML_DA=`
 <li><b>Status</b>: Aktiv eller Arkiv.</li>
 <li><b>Tags</b> og <b>beskrivelse</b>.</li>
 <li><b>Frist</b> (dato) og en tekst om, hvad fristen er.</li>
+<li><b>Gentagelse</b>: et fast mønster eller "Tilpasset…" (se Frister nedenfor). Dialogen viser, hvilken dato ✓ vil give.</li>
 <li><b>Fastgør som favorit.</b></li>
 </ul>
 <p>"Fjern" nederst til venstre fjerner posten fra dashboardet (ikke selve filen).</p>
@@ -2911,6 +2913,7 @@ const MANUAL_HTML_DA=`
 <tr><td>Kopiér sti</td><td>Kopierer stien til udklipsholderen.</td></tr>
 <tr><td>Redigér…</td><td>Ændr sti, navn, hub, tags, beskrivelse, frist og status.</td></tr>
 <tr><td>Favorit / Arkiv</td><td>Skifter status.</td></tr>
+<tr><td>Genfind…</td><td>Vises kun, når filen ikke kan findes. Se "Filer, der er flyttet" under Organiser.</td></tr>
 <tr><td>Fjern fra dashboardet</td><td>Sletter posten (ikke selve filen). Du bliver spurgt først.</td></tr>
 </table>
 
@@ -2919,7 +2922,7 @@ const MANUAL_HTML_DA=`
 <table>
 <tr><th>Farve</th><th>Betyder</th></tr>
 <tr><td>Grøn</td><td>Filen eller mappen findes.</td></tr>
-<tr><td>Rød</td><td>Filen blev ikke fundet. Den er flyttet, omdøbt eller slettet. Ret stien via "Redigér…" eller "Ret sti".</td></tr>
+<tr><td>Rød</td><td>Filen blev ikke fundet. Den er flyttet, omdøbt eller slettet. Ret stien via "Redigér…" eller "Ret sti", eller brug "Genfind…" til flere filer på én gang.</td></tr>
 <tr><td>Gul</td><td>Ingen svar inden for ca. 6 sekunder. Typisk et netværksdrev, som ikke er forbundet.</td></tr>
 <tr><td>Blå</td><td>Online-link. Kontrolleres ikke.</td></tr>
 <tr><td>Grå</td><td>Ikke kontrolleret endnu.</td></tr>
@@ -2930,7 +2933,7 @@ const MANUAL_HTML_DA=`
 <li><b>Hvor:</b> alt gemmes i <code>data.json</code> i <code>%LOCALAPPDATA%\FileCommandCenter\</code>. Ændringer gemmes automatisk et øjeblik efter, at du har lavet dem. Nederst i sidebaren står "Gemt". Her ligger også dine hubs og deres noter, gemte mappegenveje og indstillinger (tema, visning og sortering).</li>
 <li><b>Dagligt:</b> ved dagens første ændring lægges en kopi af den gamle <code>data.json</code> i mappen <code>backups</code> (<code>data-ÅÅÅÅMMDD.json</code>). De seneste 30 beholdes. Kopien viser altså tilstanden fra før dagens ændringer.</li>
 <li><b>Før sletning:</b> hvis en gemning vil give færre filer end før, lægges først en kopi i <code>backups</code> som <code>gemt-foer-sletning-…</code>. De seneste 20 beholdes.</li>
-<li><b>Manuelt:</b> "Backup" nederst i sidebaren har "Hent backup" (en .json-fil), "Indlæs backup…" (erstatter alt i dashboardet, og du bliver spurgt først) og "Nulstil brugsstatistik" (nulstiller senest åbnet og mest brugte).</li>
+<li><b>Manuelt:</b> "Backup" nederst i sidebaren har "Hent backup" (en .json-fil), "Indlæs backup…" (erstatter alt i dashboardet, og du bliver spurgt først) "Fridage…" (helligdage og andre fridage til gentagne frister) og "Nulstil brugsstatistik" (nulstiller senest åbnet og mest brugte).</li>
 <li><b>Gendan en kopi:</b> luk appen, kopiér en fil fra <code>backups</code> over <code>data.json</code>, og start igen. Eller brug "Indlæs backup…".</li>
 <li><b>Flyt til en anden pc:</b> kopiér hele mappen inklusive <code>data.json</code>. Stierne skal findes på den nye pc for at være grønne.</li>
 </ul>
@@ -2962,6 +2965,9 @@ const MANUAL_HTML_DA=`
 <tr><td>Filvælgeren siger "Mappen findes ikke eller kan ikke nås"</td><td>Tjek stavemåden, og at netværksdrevet er forbundet. Prøv at åbne stien i Stifinder.</td></tr>
 <tr><td>Et klik åbner ikke filen, men markerer den</td><td>Du er i markér-tilstand. Tryk på "Færdig" eller <kbd>Esc</kbd>.</td></tr>
 <tr><td>To knapper for samme mappe i filvælgeren</td><td>Hold musen over knappen for at se stien. Er de forskellige, er det to forskellige mapper.</td></tr>
+<tr><td>Jeg trykkede ✓ ved en fejl</td><td>Tryk "Fortryd" i beskeden, der vises bagefter (i ca. 10 sekunder). Er den væk, så ret datoen via "Redigér…".</td></tr>
+<tr><td>En gentagen frist lander på en forkert dag</td><td>Tjek gentagelsen under "Redigér…", hvor den næste dato vises. Skal helligdage springes over, så læg dem ind under "Backup" → "Fridage…", og vælg i gentagelsen, hvad der skal ske, når datoen er en fridag.</td></tr>
+<tr><td>Kalenderen i Outlook passer ikke længere</td><td>Eksporten er et øjebliksbillede og opdateres ikke af sig selv. Eksportér igen fra siden Frister, og slet evt. de gamle aftaler.</td></tr>
 </table>
 
 <h2 id="m-graenser">Begrænsninger og sikkerhed</h2>
@@ -2970,13 +2976,15 @@ const MANUAL_HTML_DA=`
 <li>En fil kan kun ligge i én hub, og hubs kan ikke have underhubs. Brug tags til en mere detaljeret opdeling.</li>
 <li>Det er lavet til Windows og til én bruger. Appen sørger selv for kun at køre i én instans ad gangen.</li>
 <li>Appen har ingen lyttende netværksport – siden taler kun med appen via interne beskeder, aldrig via nettet. Den åbner kun stier, der er lagt ind i dashboardet, og aldrig programfiler.</li>
-<li>Ændringer i filerne uden for dashboardet (flytning, omdøbning) opdages ved næste kontrol og vises som rød status.</li>
+<li>Ændringer i filerne uden for dashboardet (flytning, omdøbning) opdages ved næste kontrol og vises som rød status. Brug "Genfind…" til at rette stierne.</li>
+<li>Appen gemmer ikke, hvad der er udført. Derfor viser siden Frister ikke perioder før i dag, og en eksporteret kalender opdateres ikke, når du trykker ✓.</li>
 </ul>
 
 <h2 id="m-aendringer">Ændringer</h2>
 <p>Seneste ændringer, med de nyeste først.</p>
 <table>
 <tr><th>Dato</th><th>Ændring</th></tr>
+<tr><td>30. september 2026</td><td>Gentagne frister med faste mønstre eller et tilpasset mønster, fridage, ✓ til næste dato og "Fortryd". Ny side Frister med visning pr. dag, uge, måned, kvartal og år. "Genfind…" til filer, der er flyttet. Eksport af frister til kalender (.ics).</td></tr>
 <tr><td>22. september 2026</td><td>Dashboardet hedder nu File Command Center og håndterer alle filtyper, ikke kun Excel og CSV: filvælgeren og Scan mapper viser som standard alt, og forhåndsvisningsruden virker nu også på billeder, PDF'er og tekstfiler. Forhåndsvisningsruden kan trækkes bredere eller smallere i venstre kant.</td></tr>
 <tr><td>21. september 2026</td><td>Kategorier og hubs er slået sammen til hubs. Alle hubs har egen side med genveje og noter. Gamle kategorier er blevet til hubs.</td></tr>
 <tr><td>21. september 2026</td><td>Markér-tilstand: tilføj eller fjern tags, skift hub, favorit, arkivér og fjern for flere filer ad gangen.</td></tr>
@@ -3005,7 +3013,8 @@ const MANUAL_HTML_EN=`
 <tr><td>Favorite (★)</td><td>A pinned file. Favorites are listed first.</td></tr>
 <tr><td>Shortcut</td><td>The word is used in two places. On a hub's page, "Shortcuts" are the hub's favorites shown as buttons. In the file picker, a shortcut is a saved folder (📌).</td></tr>
 <tr><td>Archive</td><td>Hides a file from everyday view without deleting the entry.</td></tr>
-<tr><td>Deadline</td><td>A date on a file, shown on the Overview, on the card and on the hub's page.</td></tr>
+<tr><td>Deadline</td><td>A date on a file, shown on the Overview, on the card, on the hub's page and on the Deadlines page. A deadline can recur in a pattern, e.g. every month.</td></tr>
+<tr><td>Day off</td><td>A date that is not counted as a workday in recurring deadlines. Saturday and Sunday are always days off; you add public holidays and other days off yourself.</td></tr>
 </table>
 
 <h2 id="m-arbejdsgang">A typical workflow</h2>
@@ -3014,9 +3023,9 @@ const MANUAL_HTML_EN=`
 <li><b>Add the files</b> with <b>Add → Pick files…</b> (or Scan folders…). Choose the hub and optionally write shared tags in the dialog.</li>
 <li><b>Fine-tune with Select:</b> press ☑ Select, select the files that belong together, and use <b>Add tag…</b>.</li>
 <li><b>Pin</b> the files you use daily with ☆. They become shortcuts at the top of the hub.</li>
-<li><b>Set deadlines</b> on files for recurring tasks (Edit…).</li>
+<li><b>Set deadlines</b> on files for recurring tasks (Edit…), and choose a recurrence if the task comes back. Press ✓ next to the deadline when the task is done.</li>
 <li><b>Everyday use:</b> press <kbd>Ctrl</kbd>+<kbd>K</kbd>, type a few letters, and press Enter. Or open the file from the Overview or the hub.</li>
-<li><b>Clean up:</b> press "Check files", fix the red paths, and archive what you no longer use.</li>
+<li><b>Clean up:</b> press "Check files", fix the red paths (or use "Find again…" if a folder has moved), and archive what you no longer use.</li>
 </ol>
 
 <h2 id="m-overblik">Overview</h2>
@@ -3024,12 +3033,12 @@ const MANUAL_HTML_EN=`
 <ul>
 <li><b>The status bar</b> at the top tells you whether all files can be found. Below it is one field per active file. The color shows the status (see the <a href="#/help" onclick="return false">File status</a> section), and the thin line under the field has the hub's color. Click a field to edit the file, e.g. to fix a path.</li>
 <li><b>Hubs</b> are shown as large tiles with the number of files, how many are missing, and the hub's most-used tags. Click one to go to the hub.</li>
-<li><b>Deadlines</b> and <b>Needs attention</b> only show when there's something in them. "Needs attention" shows files that cannot be found.</li>
+<li><b>Deadlines</b> and <b>Needs attention</b> only show when there's something in them. A recurring deadline has a ✓ that moves it to the next date, and "All deadlines" opens the Deadlines page. "Needs attention" shows files that cannot be found, and "Find again…" helps you locate them.</li>
 <li><b>All files</b> is shown as cards. Favorites come first, then the cards are grouped by hub in the same order as the sidebar. The color on the top edge of the card shows the hub. The buttons above the cards filter to one hub, and the dropdown chooses the sort order within each group. "Filters and tags" takes you to the full library. Clicking a tag on a card opens the library with that tag selected.</li>
 <li><b>Recently opened</b> and <b>Most used</b> sit at the bottom and are built from the files you open via the dashboard.</li>
 </ul>
 <h3>The sidebar</h3>
-<p>Overview, All files, Favorites, Archive, Manual, and below that your hubs. The number next to each hub is the count of active files. Press + next to the heading to create a new hub. Hover over a hub and press ✎ to edit it. At the bottom you can see whether the app is responding, whether things are saved, and switch between dark and light theme.</p>
+<p>Overview, All files, Favorites, Deadlines, Archive, Manual, and below that your hubs. The number next to Deadlines is the count of deadlines that are overdue or due today. The number next to each hub is the count of active files. Press + next to the heading to create a new hub. Hover over a hub and press ✎ to edit it. At the bottom you can see whether the app is responding, whether things are saved, and switch between dark and light theme.</p>
 
 <h2 id="m-tilfoej">Adding files and folders</h2>
 <p>Press <b>Add</b> in the top right. You can choose between:</p>
@@ -3082,6 +3091,7 @@ const MANUAL_HTML_EN=`
 <li><b>Status</b>: Active or Archive.</li>
 <li><b>Tags</b> and <b>description</b>.</li>
 <li><b>Deadline</b> (date) and a text saying what the deadline is.</li>
+<li><b>Recurrence</b>: a fixed pattern or "Custom…" (see Deadlines below). The dialog shows which date ✓ will give.</li>
 <li><b>Pin as favorite.</b></li>
 </ul>
 <p>"Remove" in the bottom left removes the entry from the dashboard (not the file itself).</p>
@@ -3127,6 +3137,7 @@ const MANUAL_HTML_EN=`
 <tr><td>Copy path</td><td>Copies the path to the clipboard.</td></tr>
 <tr><td>Edit…</td><td>Change path, name, hub, tags, description, deadline and status.</td></tr>
 <tr><td>Favorite / Archive</td><td>Toggles the status.</td></tr>
+<tr><td>Find again…</td><td>Only shown when the file cannot be found. See "Files that have moved" under Organizing.</td></tr>
 <tr><td>Remove from dashboard</td><td>Deletes the entry (not the file itself). You're asked to confirm first.</td></tr>
 </table>
 
@@ -3135,7 +3146,7 @@ const MANUAL_HTML_EN=`
 <table>
 <tr><th>Color</th><th>Meaning</th></tr>
 <tr><td>Green</td><td>The file or folder exists.</td></tr>
-<tr><td>Red</td><td>The file was not found. It has been moved, renamed or deleted. Fix the path via "Edit…" or "Fix path".</td></tr>
+<tr><td>Red</td><td>The file was not found. It has been moved, renamed or deleted. Fix the path via "Edit…" or "Fix path", or use "Find again…" for several files at once.</td></tr>
 <tr><td>Yellow</td><td>No response within about 6 seconds. Typically a network drive that isn't connected.</td></tr>
 <tr><td>Blue</td><td>Online link. Not checked.</td></tr>
 <tr><td>Gray</td><td>Not checked yet.</td></tr>
@@ -3146,7 +3157,7 @@ const MANUAL_HTML_EN=`
 <li><b>Where:</b> everything is saved in <code>data.json</code> in <code>%LOCALAPPDATA%\FileCommandCenter\</code>. Changes are saved automatically a moment after you make them. "Saved" is shown at the bottom of the sidebar. This is also where your hubs and their notes, saved folder shortcuts, and settings (theme, view and sort order) live.</li>
 <li><b>Daily:</b> on the day's first change, a copy of the old <code>data.json</code> is placed in the <code>backups</code> folder (<code>data-YYYYMMDD.json</code>). The last 30 are kept. The copy therefore shows the state from before that day's changes.</li>
 <li><b>Before a deletion:</b> if saving would result in fewer files than before, a copy is placed in <code>backups</code> first, as <code>gemt-foer-sletning-…</code> ("saved-before-deletion"). The last 20 are kept.</li>
-<li><b>Manually:</b> "Backup" at the bottom of the sidebar has "Get backup" (a .json file), "Load backup…" (replaces everything in the dashboard, and you're asked to confirm first) and "Reset usage statistics" (resets recently opened and most used).</li>
+<li><b>Manually:</b> "Backup" at the bottom of the sidebar has "Get backup" (a .json file), "Load backup…" (replaces everything in the dashboard, and you're asked to confirm first) "Days off…" (public holidays and other days off for recurring deadlines) and "Reset usage statistics" (resets recently opened and most used).</li>
 <li><b>Restoring a copy:</b> close the app, copy a file from <code>backups</code> over <code>data.json</code>, and start again. Or use "Load backup…".</li>
 <li><b>Moving to another PC:</b> copy the whole folder including <code>data.json</code>. The paths need to exist on the new PC to show green.</li>
 </ul>
@@ -3178,6 +3189,9 @@ const MANUAL_HTML_EN=`
 <tr><td>The file picker says "The folder does not exist or cannot be reached"</td><td>Check the spelling, and that the network drive is connected. Try opening the path in File Explorer.</td></tr>
 <tr><td>A click doesn't open the file, but selects it instead</td><td>You're in selection mode. Press "Done" or <kbd>Esc</kbd>.</td></tr>
 <tr><td>Two buttons for the same folder in the file picker</td><td>Hover over the button to see the path. If they differ, they're two different folders.</td></tr>
+<tr><td>I pressed ✓ by mistake</td><td>Press "Undo" in the message shown afterwards (for about 10 seconds). If it's gone, correct the date via "Edit…".</td></tr>
+<tr><td>A recurring deadline lands on the wrong day</td><td>Check the recurrence under "Edit…", where the next date is shown. To skip public holidays, add them under "Backup" → "Days off…", and choose in the recurrence what should happen when the date is a day off.</td></tr>
+<tr><td>The calendar in Outlook no longer matches</td><td>The export is a snapshot and does not update by itself. Export again from the Deadlines page, and delete the old appointments if needed.</td></tr>
 </table>
 
 <h2 id="m-graenser">Limitations and security</h2>
@@ -3186,13 +3200,15 @@ const MANUAL_HTML_EN=`
 <li>A file can only belong to one hub, and hubs can't have sub-hubs. Use tags for finer-grained grouping.</li>
 <li>It's built for Windows and for one user. The app only allows one instance to run at a time.</li>
 <li>The app has no listening network port – the page only talks to the app through internal messages, never over the network. It only opens paths that have been added to the dashboard, and never program files.</li>
-<li>Changes to files outside the dashboard (moving, renaming) are detected on the next check and shown as a red status.</li>
+<li>Changes to files outside the dashboard (moving, renaming) are detected on the next check and shown as a red status. Use "Find again…" to fix the paths.</li>
+<li>The app does not keep a record of what was done. That is why the Deadlines page does not show periods before today, and an exported calendar is not updated when you press ✓.</li>
 </ul>
 
 <h2 id="m-aendringer">Changes</h2>
 <p>Latest changes, newest first.</p>
 <table>
 <tr><th>Date</th><th>Change</th></tr>
+<tr><td>30 September 2026</td><td>Recurring deadlines with fixed or custom patterns, days off, ✓ to move to the next date, and "Undo". New Deadlines page with day, week, month, quarter and year views. "Find again…" for files that have moved. Export of deadlines to a calendar (.ics).</td></tr>
 <tr><td>22 September 2026</td><td>The dashboard is now called File Command Center and handles all file types, not just Excel and CSV: the file picker and Scan folders now show everything by default, and the preview pane now also works on images, PDFs and text files. The preview pane can be dragged wider or narrower at its left edge.</td></tr>
 <tr><td>21 September 2026</td><td>Categories and hubs have been merged into hubs. Every hub has its own page with shortcuts and notes. Old categories have become hubs.</td></tr>
 <tr><td>21 September 2026</td><td>Selection mode: add or remove tags, change hub, favorite, archive and remove for several files at once.</td></tr>
