@@ -607,7 +607,7 @@ da:{
 'fld.deadlineOptional':'Frist (valgfri)',
 'fld.whatIsDeadline':'Hvad er fristen?',
 'fld.recur':'Gentagelse',
-'fld.recurHint':'Når du trykker ✓ ved en frist, sættes den automatisk til den næste dato.',
+'fld.recurHint':'Datoen ovenfor er valgfri: uden dato beregnes første gang ud fra gentagelsen. Når du trykker ✓, sættes næste dato automatisk.',
 'recur.none':'Ingen',
 'recur.daily':'Dagligt',
 'recur.weekdays':'Hver hverdag (man-fre)',
@@ -639,7 +639,7 @@ da:{
 'recur.until':'Slutter (valgfri)',
 'recur.preview':d=>'Næste dato efter ✓: '+d,
 'recur.previewNone':'Ingen flere datoer - gentagelsen er slut',
-'recur.needDate':'Sæt en frist for at bruge gentagelse',
+'recur.previewFirst':d=>'Første gang: '+d+' (beregnet ud fra gentagelsen, da der ikke er sat en dato)',
 'recur.ended':'Gentagelsen er slut - fristen er fjernet',
 'recur.markDoneTitle':'Udført - sæt næste dato',
 'recur.advanced':d=>'Næste dato sat til '+d,
@@ -1068,7 +1068,7 @@ da:{
 'fld.deadlineOptional':'Deadline (optional)',
 'fld.whatIsDeadline':'What is the deadline?',
 'fld.recur':'Recurrence',
-'fld.recurHint':'Pressing ✓ on a deadline automatically sets it to the next date.',
+'fld.recurHint':'The date above is optional: without one, the first time is calculated from the recurrence. Pressing ✓ sets the next date automatically.',
 'recur.none':'None',
 'recur.daily':'Daily',
 'recur.weekdays':'Every workday (Mon-Fri)',
@@ -1100,7 +1100,7 @@ da:{
 'recur.until':'Ends (optional)',
 'recur.preview':d=>'Next date after ✓: '+d,
 'recur.previewNone':'No more dates - the recurrence has ended',
-'recur.needDate':'Set a deadline to use recurrence',
+'recur.previewFirst':d=>'First time: '+d+' (calculated from the recurrence, since no date is set)',
 'recur.ended':'The recurrence has ended - the deadline was removed',
 'recur.markDoneTitle':'Done - set next date',
 'recur.advanced':d=>'Next date set to '+d,
@@ -1341,7 +1341,7 @@ function shiftDay(d,shift,hol){
   return d;
 }
 /* Næste forekomst efter både i dag og den nuværende frist; null hvis reglen er slut */
-function nextOcc(dateStr,r,today){
+function nextOcc(dateStr,r,today,inclusive){
   if(!today){today=new Date();today.setHours(0,0,0,0)}
   const hol=holidaySet(),done=r.from==='done',cur=pd(dateStr),d0=done?today:pd(r.anchor||dateStr),floor=done||today>cur?today:cur;
   const every=Math.max(1,r.every|0),of=r.of==null?'date':r.of,pos=of==='date'&&(done||!r.pos)?d0.getDate():(r.pos||1);
@@ -1351,7 +1351,7 @@ function nextOcc(dateStr,r,today){
     if(r.unit==='day') c=[addDays(d0,k*every)];
     else if(r.unit==='week') c=days.map(w=>addDays(mon,7*every*k+(w+6)%7));
     else c=[monthOcc(d0.getFullYear(),d0.getMonth()+(r.unit==='year'?12:1)*every*k,of,pos,hol)].filter(Boolean);
-    const hit=c.map(a=>({a,d:shiftDay(a,r.shift,hol)})).sort((x,y)=>x.d-y.d).find(x=>x.d>floor);
+    const hit=c.map(a=>({a,d:shiftDay(a,r.shift,hol)})).sort((x,y)=>x.d-y.d).find(x=>inclusive?x.d>=floor:x.d>floor);
     if(hit) return r.until&&ymd(hit.d)>r.until?null:{due:ymd(hit.d),anchor:ymd(hit.a)};
   }
   return null;
@@ -1376,6 +1376,11 @@ function advanceRecurrence(f){
   if(!o){f.due='';f.recur='';save();render();toast([t('recur.ended'),undo],'ok',10000);return}
   const r={...f.recur};if(o.anchor!==o.due) r.anchor=o.anchor;else delete r.anchor;
   f.due=o.due;f.recur=r;save();render();toast([t('recur.advanced',fmtDate(f.due+'T00:00:00')),undo],'ok',10000);
+}
+/* Første dato fra og med i dag, når en gentagelse ikke har fået en dato: reglen regnes fra i dag */
+function firstOcc(r,today){
+  if(!today){today=new Date();today.setHours(0,0,0,0)}
+  return nextOcc(ymd(today),r,today,true);
 }
 /* Alle forekomster af en fils frist i [from;to]: den nuværende frist og derefter reglens kommende datoer */
 function occurrences(f,from,to,today){
@@ -2427,7 +2432,7 @@ function fileDialog(f,preset={}){
   const desc=h('textarea',{},m.desc||''),due=h('input',{type:'date',value:m.due||''}),dueL=h('input',{value:m.dueLabel||'',placeholder:t('fdlg.dueLabelPlaceholder')});
   /* Gentagelse: faste valg + "Tilpasset…", som viser hele reglen */
   const R=m.recur&&m.recur.unit?m.recur:null,c=R||{unit:'week',every:1};
-  const dueDay=()=>due.value?pd(due.value).getDate():1;
+  const dueDay=()=>(due.value?pd(due.value):new Date()).getDate();
   const PRESETS={daily:()=>({unit:'day',every:1}),weekdays:()=>({unit:'week',every:1,days:[1,2,3,4,5]}),weekly:()=>({unit:'week',every:1}),biweekly:()=>({unit:'week',every:2}),
     monthly:()=>({unit:'month',every:1,of:'date',pos:dueDay()}),quarterly:()=>({unit:'month',every:3,of:'date',pos:dueDay()}),yearly:()=>({unit:'year',every:1,of:'date',pos:dueDay()})};
   const recurKey=r=>JSON.stringify([r.unit,r.every,r.days||[],r.of==null?'':r.of,r.pos||0,r.shift||'',r.from||'',r.until||'']);
@@ -2463,7 +2468,7 @@ function fileDialog(f,preset={}){
     rWeekRow.style.display=rUnit.value==='week'?'':'none';
     rMonthRow.style.display=rUnit.value==='month'||rUnit.value==='year'?'':'none';
     let txt='';
-    if(recurSel.value&&due.value){const o=nextOcc(due.value,readRecur());txt=o?t('recur.preview',fmtDate(o.due+'T00:00:00')):t('recur.previewNone')}
+    if(recurSel.value){const o=due.value?nextOcc(due.value,readRecur()):firstOcc(readRecur());txt=!o?t('recur.previewNone'):due.value?t('recur.preview',fmtDate(o.due+'T00:00:00')):t('recur.previewFirst',fmtDate(o.due+'T00:00:00'))}
     recurPreview.textContent=txt;
   };
   [recurSel,rEvery,rUnit,rPos,rOf,rEnd,rShift,rFrom,rUntil,due,...rCbs].forEach(x=>{x.addEventListener('change',updateRecur);x.addEventListener('input',updateRecur)});updateRecur();
@@ -2473,9 +2478,10 @@ function fileDialog(f,preset={}){
     const p=cleanPath(path.value);if(!p){toast(t('fdlg.giveAPath'),'bad');path.focus();return}
     if(S.files.some(x=>x!==f&&x.path.toLowerCase()===p.toLowerCase())&&!confirm(t('fdlg.pathExistsConfirm'))) return;
     const recurVal=readRecur();
-    if(recurVal&&!due.value){toast(t('recur.needDate'),'bad');due.focus();return}
+    let dueVal=due.value;
+    if(recurVal&&!dueVal){const o=firstOcc(recurVal);if(!o){toast(t('recur.previewNone'),'bad');return}dueVal=o.due;if(o.anchor!==o.due) recurVal.anchor=o.anchor}
     if(recurVal&&R&&R.anchor&&f&&due.value===f.due&&recurKey(recurVal)===recurKey(R)) recurVal.anchor=R.anchor;
-    Object.assign(m,{title:title.value.trim()||titleFromPath(p),path:p,category:catSel.value,tags:tags.get(),desc:desc.value.trim(),due:due.value,dueLabel:dueL.value.trim(),recur:recurVal,status:stat.value,pinned:pin.checked});
+    Object.assign(m,{title:title.value.trim()||titleFromPath(p),path:p,category:catSel.value,tags:tags.get(),desc:desc.value.trim(),due:dueVal,dueLabel:dueL.value.trim(),recur:recurVal,status:stat.value,pinned:pin.checked});
     if(isNew) S.files.push(m);else Object.assign(f,m);
     save();d.close();render();checkHealth([p]);
   };
@@ -2799,7 +2805,7 @@ const MANUAL_HTML_DA=`
 <li><b>Tilføj filerne</b> med <b>Tilføj → Vælg filer…</b> (eller Scan mapper…). Vælg hubben og skriv evt. fælles tags i dialogen.</li>
 <li><b>Finpuds med markér:</b> tryk på ☑ Markér, markér de filer, der hører sammen, og brug <b>Tilføj tag…</b>.</li>
 <li><b>Fastgør</b> de filer, du bruger til daglig, med ☆. De bliver til genveje øverst på hubben.</li>
-<li><b>Sæt frister</b> på filer til faste opgaver (Redigér…), og vælg en gentagelse, hvis opgaven kommer igen. Tryk ✓ ved fristen, når opgaven er udført.</li>
+<li><b>Sæt frister</b> på filer til faste opgaver (Redigér…), og vælg en gentagelse, hvis filen skal bruges igen. Du behøver ikke sætte en dato; uden dato beregnes første gang ud fra gentagelsen. Tryk ✓ ved fristen, når du er færdig med filen denne gang.</li>
 <li><b>Hverdag:</b> tryk <kbd>Ctrl</kbd>+<kbd>K</kbd>, skriv et par bogstaver, og tryk Enter. Eller åbn filen fra Overblik eller hubben.</li>
 <li><b>Ryd op:</b> tryk på "Tjek filer", ret de røde stier (eller brug "Genfind…", hvis en mappe er flyttet), og arkivér det, du ikke bruger mere.</li>
 </ol>
@@ -2867,7 +2873,7 @@ const MANUAL_HTML_DA=`
 <li><b>Status</b>: Aktiv eller Arkiv.</li>
 <li><b>Tags</b> og <b>beskrivelse</b>.</li>
 <li><b>Frist</b> (dato) og en tekst om, hvad fristen er.</li>
-<li><b>Gentagelse</b>: et fast mønster eller "Tilpasset…" (se Frister nedenfor). Dialogen viser, hvilken dato ✓ vil give.</li>
+<li><b>Gentagelse</b>: et fast mønster eller "Tilpasset…" (se Frister nedenfor). Datoen er valgfri, når der er en gentagelse: uden dato beregnes første gang fra i dag. Dialogen viser, hvilken dato det bliver.</li>
 <li><b>Fastgør som favorit.</b></li>
 </ul>
 <p>"Fjern" nederst til venstre fjerner posten fra dashboardet (ikke selve filen).</p>
@@ -3023,7 +3029,7 @@ const MANUAL_HTML_EN=`
 <li><b>Add the files</b> with <b>Add → Pick files…</b> (or Scan folders…). Choose the hub and optionally write shared tags in the dialog.</li>
 <li><b>Fine-tune with Select:</b> press ☑ Select, select the files that belong together, and use <b>Add tag…</b>.</li>
 <li><b>Pin</b> the files you use daily with ☆. They become shortcuts at the top of the hub.</li>
-<li><b>Set deadlines</b> on files for recurring tasks (Edit…), and choose a recurrence if the task comes back. Press ✓ next to the deadline when the task is done.</li>
+<li><b>Set deadlines</b> on files for recurring tasks (Edit…), and choose a recurrence if the file is used again. You don't need to set a date; without one, the first time is calculated from the recurrence. Press ✓ next to the deadline when you're done with the file this time.</li>
 <li><b>Everyday use:</b> press <kbd>Ctrl</kbd>+<kbd>K</kbd>, type a few letters, and press Enter. Or open the file from the Overview or the hub.</li>
 <li><b>Clean up:</b> press "Check files", fix the red paths (or use "Find again…" if a folder has moved), and archive what you no longer use.</li>
 </ol>
@@ -3091,7 +3097,7 @@ const MANUAL_HTML_EN=`
 <li><b>Status</b>: Active or Archive.</li>
 <li><b>Tags</b> and <b>description</b>.</li>
 <li><b>Deadline</b> (date) and a text saying what the deadline is.</li>
-<li><b>Recurrence</b>: a fixed pattern or "Custom…" (see Deadlines below). The dialog shows which date ✓ will give.</li>
+<li><b>Recurrence</b>: a fixed pattern or "Custom…" (see Deadlines below). The date is optional when there is a recurrence: without one, the first time is calculated from today. The dialog shows which date it will be.</li>
 <li><b>Pin as favorite.</b></li>
 </ul>
 <p>"Remove" in the bottom left removes the entry from the dashboard (not the file itself).</p>
