@@ -22,7 +22,7 @@ Dine data (`data.json` + `backups/`) gemmes lokalt i `%LOCALAPPDATA%\FileCommand
 
 Fra [Releases](https://github.com/BahneGork/file-command-center/releases/latest) - to former, samme app:
 - **Installer (.msi)** - installerer i `Program Files`, kræver admin, giver en Start-menu-genvej og selv-opdatering. Byg-instruktioner: **[desktop/installer/README.md](desktop/installer/README.md)**.
-- **Portabel (.zip)** - pak ud og kør `FileCommandCenter.exe` hvor som helst, ingen installation, ingen admin-rettigheder nødvendigt. `web`-mappen skal blive liggende ved siden af .exe'en. Opdateres ved selv at hente en ny .zip igen - den indbyggede "Opdater nu" er lavet til installer-udgaven og vil installere en separat kopi i `Program Files`, ikke opdatere den portable kopi i sig selv.
+- **Portabel (.zip)** - pak ud og kør `FileCommandCenter.exe` hvor som helst, ingen installation, ingen admin-rettigheder nødvendigt. `web`-mappen skal blive liggende ved siden af .exe'en. Fra v1.0.7 opdaterer den sig selv via "Opdater nu" (henter den nye .zip og skifter sine egne filer ud), så længe mappen kan skrives i. En portabel kopi fra før v1.0.7 skal opdateres manuelt én sidste gang.
 
 Begge er selvstændige builds (intet .NET skal være installeret i forvejen).
 

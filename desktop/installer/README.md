@@ -44,12 +44,16 @@ har en `.msi` vedhæftet som "asset" - der er ingen CI her, så det gøres manue
    lader en nyere version opdatere en ældre i stedet for at installere ved siden af den.
 2. Sæt **samme** nye versionsnummer to steder: `<Version>` i `../CommandCenter.csproj` og `Version=` i `Package.wxs`.
 3. Byg publish-outputtet og MSI'en som beskrevet ovenfor.
-4. Tag og udgiv med den vedhæftede MSI (tag skal starte med `v`, fx `v1.0.2` - det er det, appen sammenligner sin
+4. Byg den portable udgave for sig, med `-p:Flavor=portable` lagt til `dotnet publish`-kommandoen og sin egen
+   output-mappe (fx `-o C:\build\portable`), og zip den mappes indhold direkte som
+   `FileCommandCenter-<version>-portable-win-x64.zip`. Den portable exe må aldrig komme i MSI'en, og omvendt -
+   det er mærket i exe'en, der afgør, om appen opdaterer sig selv med MSI'en eller .zip'en.
+5. Tag og udgiv med begge filer vedhæftet (tag skal starte med `v`, fx `v1.0.2` - det er det, appen sammenligner sin
    egen version imod):
    ```
-   gh release create v1.0.2 FileCommandCenter.msi --title "v1.0.2" --notes "Hvad der er ændret"
+   gh release create v1.0.2 FileCommandCenter.msi FileCommandCenter-1.0.2-portable-win-x64.zip --title "v1.0.2" --notes "Hvad der er ændret"
    ```
-5. Kør git-commit/push af kildekoden (inkl. de to versionstal) separat - releasen er ikke bundet til et bestemt
+6. Kør git-commit/push af kildekoden (inkl. de to versionstal) separat - releasen er ikke bundet til et bestemt
    commit på nogen særlig måde ud over tagget.
 
 Kun brugere, der allerede kører en version, som selv har opdateringstjekket i sig (denne eller nyere), vil se
