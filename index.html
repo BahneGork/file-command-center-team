@@ -150,7 +150,7 @@ select{padding:7px 8px}
 .catpill{font-size:12px;color:var(--muted);white-space:nowrap}
 .path{color:var(--dim);overflow-wrap:anywhere}
 .desc{margin:0;color:var(--muted);font-size:13px}
-.due{font-size:12.5px}.due.bad{color:var(--bad)}.due.warn{color:var(--warn)}.due.ok{color:var(--muted)}
+.due{font-size:12.5px}.due.bad{color:var(--bad)}.due.warn{color:var(--warn)}.due.ok{color:var(--muted)}.due.past,.x.past{color:var(--dim)}
 .tags{display:flex;gap:5px;flex-wrap:wrap}
 .tags .chip{padding:0 8px;font-size:12px}
 .foot{display:flex;align-items:center;gap:8px;margin-top:2px}
@@ -354,7 +354,7 @@ da:{
 'rel.minAgo':m=>'for '+m+' min siden',
 'rel.hAgo':t=>'for '+t+' t siden',
 'rel.dayAgo':d=>'for '+d+(d===1?' dag':' dage')+' siden',
-'due.overdue':n=>(-n)+(n===-1?' dag':' dage')+' over fristen',
+'due.past':n=>'for '+(-n)+(n===-1?' dag':' dage')+' siden',
 'due.today':'i dag',
 'due.tomorrow':'i morgen',
 'due.inDays':n=>'om '+n+' dage',
@@ -608,7 +608,7 @@ da:{
 'fld.deadlineOptional':'Frist (valgfri)',
 'fld.whatIsDeadline':'Hvad er fristen?',
 'fld.recur':'Gentagelse',
-'fld.recurHint':'Datoen ovenfor er valgfri: uden dato beregnes første gang ud fra gentagelsen. Når du trykker ✓, sættes næste dato automatisk.',
+'fld.recurHint':'Med en gentagelse er datoen ovenfor startdatoen, og den er valgfri: uden dato starter gentagelsen i dag. Næste dato vises altid af sig selv.',
 'recur.none':'Ingen',
 'recur.daily':'Dagligt',
 'recur.weekdays':'Hver hverdag (man-fre)',
@@ -634,17 +634,10 @@ da:{
 'recur.shift.none':'Behold datoen',
 'recur.shift.before':'Flyt til hverdagen før',
 'recur.shift.after':'Flyt til hverdagen efter',
-'recur.from':'Regn fra',
-'recur.from.schedule':'Planen (faste datoer)',
-'recur.from.done':'Den dag, jeg markerer udført',
 'recur.until':'Slutter (valgfri)',
-'recur.preview':d=>'Næste dato efter ✓: '+d,
+'recur.preview':d=>'Næste gang: '+d,
 'recur.previewNone':'Ingen flere datoer - gentagelsen er slut',
 'recur.previewFirst':d=>'Første gang: '+d+' (beregnet ud fra gentagelsen, da der ikke er sat en dato)',
-'recur.ended':'Gentagelsen er slut - fristen er fjernet',
-'recur.markDoneTitle':'Udført - sæt næste dato',
-'recur.advanced':d=>'Næste dato sat til '+d,
-'common.undo':'Fortryd',
 'nav.deadlines':'Frister',
 'dv.view.day':'Dag',
 'dv.view.week':'Uge',
@@ -657,8 +650,7 @@ da:{
 'dv.prev':'Forrige',
 'dv.next':'Næste',
 'dv.today':'I dag',
-'dv.overdue':'Overskredet',
-'dv.upcomingTitle':'Kommende gentagelse (beregnet ud fra reglen)',
+'dv.recurringTitle':'Gentages',
 'dv.seeAll':'Alle frister',
 'dv.nonePeriod':'Ingen frister i denne periode.',
 'dv.noneAtAll':'Ingen filer har en frist endnu.',
@@ -819,7 +811,7 @@ da:{
 'rel.minAgo':m=>m+' min ago',
 'rel.hAgo':t=>t+'h ago',
 'rel.dayAgo':d=>d+(d===1?' day':' days')+' ago',
-'due.overdue':n=>(-n)+(n===-1?' day':' days')+' overdue',
+'due.past':n=>(-n)+(n===-1?' day':' days')+' ago',
 'due.today':'today',
 'due.tomorrow':'tomorrow',
 'due.inDays':n=>'in '+n+' days',
@@ -1073,7 +1065,7 @@ da:{
 'fld.deadlineOptional':'Deadline (optional)',
 'fld.whatIsDeadline':'What is the deadline?',
 'fld.recur':'Recurrence',
-'fld.recurHint':'The date above is optional: without one, the first time is calculated from the recurrence. Pressing ✓ sets the next date automatically.',
+'fld.recurHint':'With a recurrence, the date above is the start date, and it is optional: without one, the recurrence starts today. The next date is always shown by itself.',
 'recur.none':'None',
 'recur.daily':'Daily',
 'recur.weekdays':'Every workday (Mon-Fri)',
@@ -1099,17 +1091,10 @@ da:{
 'recur.shift.none':'Keep the date',
 'recur.shift.before':'Move to the workday before',
 'recur.shift.after':'Move to the workday after',
-'recur.from':'Count from',
-'recur.from.schedule':'The schedule (fixed dates)',
-'recur.from.done':'The day I mark it done',
 'recur.until':'Ends (optional)',
-'recur.preview':d=>'Next date after ✓: '+d,
+'recur.preview':d=>'Next time: '+d,
 'recur.previewNone':'No more dates - the recurrence has ended',
 'recur.previewFirst':d=>'First time: '+d+' (calculated from the recurrence, since no date is set)',
-'recur.ended':'The recurrence has ended - the deadline was removed',
-'recur.markDoneTitle':'Done - set next date',
-'recur.advanced':d=>'Next date set to '+d,
-'common.undo':'Undo',
 'nav.deadlines':'Deadlines',
 'dv.view.day':'Day',
 'dv.view.week':'Week',
@@ -1122,8 +1107,7 @@ da:{
 'dv.prev':'Previous',
 'dv.next':'Next',
 'dv.today':'Today',
-'dv.overdue':'Overdue',
-'dv.upcomingTitle':'Upcoming occurrence (calculated from the rule)',
+'dv.recurringTitle':'Recurring',
 'dv.seeAll':'All deadlines',
 'dv.nonePeriod':'No deadlines in this period.',
 'dv.noneAtAll':'No files have a deadline yet.',
@@ -1297,7 +1281,7 @@ function migrate(s){s.categories=Array.isArray(s.categories)?s.categories:[];s.c
   s.team=Object.assign({folder:null,displayName:'',files:[],rev:0,lastSync:null},s.team||{});
   s.team.files=Array.isArray(s.team.files)?s.team.files:[];
   const ids=new Set();
-  s.files.forEach(f=>{f.tags=f.tags||[];f.status=f.status||'aktiv';f.opens=f.opens||0;f.category=f.category||'';f.recur=normRecur(f.recur,f.due);if(!f.id||ids.has(f.id)) f.id=uid();ids.add(f.id)});return s}
+  s.files.forEach(f=>{f.tags=f.tags||[];f.status=f.status||'aktiv';f.opens=f.opens||0;f.category=f.category||'';if(f.recur&&typeof f.recur==='object'&&f.recur.anchor) f.due=f.recur.anchor;f.recur=normRecur(f.recur,f.due);if(!f.id||ids.has(f.id)) f.id=uid();ids.add(f.id)});return s}
 
 /* ================= Hjælpefunktioner ================= */
 function h(tag,props,...kids){
@@ -1325,14 +1309,15 @@ const fmtDate=iso=>new Date(iso).toLocaleDateString(dateLocale(),{day:'numeric',
 function fmtSize(n){if(n==null) return '';if(n<1024) return n+' B';if(n<1048576) return (n/1024).toFixed(0)+' KB';return (n/1048576).toFixed(1).replace('.',',')+' MB'}
 function relTime(iso){const m=Math.round((Date.now()-new Date(iso))/6e4);if(m<1) return t('rel.now');if(m<60) return t('rel.minAgo',m);const t2=Math.round(m/60);if(t2<24) return t('rel.hAgo',t2);const d=Math.round(t2/24);if(d<30) return t('rel.dayAgo',d);return fmtDate(iso)}
 function daysUntil(due){const t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(due+'T00:00:00')-t)/864e5)}
-function dueInfo(f){if(!f.due) return null;const n=daysUntil(f.due);let k='ok',tt;
-  if(n<0){k='bad';tt=t('due.overdue',n)}else if(n===0){k='warn';tt=t('due.today')}else if(n===1){k='warn';tt=t('due.tomorrow')}else{k=n<=7?'warn':'ok';tt=t('due.inDays',n)}
-  return{n,k,t:tt}}
+function dueInfo(f){const d=nextDate(f);return d?dateInfo(d):null}
+function dateInfo(d){const n=daysUntil(d);let k='ok',tt;
+  if(n<0){k='past';tt=t('due.past',n)}else if(n===0){k='warn';tt=t('due.today')}else if(n===1){k='warn';tt=t('due.tomorrow')}else{k=n<=7?'warn':'ok';tt=t('due.inDays',n)}
+  return{n,k,t:tt,d}}
 const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 /* -- gentagne frister --
    En regel: {unit:'day'|'week'|'month'|'year', every:N, days:[0-6] (uge), of:'date'|'workday'|0-6 + pos:±n (måned/år),
-   shift:'before'|'after' (flyt væk fra fridage), from:'done' (regn fra udført-dagen), until:'ÅÅÅÅ-MM-DD',
-   anchor: den planlagte dato før evt. flytning, så planen ikke skrider}. */
+   shift:'before'|'after' (flyt væk fra fridage), until:'ÅÅÅÅ-MM-DD'}.
+   Filens dato (f.due) er gentagelsens startdato; datoerne regnes altid ud fra den, så intet skal "udføres". */
 const pd=s=>new Date(s+'T00:00:00');
 const addDays=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
 const holidaySet=()=>new Set(((S&&S.settings&&S.settings.holidays)||[]).map(x=>x.slice(0,10)));
@@ -1349,18 +1334,19 @@ function shiftDay(d,shift,hol){
   for(let n=0;n<31&&!isWorkday(d,hol);n++) d=addDays(d,shift==='before'?-1:1);
   return d;
 }
-/* Næste forekomst efter både i dag og den nuværende frist; null hvis reglen er slut */
+/* Første forekomst efter (eller med inclusive: fra og med) "today", regnet fra startdatoen dateStr: den planlagte dato
+   må ikke ligge før startdatoen, men den flyttede dato må (fx når startdatoen selv er en fridag); null hvis reglen er slut */
 function nextOcc(dateStr,r,today,inclusive){
   if(!today){today=new Date();today.setHours(0,0,0,0)}
-  const hol=holidaySet(),done=r.from==='done',cur=pd(dateStr),d0=done?today:pd(r.anchor||dateStr),floor=done||today>cur?today:cur;
-  const every=Math.max(1,r.every|0),of=r.of==null?'date':r.of,pos=of==='date'&&(done||!r.pos)?d0.getDate():(r.pos||1);
+  const hol=holidaySet(),d0=pd(dateStr),floor=today;
+  const every=Math.max(1,r.every|0),of=r.of==null?'date':r.of,pos=of==='date'&&!r.pos?d0.getDate():(r.pos||1);
   const days=r.days&&r.days.length?r.days:[d0.getDay()],mon=addDays(d0,-((d0.getDay()+6)%7));
   for(let k=0;k<20000;k++){
     let c;
     if(r.unit==='day') c=[addDays(d0,k*every)];
     else if(r.unit==='week') c=days.map(w=>addDays(mon,7*every*k+(w+6)%7));
     else c=[monthOcc(d0.getFullYear(),d0.getMonth()+(r.unit==='year'?12:1)*every*k,of,pos,hol)].filter(Boolean);
-    const hit=c.map(a=>({a,d:shiftDay(a,r.shift,hol)})).sort((x,y)=>x.d-y.d).find(x=>inclusive?x.d>=floor:x.d>floor);
+    const hit=c.map(a=>({a,d:shiftDay(a,r.shift,hol)})).filter(x=>x.a>=d0).sort((x,y)=>x.d-y.d).find(x=>inclusive?x.d>=floor:x.d>floor);
     if(hit) return r.until&&ymd(hit.d)>r.until?null:{due:ymd(hit.d),anchor:ymd(hit.a)};
   }
   return null;
@@ -1370,46 +1356,48 @@ function danishHolidays(y){
   const e=easter(y),rel=(n,name)=>ymd(addDays(e,n))+' '+name;
   return[y+'-01-01 Nytårsdag',rel(-3,'Skærtorsdag'),rel(-2,'Langfredag'),rel(1,'2. påskedag'),rel(39,'Kristi himmelfartsdag'),rel(50,'2. pinsedag'),y+'-12-25 Juledag',y+'-12-26 2. juledag'];
 }
-/* Ældre formater ('daily' eller {kind,n}) oversættes til en regel */
+/* Ældre formater ('daily' eller {kind,n}) oversættes til en regel. "Regn fra udført" og ankeret fra dengang,
+   fristen blev rykket med ✓, findes ikke længere (se migrate). */
 function normRecur(r,due){
   if(!r) return '';
-  if(typeof r==='object'&&r.unit) return r;
+  if(typeof r==='object'&&r.unit){const x={...r};delete x.from;delete x.anchor;return x}
   const k=typeof r==='string'?r:r.kind,n=+r.n||1;
   return k==='daily'?{unit:'day',every:1}:k==='weekly'?{unit:'week',every:1}:k==='everyNDays'?{unit:'day',every:n}
     :k==='monthly'?{unit:'month',every:1,of:'date',pos:due?pd(due).getDate():1}
     :k==='nthWorkday'?{unit:'month',every:1,of:'workday',pos:n}:k==='lastWorkday'?{unit:'month',every:1,of:'workday',pos:-1}:'';
-}
-function advanceRecurrence(f){
-  const prev={due:f.due,recur:f.recur},o=nextOcc(f.due,f.recur);
-  const undo=h('button',{class:'btn sm',style:{marginLeft:'10px',pointerEvents:'auto'},onClick:e=>{f.due=prev.due;f.recur=prev.recur;save();render();e.currentTarget.closest('.toast').remove()}},t('common.undo'));
-  if(!o){f.due='';f.recur='';save();render();toast([t('recur.ended'),undo],'ok',10000);return}
-  const r={...f.recur};if(o.anchor!==o.due) r.anchor=o.anchor;else delete r.anchor;
-  f.due=o.due;f.recur=r;save();render();toast([t('recur.advanced',fmtDate(f.due+'T00:00:00')),undo],'ok',10000);
 }
 /* Første dato fra og med i dag, når en gentagelse ikke har fået en dato: reglen regnes fra i dag */
 function firstOcc(r,today){
   if(!today){today=new Date();today.setHours(0,0,0,0)}
   return nextOcc(ymd(today),r,today,true);
 }
-/* Alle forekomster af en fils frist i [from;to]: den nuværende frist og derefter reglens kommende datoer */
-function occurrences(f,from,to,today){
-  const out=[];if(!f.due) return out;
+/* Datoen, der gælder nu: for en gentagelse den næste fra og med i dag (eller fra startdatoen, hvis den ligger
+   senere); ellers filens faste dato. null uden dato, eller når gentagelsen er slut. */
+function nextDate(f,today){
+  if(!f.due) return null;
+  const r=f.recur&&f.recur.unit?f.recur:null;
+  if(!r) return f.due;
   if(!today){today=new Date();today.setHours(0,0,0,0)}
-  const lo=ymd(from),hi=ymd(to);
-  let cur=f.due,r=f.recur&&f.recur.unit?f.recur:null,actual=true;
-  for(let i=0;i<3000&&cur<=hi;i++){
-    if(cur>=lo) out.push({f,date:cur,actual});
-    if(!r) break;
-    const base=pd(cur),o=nextOcc(cur,r,base>today?base:today);
-    if(!o) break;
-    cur=o.due;r={...r,anchor:o.anchor};actual=false;
+  const o=nextOcc(f.due,r,today,true);
+  return o&&o.due;
+}
+/* Alle datoer for en fil i [from;to]: den faste dato, eller gentagelsens datoer fra startdatoen */
+function occurrences(f,from,to){
+  if(!f.due) return [];
+  const r=f.recur&&f.recur.unit?f.recur:null,hi=ymd(to);
+  if(!r) return f.due>=ymd(from)&&f.due<=hi?[{f,date:f.due}]:[];
+  const out=[];let floor=from,incl=true;
+  for(let i=0;i<3000;i++){
+    const o=nextOcc(f.due,r,floor,incl);
+    if(!o||o.due>hi) break;
+    out.push({f,date:o.due});floor=pd(o.due);incl=false;
   }
   return out;
 }
 /* RRULE for regler, som kalenderstandarden udtrykker præcist som appen; ellers null (så eksporteres enkeltdatoer) */
-function icsRule(f){
-  const r=f.recur,d=pd(f.due),BY=['SU','MO','TU','WE','TH','FR','SA'],parts=[];
-  if(r.shift||r.from==='done') return null;
+function icsRule(f,first){
+  const r=f.recur,d=pd(first),BY=['SU','MO','TU','WE','TH','FR','SA'],parts=[];
+  if(r.shift) return null;
   if(r.unit==='day') parts.push('FREQ=DAILY');
   else if(r.unit==='week'){
     const days=r.days&&r.days.length?r.days:null;
@@ -1422,7 +1410,7 @@ function icsRule(f){
     if(typeof of==='number'&&Math.abs(pos)>4) return null;
     if(of==='date'&&pos<-28) return null;
     const occ=monthOcc(d.getFullYear(),d.getMonth(),of,pos,new Set());
-    if(!occ||ymd(occ)!==f.due) return null;
+    if(!occ||ymd(occ)!==first) return null;
     parts.push(r.unit==='year'?'FREQ=YEARLY':'FREQ=MONTHLY');
     if(r.unit==='year') parts.push('BYMONTH='+(d.getMonth()+1));
     if(of==='date'){
@@ -1447,14 +1435,16 @@ function icsText(files,today){
     'DTSTART;VALUE=DATE:'+date.replace(/-/g,''),'DTEND;VALUE=DATE:'+ymd(addDays(pd(date),1)).replace(/-/g,''),
     'SUMMARY:'+esc((f.dueLabel?f.dueLabel+': ':'')+f.title),'DESCRIPTION:'+esc(f.path),...(rule?['RRULE:'+rule]:[]),'TRANSP:TRANSPARENT','END:VEVENT');
   files.filter(f=>f.due&&f.status!=='arkiv').forEach(f=>{
-    const r=f.recur&&f.recur.unit?f.recur:null,rule=r?icsRule(f):null;
-    if(!r||rule) ev(f,f.due,rule,f.id);
-    else occurrences(f,pd(f.due),addDays(today,366),today).slice(0,120).forEach(o=>ev(f,o.date,null,f.id+'-'+o.date));
+    const r=f.recur&&f.recur.unit?f.recur:null;
+    if(!r){ev(f,f.due,null,f.id);return}
+    const first=occurrences(f,pd(f.due),addDays(pd(f.due),3660))[0];if(!first) return;
+    const rule=icsRule(f,first.date);
+    if(rule) ev(f,first.date,rule,f.id);
+    else occurrences(f,today>pd(f.due)?today:pd(f.due),addDays(today,366)).slice(0,120).forEach(o=>ev(f,o.date,null,f.id+'-'+o.date));
   });
   L.push('END:VCALENDAR');
   return L.map(fold).join('\r\n')+'\r\n';
 }
-function recurBtn(f){return f.recur&&f.due?h('button',{class:'ib',title:t('recur.markDoneTitle'),onClick:e=>{e.stopPropagation();advanceRecurrence(f)}},'✓'):null}
 /* -- /gentagne frister -- */
 function isoWeek(d){const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=t.getUTCDay()||7;t.setUTCDate(t.getUTCDate()+4-day);const y0=new Date(Date.UTC(t.getUTCFullYear(),0,1));return Math.ceil(((t-y0)/864e5+1)/7)}
 function fileType(p){
@@ -1600,7 +1590,7 @@ function sortFiles(arr){
     opens:(x,y)=>(y.opens||0)-(x.opens||0)||coll(x.title,y.title),
     modified:(x,y)=>((H[y.path]||{}).modified||'').localeCompare((H[x.path]||{}).modified||''),
     added:(x,y)=>(y.added||'').localeCompare(x.added||''),
-    due:(x,y)=>(x.due||'9999').localeCompare(y.due||'9999')
+    due:(x,y)=>(nextDate(x)||'9999').localeCompare(nextDate(y)||'9999')
   }[m]||(()=>0);
   const s=[...arr].sort(cmp);
   return UI.fav?s:[...s.filter(f=>f.pinned),...s.filter(f=>!f.pinned)];
@@ -1646,7 +1636,7 @@ function renderSide(){
     nav('#/','🏠',t('nav.overview')),
     nav('#/all','📚',t('nav.allFiles'),act.length),
     nav('#/all?fav=1','⭐',t('nav.favorites'),act.filter(f=>f.pinned).length),
-    nav('#/due','📅',t('nav.deadlines'),act.filter(f=>f.due&&daysUntil(f.due)<=0).length||null),
+    nav('#/due','📅',t('nav.deadlines'),act.filter(f=>{const d=nextDate(f);return d&&daysUntil(d)===0}).length||null),
     nav('#/all?status=arkiv','🗄️',t('nav.archive'),S.files.length-act.length),
     nav('#/help','📖',t('nav.manual')),
     nav('#/team','👥',t('nav.team'),S.team.folder?S.team.files.filter(f=>!f.deleted).length:null),
@@ -1659,7 +1649,7 @@ function renderSide(){
         h('button',{class:'btn sm',onClick:()=>{S.settings.theme=S.settings.theme==='dark'?'light':'dark';save();render()}},S.settings.theme==='dark'?t('sidefoot.themeLight'):t('sidefoot.themeDark')),
         h('button',{class:'btn sm',title:t('lang.toggleTitle'),onClick:()=>{S.settings.lang=lang()==='da'?'en':'da';save();render()}},t('sidefoot.lang')),
         h('button',{class:'btn sm',onClick:settingsDialog},t('sidefoot.backup'))),
-      APPINFO?h('div',{class:'r'},h('span',{},'v'+APPINFO.version),APPINFO.portable?h('span',{class:'vtag',title:t('app.portableTitle')},t('app.portable')):null):null)].flat(Infinity).filter(Boolean));
+      APPINFO&&APPINFO.version?h('div',{class:'r'},h('span',{},'v'+APPINFO.version),APPINFO.portable?h('span',{class:'vtag',title:t('app.portableTitle')},t('app.portable')):null):null)].flat(Infinity).filter(Boolean));
 }
 
 function topbar(title,sub){
@@ -1720,9 +1710,9 @@ function homeView(){
 
   const recent=act.filter(f=>f.lastOpened).sort((a,b)=>b.lastOpened.localeCompare(a.lastOpened)).slice(0,6);
   const most=act.filter(f=>f.opens>0).sort((a,b)=>b.opens-a.opens).slice(0,6);
-  const due=act.filter(f=>f.due).sort((a,b)=>a.due.localeCompare(b.due)).slice(0,8);
+  const due=act.map(f=>({f,d:dueInfo(f)})).filter(x=>x.d&&x.d.n>=0).sort((a,b)=>a.d.d.localeCompare(b.d.d)).slice(0,8);
   const urgent=[];
-  if(due.length) urgent.push(h('section',{class:'panel'},h('h3',{class:'h2'},t('home.deadlines'),h('span',{class:'spacer'}),h('a',{class:'btn sm',href:'#/due'},t('dv.seeAll'))),due.map(f=>{const d=dueInfo(f);return miniRow(f,[h('span',{class:'x '+d.k},(f.dueLabel?f.dueLabel+': ':'')+d.t),recurBtn(f)])})));
+  if(due.length) urgent.push(h('section',{class:'panel'},h('h3',{class:'h2'},t('home.deadlines'),h('span',{class:'spacer'}),h('a',{class:'btn sm',href:'#/due'},t('dv.seeAll'))),due.map(({f,d})=>miniRow(f,[f.recur?h('span',{class:'x',title:t('dv.recurringTitle')},'↻'):null,h('span',{class:'x '+d.k},(f.dueLabel?f.dueLabel+': ':'')+d.t)]))));
   if(bad.length) urgent.push(h('section',{class:'panel'},h('h3',{class:'h2'},t('home.needsAttention'),h('span',{class:'spacer'}),h('button',{class:'btn sm',onClick:relinkDialog},t('relink.open'))),bad.slice(0,8).map(f=>miniRow(f,h('button',{class:'btn sm',onClick:e=>{e.stopPropagation();fileDialog(f)}},t('home.fixPath'))))));
   if(urgent.length) out.push(h('div',{class:'cols',style:{marginBottom:'28px'}},urgent));
   out.push(...homeGrid(act));
@@ -1771,28 +1761,25 @@ const dueStep=(view,ref,n)=>view==='day'?addDays(ref,n):view==='week'?addDays(re
 function dueView(){
   const view=DUE_VIEWS.includes(S.settings.dueView)?S.settings.dueView:'week',today=new Date();today.setHours(0,0,0,0);
   const ref=UI.dueRef||today,p=duePeriod(view,ref),act=S.files.filter(f=>f.status!=='arkiv'&&f.due),L=dateLocale();
-  const items=act.flatMap(f=>occurrences(f,p.from,p.to,today)).sort((a,b)=>a.date.localeCompare(b.date)||a.f.title.localeCompare(b.f.title,'da'));
-  // Overskredne frister fra før perioden vises øverst, når perioden indeholder i dag
-  const late=p.from<=today&&today<=p.to?act.filter(f=>f.due<ymd(p.from)).sort((a,b)=>a.due.localeCompare(b.due)):[];
+  const items=act.flatMap(f=>occurrences(f,p.from,p.to)).sort((a,b)=>a.date.localeCompare(b.date)||a.f.title.localeCompare(b.f.title,'da'));
   const group=d=>view==='day'||view==='week'?d.toLocaleDateString(L,{weekday:'long',day:'numeric',month:'long'}):view==='month'?t('dv.weekN',isoWeek(d)):d.toLocaleDateString(L,{month:'long',year:'numeric'});
-  const row=(f,date,actual,late)=>{
-    const di=actual?dueInfo(f):null,inHead=!late&&(view==='day'||view==='week');
-    const txt=[f.dueLabel,inHead?null:pd(date).toLocaleDateString(L,{weekday:'short',day:'numeric',month:'short'}),di&&di.n<=1?di.t:null].filter(Boolean).join(' · ');
-    return miniRow(f,[actual?null:h('span',{class:'x',title:t('dv.upcomingTitle')},'↻'),h('span',{class:'x '+(di?di.k:'')},txt),actual?recurBtn(f):null]);
+  const row=(f,date)=>{
+    const di=dateInfo(date),inHead=view==='day'||view==='week';
+    const txt=[f.dueLabel,inHead?null:pd(date).toLocaleDateString(L,{weekday:'short',day:'numeric',month:'short'}),di.n>=0&&di.n<=1?di.t:null].filter(Boolean).join(' · ');
+    return miniRow(f,[f.recur?h('span',{class:'x',title:t('dv.recurringTitle')},'↻'):null,h('span',{class:'x '+(di.n<0?'past':di.n<=1?'warn':'')},txt)]);
   };
   const go=d=>{UI.dueRef=d;render()};
   const head=h('div',{class:'gridhead'},
     h('div',{class:'seg'},DUE_VIEWS.map(v=>h('button',{class:v===view?'on':'',onClick:()=>{S.settings.dueView=v;save();render()}},t('dv.view.'+v)))),
-    h('button',{class:'btn',title:t('dv.prev'),disabled:p.from<=today,onClick:()=>go(dueStep(view,ref,-1))},'◀'),
+    h('button',{class:'btn',title:t('dv.prev'),onClick:()=>go(dueStep(view,ref,-1))},'◀'),
     h('button',{class:'btn',onClick:()=>go(today)},t('dv.today')),
     h('button',{class:'btn',title:t('dv.next'),onClick:()=>go(dueStep(view,ref,1))},'▶'),
     h('h2',{class:'h2',style:{margin:'0 0 0 6px'}},p.title,h('span',{class:'ct'},items.length)),
     h('span',{class:'spacer'}),
     h('button',{class:'btn',title:t('dv.exportTitle'),onClick:exportIcs},t('dv.export')));
   const secs=[];
-  if(late.length) secs.push(h('section',{class:'panel'},h('h3',{class:'h2'},t('dv.overdue'),h('span',{class:'ct'},late.length)),late.map(f=>row(f,f.due,true,true))));
   const groups=new Map();items.forEach(o=>{const k=group(pd(o.date));if(!groups.has(k)) groups.set(k,[]);groups.get(k).push(o)});
-  groups.forEach((list,k)=>secs.push(h('section',{class:'panel'},h('h3',{class:'h2'},k,h('span',{class:'ct'},list.length)),list.map(o=>row(o.f,o.date,o.actual)))));
+  groups.forEach((list,k)=>secs.push(h('section',{class:'panel'},h('h3',{class:'h2'},k,h('span',{class:'ct'},list.length)),list.map(o=>row(o.f,o.date)))));
   if(!secs.length) secs.push(h('div',{class:'hint'},act.length?t('dv.nonePeriod'):t('dv.noneAtAll')));
   return[topbar(t('nav.deadlines')),head,h('div',{style:{display:'grid',gap:'14px',maxWidth:'900px'}},secs)];
 }
@@ -1926,7 +1913,7 @@ function fileCard(f){
       sm?null:h('button',{class:'ib',title:t('card.moreOptions'),onClick:e=>fileMenu(e.currentTarget,f)},'⋯')),
     h('div',{class:'path mono',title:f.path},midEllipsis(f.path,70)),
     f.desc?h('p',{class:'desc'},f.desc):null,
-    di?h('div',{class:'due '+di.k},'⏰ '+(f.dueLabel||t('deadline'))+' '+fmtDate(f.due+'T00:00:00')+', '+di.t,recurBtn(f)):null,
+    di?h('div',{class:'due '+di.k},(f.recur?'↻ ':'⏰ ')+(f.dueLabel||t('deadline'))+' '+fmtDate(di.d+'T00:00:00')+', '+di.t):null,
     f.tags&&f.tags.length?h('div',{class:'tags'},f.tags.map(tagChip)):null,
     h('div',{class:'foot'},h('span',{class:'led '+st.k,title:st.t}),h('span',{class:'meta'},metaText(f)),sm?null:h('button',{class:'btn sm pri',onClick:()=>openFile(f)},fileType(f.path)==='folder'?t('card.openFolder'):t('card.open'))));
 }
@@ -2409,7 +2396,7 @@ function hubView(c){
   UI.cat=c.id;
   const files=S.files.filter(f=>f.category===c.id&&f.status!=='arkiv');
   const pins=files.filter(f=>f.pinned),bad=files.filter(f=>H[f.path]&&H[f.path].exists===false).length;
-  const dues=files.filter(f=>f.due).sort((a,b)=>a.due.localeCompare(b.due)).slice(0,6);
+  const dues=files.map(f=>({f,d:dueInfo(f)})).filter(x=>x.d&&x.d.n>=0).sort((a,b)=>a.d.d.localeCompare(b.d.d)).slice(0,6);
   const last=files.filter(f=>f.lastOpened).sort((a,b)=>b.lastOpened.localeCompare(a.lastOpened))[0];
   const head=h('section',{class:'hubhead',style:{'--c':c.color}},
     h('p',{class:'muted',style:{margin:0,maxWidth:'80ch'}},c.description||t('hub.addDescriptionPrompt')),
@@ -2424,7 +2411,7 @@ function hubView(c){
   const notes=h('textarea',{class:'notes',placeholder:t('hub.notesPlaceholder'),onInput:e=>{c.notes=e.target.value;save()}},c.notes||'');
   const left=h('section',{class:'panel',style:{'--c':c.color}},h('h3',{class:'h2'},t('hub.shortcuts')),
     pins.length?h('div',{class:'launch'},pins.slice(0,14).map(f=>h('button',{title:f.path,onClick:()=>openFile(f)},typeBadge(f),h('span',{},f.title)))):h('div',{class:'hint'},t('hub.pinHint')),
-    dues.length?h('div',{class:'duechips'},dues.map(f=>{const d=dueInfo(f);return h('span',{class:'chip',onClick:()=>openFile(f)},'⏰ '+(f.dueLabel||f.title)+' – '+d.t)})):null);
+    dues.length?h('div',{class:'duechips'},dues.map(({f,d})=>h('span',{class:'chip',onClick:()=>openFile(f)},(f.recur?'↻ ':'⏰ ')+(f.dueLabel||f.title)+' – '+d.t))):null);
   const right=h('section',{class:'panel'},h('h3',{class:'h2'},t('hub.notes')),notes);
   return[topbar(c.icon+' '+c.name,t('lib.hub')),head,h('div',{class:'hubgrid'},left,right),...libraryBlock({lock:true})];
 }
@@ -2445,7 +2432,7 @@ function fileDialog(f,preset={}){
   const dueDay=()=>(due.value?pd(due.value):new Date()).getDate();
   const PRESETS={daily:()=>({unit:'day',every:1}),weekdays:()=>({unit:'week',every:1,days:[1,2,3,4,5]}),weekly:()=>({unit:'week',every:1}),biweekly:()=>({unit:'week',every:2}),
     monthly:()=>({unit:'month',every:1,of:'date',pos:dueDay()}),quarterly:()=>({unit:'month',every:3,of:'date',pos:dueDay()}),yearly:()=>({unit:'year',every:1,of:'date',pos:dueDay()})};
-  const recurKey=r=>JSON.stringify([r.unit,r.every,r.days||[],r.of==null?'':r.of,r.pos||0,r.shift||'',r.from||'',r.until||'']);
+  const recurKey=r=>JSON.stringify([r.unit,r.every,r.days||[],r.of==null?'':r.of,r.pos||0,r.shift||'',r.until||'']);
   const presetOf=r=>!r?'':Object.keys(PRESETS).find(k=>recurKey(PRESETS[k]())===recurKey(r))||'custom';
   const wdName=(i,len)=>new Date(2024,0,i||7).toLocaleDateString(dateLocale(),{weekday:len});
   const recurSel=h('select',{},['',...Object.keys(PRESETS),'custom'].map(k=>h('option',{value:k,selected:presetOf(R)===k},t('recur.'+(k||'none')))));
@@ -2456,32 +2443,31 @@ function fileDialog(f,preset={}){
   const rOf=h('select',{},[['date',t('recur.of.date')],['workday',t('recur.of.workday')],...[1,2,3,4,5,6,0].map(i=>[String(i),wdName(i,'long')])].map(([v,l])=>h('option',{value:v,selected:String(c.of==null?'date':c.of)===v},l)));
   const rEnd=h('select',{},h('option',{value:'1',selected:!(c.pos<0)},t('recur.fromStart')),h('option',{value:'-1',selected:c.pos<0},t('recur.fromEnd')));
   const rShift=h('select',{},['','before','after'].map(v=>h('option',{value:v,selected:(c.shift||'')===v},t('recur.shift.'+(v||'none')))));
-  const rFrom=h('select',{},['schedule','done'].map(v=>h('option',{value:v,selected:(c.from||'schedule')===v},t('recur.from.'+v))));
   const rUntil=h('input',{type:'date',value:c.until||''});
   const readRecur=()=>{
     const k=recurSel.value;if(!k) return '';if(k!=='custom') return PRESETS[k]();
     const u=rUnit.value,r={unit:u,every:Math.max(1,+rEvery.value|0)};
     if(u==='week'){const ds=rCbs.filter(x=>x.checked).map(x=>+x.value);if(ds.length) r.days=ds}
     if(u==='month'||u==='year'){r.of=/^\d$/.test(rOf.value)?+rOf.value:rOf.value;r.pos=Math.max(1,+rPos.value|0)*(+rEnd.value)}
-    if(rShift.value) r.shift=rShift.value;if(rFrom.value==='done') r.from='done';if(rUntil.value) r.until=rUntil.value;
+    if(rShift.value) r.shift=rShift.value;if(rUntil.value) r.until=rUntil.value;
     return r;
   };
   const rWeekRow=h('div',{class:'fld'},h('span',{},t('recur.onDays')),h('div',{class:'inl',style:{flexWrap:'wrap',gap:'14px'}},rCbs.map((cb,i)=>h('label',{class:'chk',style:{marginBottom:0}},cb,wdName([1,2,3,4,5,6,0][i],'short')))));
   const rMonthRow=fld(t('recur.inMonth'),h('div',{class:'inl'},rPos,rOf,rEnd),t('recur.monthHint'));
   const recurBox=h('div',{},
-    h('div',{class:'two'},fld(t('recur.every'),h('div',{class:'inl'},rEvery,rUnit)),fld(t('recur.from'),rFrom)),
+    h('div',{class:'two'},fld(t('recur.every'),h('div',{class:'inl'},rEvery,rUnit)),fld(t('recur.until'),rUntil)),
     rWeekRow,rMonthRow,
-    h('div',{class:'two'},fld(t('recur.shift'),rShift),fld(t('recur.until'),rUntil)));
+    fld(t('recur.shift'),rShift));
   const recurPreview=h('div',{class:'hint',style:{padding:'0 0 10px'}});
   const updateRecur=()=>{
     recurBox.style.display=recurSel.value==='custom'?'':'none';
     rWeekRow.style.display=rUnit.value==='week'?'':'none';
     rMonthRow.style.display=rUnit.value==='month'||rUnit.value==='year'?'':'none';
     let txt='';
-    if(recurSel.value){const o=due.value?nextOcc(due.value,readRecur()):firstOcc(readRecur());txt=!o?t('recur.previewNone'):due.value?t('recur.preview',fmtDate(o.due+'T00:00:00')):t('recur.previewFirst',fmtDate(o.due+'T00:00:00'))}
+    if(recurSel.value){const r=readRecur(),d=due.value?nextDate({due:due.value,recur:r}):(firstOcc(r)||{}).due;txt=!d?t('recur.previewNone'):due.value?t('recur.preview',fmtDate(d+'T00:00:00')):t('recur.previewFirst',fmtDate(d+'T00:00:00'))}
     recurPreview.textContent=txt;
   };
-  [recurSel,rEvery,rUnit,rPos,rOf,rEnd,rShift,rFrom,rUntil,due,...rCbs].forEach(x=>{x.addEventListener('change',updateRecur);x.addEventListener('input',updateRecur)});updateRecur();
+  [recurSel,rEvery,rUnit,rPos,rOf,rEnd,rShift,rUntil,due,...rCbs].forEach(x=>{x.addEventListener('change',updateRecur);x.addEventListener('input',updateRecur)});updateRecur();
   const stat=h('select',{},h('option',{value:'aktiv',selected:m.status!=='arkiv'},t('fdlg.active')),h('option',{value:'arkiv',selected:m.status==='arkiv'},t('fdlg.archive')));
   const pin=h('input',{type:'checkbox',checked:!!m.pinned});
   const doSave=()=>{
@@ -2489,8 +2475,7 @@ function fileDialog(f,preset={}){
     if(S.files.some(x=>x!==f&&x.path.toLowerCase()===p.toLowerCase())&&!confirm(t('fdlg.pathExistsConfirm'))) return;
     const recurVal=readRecur();
     let dueVal=due.value;
-    if(recurVal&&!dueVal){const o=firstOcc(recurVal);if(!o){toast(t('recur.previewNone'),'bad');return}dueVal=o.due;if(o.anchor!==o.due) recurVal.anchor=o.anchor}
-    if(recurVal&&R&&R.anchor&&f&&due.value===f.due&&recurKey(recurVal)===recurKey(R)) recurVal.anchor=R.anchor;
+    if(recurVal&&!dueVal){const o=firstOcc(recurVal);if(!o){toast(t('recur.previewNone'),'bad');return}dueVal=o.due}
     Object.assign(m,{title:title.value.trim()||titleFromPath(p),path:p,category:catSel.value,tags:tags.get(),desc:desc.value.trim(),due:dueVal,dueLabel:dueL.value.trim(),recur:recurVal,status:stat.value,pinned:pin.checked});
     if(isNew) S.files.push(m);else Object.assign(f,m);
     save();d.close();render();checkHealth([p]);
@@ -2788,7 +2773,7 @@ addEventListener('drop',e=>{e.preventDefault();dragDepth=0;document.body.classLi
 const MANUAL_HTML_DA=`
 <h2 id="m-start">Kom i gang</h2>
 <p>File Command Center samler adgangen til alle dine filer (dokumenter, mapper, links, hvad som helst) ét sted, uanset hvor de ligger. Dashboardet gemmer kun <b>stien</b> til filerne. Dine filer flyttes eller kopieres ikke.</p>
-<p class="muted sm">Manualen er sidst opdateret 23. september 2026. Knappen "Udskriv eller gem som PDF" øverst til højre giver en udskrift uden sidebaren.</p>
+<p class="muted sm">Manualen er sidst opdateret 2. oktober 2026. Knappen "Udskriv eller gem som PDF" øverst til højre giver en udskrift uden sidebaren.</p>
 <h3>Start og stop</h3>
 <p>Start appen fra Start-menuen (installeret udgave) eller ved at dobbeltklikke <code>FileCommandCenter.exe</code> (portabel udgave). Luk vinduet for at stoppe – dine ændringer er allerede gemt løbende.</p>
 <h3>Opdatering</h3>
@@ -2815,7 +2800,7 @@ const MANUAL_HTML_DA=`
 <li><b>Tilføj filerne</b> med <b>Tilføj → Vælg filer…</b> (eller Scan mapper…). Vælg hubben og skriv evt. fælles tags i dialogen.</li>
 <li><b>Finpuds med markér:</b> tryk på ☑ Markér, markér de filer, der hører sammen, og brug <b>Tilføj tag…</b>.</li>
 <li><b>Fastgør</b> de filer, du bruger til daglig, med ☆. De bliver til genveje øverst på hubben.</li>
-<li><b>Sæt frister</b> på filer til faste opgaver (Redigér…), og vælg en gentagelse, hvis filen skal bruges igen. Du behøver ikke sætte en dato; uden dato beregnes første gang ud fra gentagelsen. Tryk ✓ ved fristen, når du er færdig med filen denne gang.</li>
+<li><b>Sæt frister</b> på filer, du bruger fast (Redigér…), og vælg en gentagelse, hvis filen skal bruges igen. Du behøver ikke sætte en dato; uden dato starter gentagelsen i dag. Næste dato vises af sig selv, der skal ikke trykkes på noget.</li>
 <li><b>Hverdag:</b> tryk <kbd>Ctrl</kbd>+<kbd>K</kbd>, skriv et par bogstaver, og tryk Enter. Eller åbn filen fra Overblik eller hubben.</li>
 <li><b>Ryd op:</b> tryk på "Tjek filer", ret de røde stier (eller brug "Genfind…", hvis en mappe er flyttet), og arkivér det, du ikke bruger mere.</li>
 </ol>
@@ -2825,12 +2810,12 @@ const MANUAL_HTML_DA=`
 <ul>
 <li><b>Statuslinjen</b> øverst fortæller, om alle filer kan findes. Under den er der ét felt pr. aktiv fil. Farven viser status (se afsnittet <a href="#/help" onclick="return false">Status på filerne</a>), og den tynde streg under feltet har hubbens farve. Klik på et felt for at redigere filen, fx for at rette en sti.</li>
 <li><b>Hubs</b> vises som store felter med antal filer, hvor mange der mangler, og hubbens mest brugte tags. Klik på et for at gå til hubben.</li>
-<li><b>Frister</b> og <b>Kræver opmærksomhed</b> vises kun, når der er noget i dem. Ved en gentagen frist står ✓, som sætter den til næste dato, og "Alle frister" åbner siden Frister. "Kræver opmærksomhed" viser filer, som ikke kan findes, og "Genfind…" hjælper med at finde dem igen.</li>
+<li><b>Frister</b> og <b>Kræver opmærksomhed</b> vises kun, når der er noget i dem. Gentagne frister er mærket ↻ og viser altid næste dato. Frister, der er passeret, forsvinder fra listen efter dagen. "Alle frister" åbner siden Frister. "Kræver opmærksomhed" viser filer, som ikke kan findes, og "Genfind…" hjælper med at finde dem igen.</li>
 <li><b>Alle filer</b> vises som kort. Favoritter ligger først, derefter er kortene grupperet efter hub i samme rækkefølge som i sidebaren. Farven på kortets øverste kant viser hubben. Knapperne over kortene filtrerer på én hub, og rullelisten vælger sorteringen inden for hver gruppe. "Filtre og tags" fører til det fulde bibliotek. Et klik på et tag på et kort åbner biblioteket med det tag valgt.</li>
 <li><b>Senest åbnet</b> og <b>Mest brugte</b> ligger nederst og bygger på de filer, du åbner via dashboardet.</li>
 </ul>
 <h3>Sidebaren</h3>
-<p>Overblik, Alle filer, Favoritter, Frister, Arkiv, Manual, og derunder dine hubs. Tallet ved Frister er antallet af frister, der er overskredet eller skal klares i dag. Tallet ved hver hub er antallet af aktive filer. Tryk på + ved overskriften for at oprette en ny hub. Hold musen over en hub og tryk på ✎ for at redigere den. Nederst ser du, om appen svarer, om der er gemt, versionsnummeret (og "Portable", hvis det er den portable udgave), og du kan skifte mellem mørkt og lyst tema.</p>
+<p>Overblik, Alle filer, Favoritter, Frister, Arkiv, Manual, og derunder dine hubs. Tallet ved Frister er antallet af frister i dag. Tallet ved hver hub er antallet af aktive filer. Tryk på + ved overskriften for at oprette en ny hub. Hold musen over en hub og tryk på ✎ for at redigere den. Nederst ser du, om appen svarer, om der er gemt, versionsnummeret (og "Portable", hvis det er den portable udgave), og du kan skifte mellem mørkt og lyst tema.</p>
 
 <h2 id="m-tilfoej">Tilføj filer og mapper</h2>
 <p>Tryk på <b>Tilføj</b> øverst til højre. Du kan vælge mellem:</p>
@@ -2883,7 +2868,7 @@ const MANUAL_HTML_DA=`
 <li><b>Status</b>: Aktiv eller Arkiv.</li>
 <li><b>Tags</b> og <b>beskrivelse</b>.</li>
 <li><b>Frist</b> (dato) og en tekst om, hvad fristen er.</li>
-<li><b>Gentagelse</b>: et fast mønster eller "Tilpasset…" (se Frister nedenfor). Datoen er valgfri, når der er en gentagelse: uden dato beregnes første gang fra i dag. Dialogen viser, hvilken dato det bliver.</li>
+<li><b>Gentagelse</b>: et fast mønster eller "Tilpasset…" (se Frister nedenfor). Med en gentagelse er datoen startdatoen, og den er valgfri: uden dato starter gentagelsen i dag. Dialogen viser næste dato.</li>
 <li><b>Fastgør som favorit.</b></li>
 </ul>
 <p>"Fjern" nederst til venstre fjerner posten fra dashboardet (ikke selve filen).</p>
@@ -2894,9 +2879,9 @@ const MANUAL_HTML_DA=`
 <h3>Favoritter</h3>
 <p>Tryk på ☆ på et kort for at gøre filen til favorit (★). Favoritter ligger først på Overblik og i listerne, og de vises som genveje på hubbens side.</p>
 <h3>Frister</h3>
-<p>Under redigering kan du sætte en frist og skrive, hvad fristen er. Frister vises på Overblik, på kortet og på hubbens side. Fristen bliver gul, når der er 7 dage eller mindre, og rød, når den er overskredet.</p>
-<p>En frist kan <b>gentages</b>. Vælg et fast mønster (dagligt, hver hverdag, ugentligt, hver 2. uge, månedligt, kvartalsvis, årligt) eller "Tilpasset…", hvor du selv sætter interval, ugedage, dag i måneden (fx 2. hverdag eller sidste fredag), hvad der skal ske, hvis datoen er en fridag, og en evt. slutdato. Tryk ✓ ved fristen, når opgaven er udført - så sættes fristen til næste dato, også selvom du er flere gange bagud. Under redigering kan du se, hvilken dato ✓ vil give. Helligdage og andre fridage tilføjer du under "Backup" nederst i sidebaren → "Fridage…"; de tælles ikke som hverdage. Kom du til at trykke ✓ ved en fejl, så tryk "Fortryd" i beskeden, der vises bagefter.</p>
-<p>Siden <b>Frister</b> i sidebaren viser fristerne for en dag, uge, måned, et kvartal eller et år ad gangen. Gentagne frister vises også med deres kommende datoer (markeret ↻), så du kan se, hvad der venter. Brug ▶ til at se fremad og ◀ og "I dag" til at komme tilbage. Perioder før i dag vises ikke, for appen gemmer ikke, hvad der er udført; overskredne frister står øverst i den aktuelle periode. "Eksportér til kalender" henter en .ics-fil med alle frister, som kan importeres i Outlook og andre kalendere.</p>
+<p>Under redigering kan du sætte en frist og skrive, hvad fristen er. Frister vises på Overblik, på kortet, på hubbens side og på siden Frister, som datoer i en kalender. Fristen bliver gul, når der er 7 dage eller mindre. En frist, der er passeret, bliver stående på filen som en dato i fortiden (grå); den skal ikke afsluttes eller slettes.</p>
+<p>En frist kan <b>gentages</b>. Vælg et fast mønster (dagligt, hver hverdag, ugentligt, hver 2. uge, månedligt, kvartalsvis, årligt) eller "Tilpasset…", hvor du selv sætter interval, ugedage, dag i måneden (fx 2. hverdag eller sidste fredag), hvad der skal ske, hvis datoen er en fridag, og en evt. slutdato. Datoen på filen er så gentagelsens startdato, og der vises altid næste dato ud fra den; der skal ikke trykkes på noget, når en dato er passeret. Under redigering kan du se, hvilken dato der er den næste. Helligdage og andre fridage tilføjer du under "Backup" nederst i sidebaren → "Fridage…"; de tælles ikke som hverdage.</p>
+<p>Siden <b>Frister</b> i sidebaren viser fristerne for en dag, uge, måned, et kvartal eller et år ad gangen. Gentagne frister vises med alle deres datoer i perioden (markeret ↻). Brug ◀ og ▶ til at bladre frem og tilbage, og "I dag" til at komme tilbage til i dag. "Eksportér til kalender" henter en .ics-fil med alle frister, som kan importeres i Outlook og andre kalendere.</p>
 <h3>Filer, der er flyttet</h3>
 <p>Kan en fil ikke findes, vises den under "Kræver opmærksomhed" på Overblik. Tryk "Genfind…" for at finde de nye placeringer for alle manglende filer på én gang: enten ved at angive, at en mappe er flyttet eller omdøbt (den første del af stien udskiftes), eller ved at lade appen lede efter filnavnene i en mappe og dens undermapper. Du vælger selv, hvilke stier der opdateres. Selve filerne røres ikke.</p>
 <h3>Arkiv</h3>
@@ -2925,6 +2910,7 @@ const MANUAL_HTML_DA=`
 <table>
 <tr><th>Valg</th><th>Virkning</th></tr>
 <tr><td>Åbn</td><td>Åbner filen eller mappen.</td></tr>
+<tr><td>Forhåndsvis…</td><td>Viser filens indhold i forhåndsvisningsruden (se nedenfor). Findes kun for filtyper, der kan vises.</td></tr>
 <tr><td>Vis i mappe</td><td>Åbner Stifinder med filen markeret. For links hedder valget "Åbn i browser". Findes ikke for mapper.</td></tr>
 <tr><td>Kopiér sti</td><td>Kopierer stien til udklipsholderen.</td></tr>
 <tr><td>Redigér…</td><td>Ændr sti, navn, hub, tags, beskrivelse, frist og status.</td></tr>
@@ -2932,6 +2918,9 @@ const MANUAL_HTML_DA=`
 <tr><td>Genfind…</td><td>Vises kun, når filen ikke kan findes. Se "Filer, der er flyttet" under Organiser.</td></tr>
 <tr><td>Fjern fra dashboardet</td><td>Sletter posten (ikke selve filen). Du bliver spurgt først.</td></tr>
 </table>
+<h3>Forhåndsvisning</h3>
+<p>Tryk på "👁 Forhåndsvisning" over fillisten for at få en rude i højre side, der viser indholdet af den valgte fil uden at åbne den. Klik på en fil for at vælge den, og dobbeltklik for at åbne den. Du kan også trykke på 👁 på et kort eller vælge "Forhåndsvis…" i ⋯-menuen.</p>
+<p>Regneark (xlsx) og CSV-filer vises som en tabel med de første rækker og kolonner, uden Excels talformatering, dog med datoer og procenter. Har regnearket flere ark, vælger du arket øverst i ruden. Billeder og PDF'er vises direkte, og tekstfiler som tekst. Andre filtyper har ingen forhåndsvisning. Filer læses kun, når de er valgt, og højst 50 MB. Træk i rudens venstre kant for at gøre den bredere eller smallere, og tryk ✕ for at skjule den.</p>
 
 <h2 id="m-status">Status på filerne</h2>
 <p>Dashboardet kontrollerer filerne, når siden åbnes, hver 5. minut (mens fanen er synlig) og når du trykker på <b>Tjek filer</b>. Kontrollen viser også, hvornår filen sidst er ændret, og hvor stor den er.</p>
@@ -2949,7 +2938,7 @@ const MANUAL_HTML_DA=`
 <li><b>Hvor:</b> alt gemmes i <code>data.json</code> i <code>%LOCALAPPDATA%\FileCommandCenter\</code>. Ændringer gemmes automatisk et øjeblik efter, at du har lavet dem. Nederst i sidebaren står "Gemt". Her ligger også dine hubs og deres noter, gemte mappegenveje og indstillinger (tema, visning og sortering).</li>
 <li><b>Dagligt:</b> ved dagens første ændring lægges en kopi af den gamle <code>data.json</code> i mappen <code>backups</code> (<code>data-ÅÅÅÅMMDD.json</code>). De seneste 30 beholdes. Kopien viser altså tilstanden fra før dagens ændringer.</li>
 <li><b>Før sletning:</b> hvis en gemning vil give færre filer end før, lægges først en kopi i <code>backups</code> som <code>gemt-foer-sletning-…</code>. De seneste 20 beholdes.</li>
-<li><b>Manuelt:</b> "Backup" nederst i sidebaren har "Hent backup" (en .json-fil), "Indlæs backup…" (erstatter alt i dashboardet, og du bliver spurgt først) "Fridage…" (helligdage og andre fridage til gentagne frister) og "Nulstil brugsstatistik" (nulstiller senest åbnet og mest brugte).</li>
+<li><b>Manuelt:</b> "Backup" nederst i sidebaren har "Hent backup" (en .json-fil), "Indlæs backup…" (erstatter alt i dashboardet, og du bliver spurgt først), "Fridage…" (helligdage og andre fridage til gentagne frister) og "Nulstil brugsstatistik" (nulstiller senest åbnet og mest brugte).</li>
 <li><b>Gendan en kopi:</b> luk appen, kopiér en fil fra <code>backups</code> over <code>data.json</code>, og start igen. Eller brug "Indlæs backup…".</li>
 <li><b>Flyt til en anden pc:</b> kopiér hele mappen inklusive <code>data.json</code>. Stierne skal findes på den nye pc for at være grønne.</li>
 </ul>
@@ -2981,7 +2970,6 @@ const MANUAL_HTML_DA=`
 <tr><td>Filvælgeren siger "Mappen findes ikke eller kan ikke nås"</td><td>Tjek stavemåden, og at netværksdrevet er forbundet. Prøv at åbne stien i Stifinder.</td></tr>
 <tr><td>Et klik åbner ikke filen, men markerer den</td><td>Du er i markér-tilstand. Tryk på "Færdig" eller <kbd>Esc</kbd>.</td></tr>
 <tr><td>To knapper for samme mappe i filvælgeren</td><td>Hold musen over knappen for at se stien. Er de forskellige, er det to forskellige mapper.</td></tr>
-<tr><td>Jeg trykkede ✓ ved en fejl</td><td>Tryk "Fortryd" i beskeden, der vises bagefter (i ca. 10 sekunder). Er den væk, så ret datoen via "Redigér…".</td></tr>
 <tr><td>En gentagen frist lander på en forkert dag</td><td>Tjek gentagelsen under "Redigér…", hvor den næste dato vises. Skal helligdage springes over, så læg dem ind under "Backup" → "Fridage…", og vælg i gentagelsen, hvad der skal ske, når datoen er en fridag.</td></tr>
 <tr><td>Kalenderen i Outlook passer ikke længere</td><td>Eksporten er et øjebliksbillede og opdateres ikke af sig selv. Eksportér igen fra siden Frister, og slet evt. de gamle aftaler.</td></tr>
 </table>
@@ -2993,13 +2981,15 @@ const MANUAL_HTML_DA=`
 <li>Det er lavet til Windows og til én bruger. Appen sørger selv for kun at køre i én instans ad gangen.</li>
 <li>Appen har ingen lyttende netværksport – siden taler kun med appen via interne beskeder, aldrig via nettet. Den åbner kun stier, der er lagt ind i dashboardet, og aldrig programfiler.</li>
 <li>Ændringer i filerne uden for dashboardet (flytning, omdøbning) opdages ved næste kontrol og vises som rød status. Brug "Genfind…" til at rette stierne.</li>
-<li>Appen gemmer ikke, hvad der er udført. Derfor viser siden Frister ikke perioder før i dag, og en eksporteret kalender opdateres ikke, når du trykker ✓.</li>
+<li>Frister er datoer, ikke opgaver: appen holder ikke styr på, hvad der er gjort. En eksporteret kalender er et øjebliksbillede og opdateres ikke, når du ændrer en frist.</li>
 </ul>
 
 <h2 id="m-aendringer">Ændringer</h2>
 <p>Seneste ændringer, med de nyeste først.</p>
 <table>
 <tr><th>Dato</th><th>Ændring</th></tr>
+<tr><td>2. oktober 2026</td><td>Frister er nu datoer i en kalender: en gentagelse er en fast plan ud fra startdatoen, og næste dato vises af sig selv. ✓ og "Fortryd" er fjernet, ligesom "Regn fra den dag, jeg markerer udført". Passerede frister vises som datoer i fortiden, og siden Frister kan også vise perioder før i dag.</td></tr>
+<tr><td>1. oktober 2026</td><td>En gentagelse kræver ikke længere en dato; uden dato starter den i dag. Den portable udgave opdaterer sig selv via "Opdater nu", og versionsnummeret står nederst i sidebaren (med "Portable" i den portable udgave).</td></tr>
 <tr><td>30. september 2026</td><td>Gentagne frister med faste mønstre eller et tilpasset mønster, fridage, ✓ til næste dato og "Fortryd". Ny side Frister med visning pr. dag, uge, måned, kvartal og år. "Genfind…" til filer, der er flyttet. Eksport af frister til kalender (.ics).</td></tr>
 <tr><td>22. september 2026</td><td>Dashboardet hedder nu File Command Center og håndterer alle filtyper, ikke kun Excel og CSV: filvælgeren og Scan mapper viser som standard alt, og forhåndsvisningsruden virker nu også på billeder, PDF'er og tekstfiler. Forhåndsvisningsruden kan trækkes bredere eller smallere i venstre kant.</td></tr>
 <tr><td>21. september 2026</td><td>Kategorier og hubs er slået sammen til hubs. Alle hubs har egen side med genveje og noter. Gamle kategorier er blevet til hubs.</td></tr>
@@ -3012,7 +3002,7 @@ const MANUAL_HTML_DA=`
 const MANUAL_HTML_EN=`
 <h2 id="m-start">Getting started</h2>
 <p>File Command Center brings together access to all your files (documents, folders, links, anything at all) in one place, wherever they live. The dashboard only stores the <b>path</b> to each file. Your files are never moved or copied.</p>
-<p class="muted sm">This manual was last updated 23 September 2026. The "Print or save as PDF" button in the top right gives you a printout without the sidebar.</p>
+<p class="muted sm">This manual was last updated 2 October 2026. The "Print or save as PDF" button in the top right gives you a printout without the sidebar.</p>
 <h3>Starting and stopping</h3>
 <p>Start the app from the Start menu (installed version) or by double-clicking <code>FileCommandCenter.exe</code> (portable version). Close the window to stop – your changes are already saved as you go.</p>
 <h3>Updating</h3>
@@ -3039,7 +3029,7 @@ const MANUAL_HTML_EN=`
 <li><b>Add the files</b> with <b>Add → Pick files…</b> (or Scan folders…). Choose the hub and optionally write shared tags in the dialog.</li>
 <li><b>Fine-tune with Select:</b> press ☑ Select, select the files that belong together, and use <b>Add tag…</b>.</li>
 <li><b>Pin</b> the files you use daily with ☆. They become shortcuts at the top of the hub.</li>
-<li><b>Set deadlines</b> on files for recurring tasks (Edit…), and choose a recurrence if the file is used again. You don't need to set a date; without one, the first time is calculated from the recurrence. Press ✓ next to the deadline when you're done with the file this time.</li>
+<li><b>Set deadlines</b> on files you use regularly (Edit…), and choose a recurrence if the file is used again. You don't need to set a date; without one, the recurrence starts today. The next date is shown by itself; there is nothing to press.</li>
 <li><b>Everyday use:</b> press <kbd>Ctrl</kbd>+<kbd>K</kbd>, type a few letters, and press Enter. Or open the file from the Overview or the hub.</li>
 <li><b>Clean up:</b> press "Check files", fix the red paths (or use "Find again…" if a folder has moved), and archive what you no longer use.</li>
 </ol>
@@ -3049,12 +3039,12 @@ const MANUAL_HTML_EN=`
 <ul>
 <li><b>The status bar</b> at the top tells you whether all files can be found. Below it is one field per active file. The color shows the status (see the <a href="#/help" onclick="return false">File status</a> section), and the thin line under the field has the hub's color. Click a field to edit the file, e.g. to fix a path.</li>
 <li><b>Hubs</b> are shown as large tiles with the number of files, how many are missing, and the hub's most-used tags. Click one to go to the hub.</li>
-<li><b>Deadlines</b> and <b>Needs attention</b> only show when there's something in them. A recurring deadline has a ✓ that moves it to the next date, and "All deadlines" opens the Deadlines page. "Needs attention" shows files that cannot be found, and "Find again…" helps you locate them.</li>
+<li><b>Deadlines</b> and <b>Needs attention</b> only show when there's something in them. Recurring deadlines are marked ↻ and always show the next date. Deadlines that have passed drop off the list after the day. "All deadlines" opens the Deadlines page. "Needs attention" shows files that cannot be found, and "Find again…" helps you locate them.</li>
 <li><b>All files</b> is shown as cards. Favorites come first, then the cards are grouped by hub in the same order as the sidebar. The color on the top edge of the card shows the hub. The buttons above the cards filter to one hub, and the dropdown chooses the sort order within each group. "Filters and tags" takes you to the full library. Clicking a tag on a card opens the library with that tag selected.</li>
 <li><b>Recently opened</b> and <b>Most used</b> sit at the bottom and are built from the files you open via the dashboard.</li>
 </ul>
 <h3>The sidebar</h3>
-<p>Overview, All files, Favorites, Deadlines, Archive, Manual, and below that your hubs. The number next to Deadlines is the count of deadlines that are overdue or due today. The number next to each hub is the count of active files. Press + next to the heading to create a new hub. Hover over a hub and press ✎ to edit it. At the bottom you can see whether the app is responding, whether things are saved, the version number (and "Portable" if it is the portable version), and switch between dark and light theme.</p>
+<p>Overview, All files, Favorites, Deadlines, Archive, Manual, and below that your hubs. The number next to Deadlines is the count of deadlines today. The number next to each hub is the count of active files. Press + next to the heading to create a new hub. Hover over a hub and press ✎ to edit it. At the bottom you can see whether the app is responding, whether things are saved, the version number (and "Portable" if it is the portable version), and switch between dark and light theme.</p>
 
 <h2 id="m-tilfoej">Adding files and folders</h2>
 <p>Press <b>Add</b> in the top right. You can choose between:</p>
@@ -3107,7 +3097,7 @@ const MANUAL_HTML_EN=`
 <li><b>Status</b>: Active or Archive.</li>
 <li><b>Tags</b> and <b>description</b>.</li>
 <li><b>Deadline</b> (date) and a text saying what the deadline is.</li>
-<li><b>Recurrence</b>: a fixed pattern or "Custom…" (see Deadlines below). The date is optional when there is a recurrence: without one, the first time is calculated from today. The dialog shows which date it will be.</li>
+<li><b>Recurrence</b>: a fixed pattern or "Custom…" (see Deadlines below). With a recurrence, the date is the start date, and it is optional: without one, the recurrence starts today. The dialog shows the next date.</li>
 <li><b>Pin as favorite.</b></li>
 </ul>
 <p>"Remove" in the bottom left removes the entry from the dashboard (not the file itself).</p>
@@ -3118,9 +3108,9 @@ const MANUAL_HTML_EN=`
 <h3>Favorites</h3>
 <p>Press ☆ on a card to make the file a favorite (★). Favorites are listed first on the Overview and in the lists, and are shown as shortcuts on the hub's page.</p>
 <h3>Deadlines</h3>
-<p>While editing you can set a deadline and write what it's for. Deadlines are shown on the Overview, on the card and on the hub's page. The deadline turns yellow when there are 7 days or fewer left, and red once it's passed.</p>
-<p>A deadline can <b>recur</b>. Pick a fixed pattern (daily, every workday, weekly, every 2 weeks, monthly, quarterly, yearly) or "Custom…", where you set the interval, weekdays, day of the month (e.g. 2nd workday or last Friday), what happens if the date is a day off, and an optional end date. Press ✓ next to the deadline when the task is done - the deadline moves to the next date, even if you are several occurrences behind. While editing you can see which date ✓ will give. Add public holidays and other days off under "Backup" at the bottom of the sidebar → "Days off…"; they are not counted as workdays. If you press ✓ by mistake, press "Undo" in the message shown afterwards.</p>
-<p>The <b>Deadlines</b> page in the sidebar shows the deadlines for a day, week, month, quarter or year at a time. Recurring deadlines are also shown with their upcoming dates (marked ↻), so you can see what is coming. Use ▶ to look ahead, and ◀ and "Today" to come back. Periods before today are not shown, since the app does not keep a record of what was done; overdue deadlines are listed at the top of the current period. "Export to calendar" downloads an .ics file with all deadlines, which can be imported into Outlook and other calendars.</p>
+<p>While editing you can set a deadline and write what it's for. Deadlines are shown on the Overview, on the card, on the hub's page and on the Deadlines page, as dates in a calendar. The deadline turns yellow when there are 7 days or fewer left. A deadline that has passed stays on the file as a date in the past (grey); it does not need to be closed or deleted.</p>
+<p>A deadline can <b>recur</b>. Pick a fixed pattern (daily, every workday, weekly, every 2 weeks, monthly, quarterly, yearly) or "Custom…", where you set the interval, weekdays, day of the month (e.g. 2nd workday or last Friday), what happens if the date is a day off, and an optional end date. The date on the file is then the start date of the recurrence, and the next date is always shown from it; there is nothing to press when a date has passed. While editing you can see which date is next. Add public holidays and other days off under "Backup" at the bottom of the sidebar → "Days off…"; they are not counted as workdays.</p>
+<p>The <b>Deadlines</b> page in the sidebar shows the deadlines for a day, week, month, quarter or year at a time. Recurring deadlines are shown with all their dates in the period (marked ↻). Use ◀ and ▶ to move back and forward, and "Today" to come back to today. "Export to calendar" downloads an .ics file with all deadlines, which can be imported into Outlook and other calendars.</p>
 <h3>Files that have moved</h3>
 <p>If a file cannot be found, it is shown under "Needs attention" on the Overview. Press "Find again…" to locate the new places for all missing files at once: either by stating that a folder was moved or renamed (the first part of the path is replaced), or by letting the app search a folder and its subfolders for the file names. You choose which paths are updated. The files themselves are not touched.</p>
 <h3>Archive</h3>
@@ -3149,6 +3139,7 @@ const MANUAL_HTML_EN=`
 <table>
 <tr><th>Option</th><th>Effect</th></tr>
 <tr><td>Open</td><td>Opens the file or folder.</td></tr>
+<tr><td>Preview…</td><td>Shows the file's content in the preview pane (see below). Only available for file types that can be shown.</td></tr>
 <tr><td>Show in folder</td><td>Opens File Explorer with the file selected. For links this option is called "Open in browser". Not available for folders.</td></tr>
 <tr><td>Copy path</td><td>Copies the path to the clipboard.</td></tr>
 <tr><td>Edit…</td><td>Change path, name, hub, tags, description, deadline and status.</td></tr>
@@ -3156,6 +3147,9 @@ const MANUAL_HTML_EN=`
 <tr><td>Find again…</td><td>Only shown when the file cannot be found. See "Files that have moved" under Organizing.</td></tr>
 <tr><td>Remove from dashboard</td><td>Deletes the entry (not the file itself). You're asked to confirm first.</td></tr>
 </table>
+<h3>Preview</h3>
+<p>Press "👁 Preview" above the file list to get a pane on the right that shows the content of the selected file without opening it. Click a file to select it, and double-click to open it. You can also press 👁 on a card or choose "Preview…" in the ⋯ menu.</p>
+<p>Spreadsheets (xlsx) and CSV files are shown as a table with the first rows and columns, without Excel's number formatting, except dates and percentages. If the spreadsheet has several sheets, you pick the sheet at the top of the pane. Images and PDFs are shown directly, and text files as text. Other file types have no preview. Files are only read when selected, and at most 50 MB. Drag the pane's left edge to make it wider or narrower, and press ✕ to hide it.</p>
 
 <h2 id="m-status">File status</h2>
 <p>The dashboard checks the files when the page opens, every 5 minutes (while the tab is visible) and when you press <b>Check files</b>. The check also shows when the file was last modified, and how big it is.</p>
@@ -3173,7 +3167,7 @@ const MANUAL_HTML_EN=`
 <li><b>Where:</b> everything is saved in <code>data.json</code> in <code>%LOCALAPPDATA%\FileCommandCenter\</code>. Changes are saved automatically a moment after you make them. "Saved" is shown at the bottom of the sidebar. This is also where your hubs and their notes, saved folder shortcuts, and settings (theme, view and sort order) live.</li>
 <li><b>Daily:</b> on the day's first change, a copy of the old <code>data.json</code> is placed in the <code>backups</code> folder (<code>data-YYYYMMDD.json</code>). The last 30 are kept. The copy therefore shows the state from before that day's changes.</li>
 <li><b>Before a deletion:</b> if saving would result in fewer files than before, a copy is placed in <code>backups</code> first, as <code>gemt-foer-sletning-…</code> ("saved-before-deletion"). The last 20 are kept.</li>
-<li><b>Manually:</b> "Backup" at the bottom of the sidebar has "Get backup" (a .json file), "Load backup…" (replaces everything in the dashboard, and you're asked to confirm first) "Days off…" (public holidays and other days off for recurring deadlines) and "Reset usage statistics" (resets recently opened and most used).</li>
+<li><b>Manually:</b> "Backup" at the bottom of the sidebar has "Get backup" (a .json file), "Load backup…" (replaces everything in the dashboard, and you're asked to confirm first), "Days off…" (public holidays and other days off for recurring deadlines) and "Reset usage statistics" (resets recently opened and most used).</li>
 <li><b>Restoring a copy:</b> close the app, copy a file from <code>backups</code> over <code>data.json</code>, and start again. Or use "Load backup…".</li>
 <li><b>Moving to another PC:</b> copy the whole folder including <code>data.json</code>. The paths need to exist on the new PC to show green.</li>
 </ul>
@@ -3205,7 +3199,6 @@ const MANUAL_HTML_EN=`
 <tr><td>The file picker says "The folder does not exist or cannot be reached"</td><td>Check the spelling, and that the network drive is connected. Try opening the path in File Explorer.</td></tr>
 <tr><td>A click doesn't open the file, but selects it instead</td><td>You're in selection mode. Press "Done" or <kbd>Esc</kbd>.</td></tr>
 <tr><td>Two buttons for the same folder in the file picker</td><td>Hover over the button to see the path. If they differ, they're two different folders.</td></tr>
-<tr><td>I pressed ✓ by mistake</td><td>Press "Undo" in the message shown afterwards (for about 10 seconds). If it's gone, correct the date via "Edit…".</td></tr>
 <tr><td>A recurring deadline lands on the wrong day</td><td>Check the recurrence under "Edit…", where the next date is shown. To skip public holidays, add them under "Backup" → "Days off…", and choose in the recurrence what should happen when the date is a day off.</td></tr>
 <tr><td>The calendar in Outlook no longer matches</td><td>The export is a snapshot and does not update by itself. Export again from the Deadlines page, and delete the old appointments if needed.</td></tr>
 </table>
@@ -3217,13 +3210,15 @@ const MANUAL_HTML_EN=`
 <li>It's built for Windows and for one user. The app only allows one instance to run at a time.</li>
 <li>The app has no listening network port – the page only talks to the app through internal messages, never over the network. It only opens paths that have been added to the dashboard, and never program files.</li>
 <li>Changes to files outside the dashboard (moving, renaming) are detected on the next check and shown as a red status. Use "Find again…" to fix the paths.</li>
-<li>The app does not keep a record of what was done. That is why the Deadlines page does not show periods before today, and an exported calendar is not updated when you press ✓.</li>
+<li>Deadlines are dates, not tasks: the app does not keep track of what was done. An exported calendar is a snapshot and is not updated when you change a deadline.</li>
 </ul>
 
 <h2 id="m-aendringer">Changes</h2>
 <p>Latest changes, newest first.</p>
 <table>
 <tr><th>Date</th><th>Change</th></tr>
+<tr><td>2 October 2026</td><td>Deadlines are now dates in a calendar: a recurrence is a fixed schedule from its start date, and the next date is shown by itself. ✓ and "Undo" are gone, as is "Count from the day I mark it done". Passed deadlines are shown as dates in the past, and the Deadlines page can also show periods before today.</td></tr>
+<tr><td>1 October 2026</td><td>A recurrence no longer needs a date; without one, it starts today. The portable version updates itself via "Install now", and the version number is shown at the bottom of the sidebar (with "Portable" in the portable version).</td></tr>
 <tr><td>30 September 2026</td><td>Recurring deadlines with fixed or custom patterns, days off, ✓ to move to the next date, and "Undo". New Deadlines page with day, week, month, quarter and year views. "Find again…" for files that have moved. Export of deadlines to a calendar (.ics).</td></tr>
 <tr><td>22 September 2026</td><td>The dashboard is now called File Command Center and handles all file types, not just Excel and CSV: the file picker and Scan folders now show everything by default, and the preview pane now also works on images, PDFs and text files. The preview pane can be dragged wider or narrower at its left edge.</td></tr>
 <tr><td>21 September 2026</td><td>Categories and hubs have been merged into hubs. Every hub has its own page with shortcuts and notes. Old categories have become hubs.</td></tr>
