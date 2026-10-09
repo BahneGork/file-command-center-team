@@ -605,7 +605,8 @@ da:{
 'hub.notes':'Noter',
 'fdlg.titlePlaceholder':'Fx Månedlig indberetning',
 'fdlg.pathPlaceholder':'C:\\Rapporter\\fil.xlsx   \\\\server\\share\\fil.xlsx   https://…',
-'fdlg.dueLabelPlaceholder':'Fx Indberetning til myndighed',
+'fdlg.dueLabelPlaceholder':'Fx Månedsrapport',
+'tags.inputPlaceholder':'Skriv et tag og tryk Enter',
 'fdlg.active':'Aktiv',
 'fdlg.archive':'Arkiv',
 'fdlg.giveAPath':'Angiv en sti eller et link',
@@ -1079,7 +1080,8 @@ da:{
 'hub.notes':'Notes',
 'fdlg.titlePlaceholder':'E.g. Monthly report',
 'fdlg.pathPlaceholder':'C:\\Reports\\file.xlsx   \\\\server\\share\\file.xlsx   https://…',
-'fdlg.dueLabelPlaceholder':'E.g. Report to authority',
+'fdlg.dueLabelPlaceholder':'E.g. Monthly report',
+'tags.inputPlaceholder':'Type a tag and press Enter',
 'fdlg.active':'Active',
 'fdlg.archive':'Archive',
 'fdlg.giveAPath':'Enter a path or a link',
@@ -1587,20 +1589,20 @@ function menu(anchor,items){
 addEventListener('mousedown',e=>{if(openMenu&&!openMenu.contains(e.target)) closeMenu()});
 addEventListener('keydown',e=>{if(e.key==='Escape') closeMenu()});
 function dialog(title,body,buttons){
-  const d=h('dialog',{},h('div',{class:'dlg-h'},h('h2',{},title),h('button',{class:'x',title:'Luk',onClick:()=>d.close()},'✕')),h('div',{class:'dlg-b'},body),h('div',{class:'dlg-f'},buttons));
+  const d=h('dialog',{},h('div',{class:'dlg-h'},h('h2',{},title),h('button',{class:'x',title:t('common.close'),onClick:()=>d.close()},'✕')),h('div',{class:'dlg-b'},body),h('div',{class:'dlg-f'},buttons));
   d.addEventListener('close',()=>d.remove());document.body.append(d);d.showModal();return d;
 }
 const fld=(label,el,hint)=>h('label',{class:'fld'},h('span',{},label),el,hint?h('small',{},hint):null);
 function tagInput(initial){
   let tags=[...initial];const wrap=h('div',{class:'taginput'});
-  const inp=h('input',{list:'taglist',placeholder:'Skriv et tag og tryk Enter'});
+  const inp=h('input',{list:'taglist',placeholder:t('tags.inputPlaceholder')});
   const draw=()=>wrap.replaceChildren(...tags.map(t=>{const col=tagColor(t);return h('span',{class:'chip on'+(col?' tc':''),style:col?{'--tc':col}:null},t,h('b',{class:'x',onClick:()=>{tags=tags.filter(x=>x!==t);draw()}},'×'))}),inp);
   const add=v=>{v=v.trim().replace(/,$/,'').trim();if(!v) return;v=canonTag(v);if(!tags.some(t=>t.toLowerCase()===v.toLowerCase())) tags.push(v);inp.value='';draw();inp.focus()};
   inp.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===','){e.preventDefault();add(inp.value)}else if(e.key==='Backspace'&&!inp.value&&tags.length){tags.pop();draw();inp.focus()}});
   inp.addEventListener('change',()=>add(inp.value));
   draw();wrap.get=()=>{if(inp.value.trim()) add(inp.value);return tags};return wrap;
 }
-const catSelect=v=>h('select',{},h('option',{value:'',selected:!v},'Uden hub'),S.categories.map(c=>h('option',{value:c.id,selected:v===c.id},c.icon+' '+c.name)));
+const catSelect=v=>h('select',{},h('option',{value:'',selected:!v},t('noHub')),S.categories.map(c=>h('option',{value:c.id,selected:v===c.id},c.icon+' '+c.name)));
 
 /* ================= Routing ================= */
 function parseRoute(){const raw=location.hash.replace(/^#/,'')||'/';const [p,q]=raw.split('?');return{parts:p.split('/').filter(Boolean),params:new URLSearchParams(q||'')}}
