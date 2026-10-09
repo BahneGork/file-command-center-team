@@ -334,7 +334,7 @@ body.dragging::after{content:"Slip filerne her";position:fixed;inset:14px;z-inde
 'use strict';
 /* ================= Constants ================= */
 const CAT_COLORS=['#5eead4','#ffb02e','#7cc4ff','#f28ab2','#b7a4ff','#9be564','#ff8a5c','#e6d36f','#8fa9ff','#a3b6b5'];
-const EMOJIS=['📊','♻️','💰','📦','🧾','📈','🗂️','⚙️','🏭','🧮','📅','🔧','🌍','🧪','🚚','👥'];
+const EMOJIS=['📁','📂','🗂️','📄','📝','📚','📌','📎','📊','📈','📉','🧮','💰','🧾','💼','📅','⏰','✅','⭐','🎯','💡','🔧','⚙️','🔒','👥','🏠','🌍','✈️','🎓','🎨','📷','🎵','🛒','❤️','🧪','📦'];
 const SORT_KEYS=['recent','name','opens','modified','added','due'];
 const TYPES={excel:['X','#1d7a46','#fff'],'excel-url':['X','#1d7a46','#fff'],csv:['CSV','#3f8f6f','#fff'],pbi:['BI','#f2c811','#1a1a1a'],word:['W','#2b5eb8','#fff'],pdf:['PDF','#c8382d','#fff'],ppt:['P','#d2582b','#fff'],folder:['📁','var(--panel2)','var(--text)'],link:['🔗','var(--panel2)','var(--text)'],other:['•','var(--panel2)','var(--muted)']};
 /* ================= Language (da/en) ================= */
@@ -582,6 +582,14 @@ da:{
 'hub.lastOpened':d=>'Sidst åbnet '+d,
 'hub.editHub':'Redigér hub',
 'hub.newFileInHub':'Ny fil i hubben',
+'hub.addExisting':'Tilføj eksisterende filer…',
+'hub.addExistingTitle':n=>'Tilføj eksisterende filer til '+n,
+'hub.addExistingSearch':'Søg i titel, sti, tags eller hub…',
+'hub.addExistingMoveNote':'En fil kan kun ligge i én hub. Filer fra en anden hub flyttes hertil.',
+'hub.addExistingNone':'Alle aktive filer ligger allerede i denne hub.',
+'hub.addExistingNoMatch':'Ingen filer passer til søgningen.',
+'hub.addExistingN':n=>n===1?'Tilføj 1 fil':'Tilføj '+n+' filer',
+'hub.addExistingToast':(n,h)=>(n===1?'1 fil':n+' filer')+' tilføjet til '+h,
 'hub.notesPlaceholder':'Noter, huskeliste eller procedure for denne hub',
 'hub.shortcuts':'Genveje',
 'hub.pinHint':'Fastgør filer med ☆, så dukker de op her som knapper.',
@@ -1039,6 +1047,14 @@ da:{
 'hub.lastOpened':d=>'Last opened '+d,
 'hub.editHub':'Edit hub',
 'hub.newFileInHub':'New file in hub',
+'hub.addExisting':'Add existing files…',
+'hub.addExistingTitle':n=>'Add existing files to '+n,
+'hub.addExistingSearch':'Search title, path, tags or hub…',
+'hub.addExistingMoveNote':'A file can only be in one hub. Files from another hub are moved here.',
+'hub.addExistingNone':'All active files are already in this hub.',
+'hub.addExistingNoMatch':'No files match the search.',
+'hub.addExistingN':n=>n===1?'Add 1 file':'Add '+n+' files',
+'hub.addExistingToast':(n,h)=>(n===1?'1 file':n+' files')+' added to '+h,
 'hub.notesPlaceholder':'Notes, checklist or procedure for this hub',
 'hub.shortcuts':'Shortcuts',
 'hub.pinHint':'Pin files with ☆ and they’ll show up here as buttons.',
@@ -1271,9 +1287,8 @@ let UPDATE=null,updateProgress=null,updateInstalling=false,updateError='',APPINF
 const UI={q:'',tags:new Set(),tagMode:'and',status:'aktiv',fav:false,cat:'',problem:false,allTags:false,select:false,sel:new Set(),order:[],last:null,pv:null};
 
 function defaultState(){return{version:1,categories:[
-  {id:'oekonomi',name:'Økonomi',icon:'💰',color:'#ffb02e',hub:true,description:'',notes:''},
-  {id:'stamdata',name:'Stamdata',icon:'🗂️',color:'#7cc4ff',hub:true,description:'',notes:''},
-  {id:'diverse',name:'Diverse',icon:'📎',color:'#b7a4ff',hub:true,description:'',notes:''}],
+  {id:'hub1',name:'Hub 1',icon:'📁',color:'#ffb02e',hub:true,description:'',notes:''},
+  {id:'hub2',name:'Hub 2',icon:'📂',color:'#7cc4ff',hub:true,description:'',notes:''}],
   files:[],settings:{theme:'dark',view:'cards',sort:'recent',paneWidth:420,lang:'da'},
   team:{folder:null,displayName:'',files:[],rev:0,lastSync:null}}}
 function migrate(s){s.categories=Array.isArray(s.categories)?s.categories:[];s.categories.forEach(k=>{k.hub=true});s.files=Array.isArray(s.files)?s.files:[];
@@ -1732,11 +1747,13 @@ function homeGrid(act){
   S.categories.forEach(c=>{const n=act.filter(f=>f.category===c.id).length;if(!n) return;
     chips.push(h('button',{class:'chip'+(UI.cat===c.id?' on':''),style:{'--c':c.color},onClick:()=>{UI.cat=UI.cat===c.id?'':c.id;render()}},h('i',{class:'dot'}),c.icon+' '+c.name,h('span',{class:'ct'},n)))});
   const sort=h('select',{title:t('home.sortWithinGroup'),onChange:e=>{S.settings.sort=e.target.value;save();render()}},SORT_KEYS.map(k=>h('option',{value:k,selected:S.settings.sort===k},t('sort.'+k))));
+  UI.order=list.map(f=>f.id);
   return[
-    h('div',{class:'gridhead'},h('h2',{class:'h2',style:{margin:0}},t('nav.allFiles'),h('span',{class:'ct'},list.length)),h('span',{class:'spacer'}),previewToggle(),sort,h('a',{class:'btn sm',href:'#/all'},t('lib.filtersAndTags'))),
+    h('div',{class:'gridhead'},h('h2',{class:'h2',style:{margin:0}},t('nav.allFiles'),h('span',{class:'ct'},list.length)),h('span',{class:'spacer'}),selectToggle(),previewToggle(),sort,h('a',{class:'btn sm',href:'#/all'},t('lib.filtersAndTags'))),
     h('div',{class:'chips'},chips),
-    h('div',{class:'grid'},list.map(fileCard))
-  ];
+    h('div',{class:'grid'},list.map(fileCard)),
+    UI.select?selBar():null
+  ].filter(Boolean);
 }
 function onboarding(){
   return h('section',{class:'onboard'},h('h2',{},t('onboard.title')),
@@ -1864,7 +1881,7 @@ function libraryBlock(opt){
   const seg=h('div',{class:'seg'},[['aktiv',t('lib.active')],['arkiv',t('lib.archiveSeg')],['alle',t('lib.allSeg')]].map(([k,l])=>h('button',{class:UI.status===k?'on':'',onClick:()=>{UI.status=k;render()}},l)));
   const sort=h('select',{title:t('lib.sortTitle'),onChange:e=>{S.settings.sort=e.target.value;save();render()}},SORT_KEYS.map(k=>h('option',{value:k,selected:S.settings.sort===k},t('sort.'+k))));
   const view=h('div',{class:'seg'},[['cards',t('lib.cards')],['list',t('lib.list')]].map(([k,l])=>h('button',{class:S.settings.view===k?'on':'',onClick:()=>{S.settings.view=k;save();render()}},l)));
-  out.push(h('div',{class:'toolbar'},q,seg,h('button',{class:'chip'+(UI.fav?' on':''),onClick:()=>{UI.fav=!UI.fav;render()}},t('lib.favoritesChip')),anyBad?h('button',{class:'chip'+(UI.problem?' on':''),onClick:()=>{UI.problem=!UI.problem;render()}},t('lib.missingChip')):null,sort,view,h('button',{class:'chip'+(UI.select?' on':''),title:t('lib.markTitle'),onClick:()=>{UI.select=!UI.select;UI.sel.clear();UI.last=null;render()}},t('lib.mark')),previewToggle()));
+  out.push(h('div',{class:'toolbar'},q,seg,h('button',{class:'chip'+(UI.fav?' on':''),onClick:()=>{UI.fav=!UI.fav;render()}},t('lib.favoritesChip')),anyBad?h('button',{class:'chip'+(UI.problem?' on':''),onClick:()=>{UI.problem=!UI.problem;render()}},t('lib.missingChip')):null,sort,view,selectToggle(),previewToggle()));
 
   const catBase=S.files.filter(f=>matches(f,{skipCat:true}));
   const cchips=[h('button',{class:'chip'+(!UI.cat?' on':''),onClick:()=>{UI.cat='';render()}},t('lib.allChip'),h('span',{class:'ct'},catBase.length))];
@@ -1941,6 +1958,7 @@ function pickFile(f,e){
   UI.last=f.id;render();
 }
 function exitSelect(){UI.select=false;UI.sel.clear();UI.last=null;render()}
+const selectToggle=()=>h('button',{class:'chip'+(UI.select?' on':''),title:t('lib.markTitle'),onClick:()=>{UI.select=!UI.select;UI.sel.clear();UI.last=null;render()}},t('lib.mark'));
 function selBar(){
   const files=S.files.filter(f=>UI.sel.has(f.id)),n=files.length,order=UI.order||[];
   const hidden=files.filter(f=>!order.includes(f.id)).length;
@@ -2407,6 +2425,7 @@ function hubView(c){
       last?h('span',{},t('hub.lastOpened',relTime(last.lastOpened))):null,
       h('span',{class:'spacer',style:{flex:1}}),
       h('button',{class:'btn sm',onClick:()=>catDialog(c)},t('hub.editHub')),
+      h('button',{class:'btn sm',onClick:()=>addExistingDialog(c)},t('hub.addExisting')),
       h('button',{class:'btn sm',onClick:()=>fileDialog(null,{category:c.id})},t('hub.newFileInHub'))));
   const notes=h('textarea',{class:'notes',placeholder:t('hub.notesPlaceholder'),onInput:e=>{c.notes=e.target.value;save()}},c.notes||'');
   const left=h('section',{class:'panel',style:{'--c':c.color}},h('h3',{class:'h2'},t('hub.shortcuts')),
@@ -2414,6 +2433,34 @@ function hubView(c){
     dues.length?h('div',{class:'duechips'},dues.map(({f,d})=>h('span',{class:'chip',onClick:()=>openFile(f)},(f.recur?'↻ ':'⏰ ')+(f.dueLabel||f.title)+' – '+d.t))):null);
   const right=h('section',{class:'panel'},h('h3',{class:'h2'},t('hub.notes')),notes);
   return[topbar(c.icon+' '+c.name,t('lib.hub')),head,h('div',{class:'hubgrid'},left,right),...libraryBlock({lock:true})];
+}
+
+// Pick files already on the dashboard (active, from other hubs or without a hub) and put them in this hub
+function addExistingDialog(c){
+  const pool=S.files.filter(f=>f.category!==c.id&&f.status!=='arkiv')
+    .sort((a,b)=>(!!cat(a.category)-!!cat(b.category))||a.title.localeCompare(b.title,'da'));
+  if(!pool.length){toast(t('hub.addExistingNone'),'warn');return}
+  const picked=new Set();let d;
+  const add=h('button',{class:'btn pri'},'');
+  const upd=()=>{add.textContent=t('hub.addExistingN',picked.size);add.disabled=!picked.size};
+  const list=h('div',{class:'imp'});
+  const draw=()=>{
+    const terms=q.value.toLowerCase().split(/\s+/).filter(Boolean);
+    const shown=pool.filter(f=>{const o=catOf(f),hay=[f.title,f.path,(f.tags||[]).join(' '),o.name].join(' ').toLowerCase();return terms.every(x=>hay.includes(x))});
+    list.replaceChildren(...(shown.length?shown.map(f=>{const o=catOf(f);return h('label',{class:'imp-r'},
+      h('input',{type:'checkbox',checked:picked.has(f.id),onChange:e=>{e.target.checked?picked.add(f.id):picked.delete(f.id);upd()}}),
+      h('span',{},h('b',{},f.title),' ',h('span',{class:'catpill',style:{'--c':o.color}},o.icon+' '+o.name)),
+      h('small',{},f.path))}):[h('p',{class:'muted'},t('hub.addExistingNoMatch'))]));
+  };
+  const q=h('input',{class:'search',placeholder:t('hub.addExistingSearch'),onInput:draw});
+  add.addEventListener('click',()=>{
+    S.files.forEach(f=>{if(picked.has(f.id)) f.category=c.id});
+    save();d.close();render();toast(t('hub.addExistingToast',picked.size,c.name),'ok');
+  });
+  draw();upd();
+  d=dialog(t('hub.addExistingTitle',c.icon+' '+c.name),[q,h('p',{class:'muted sm'},t('hub.addExistingMoveNote')),list],
+    [h('span',{class:'spacer'}),h('button',{class:'btn',onClick:()=>d.close()},t('common.cancel')),add]);
+  q.focus();
 }
 
 /* ================= Dialogs ================= */
@@ -2675,7 +2722,7 @@ function catDialog(c,preset={}){
     save();d.close();if(isNew&&m.hub) location.hash='#/hub/'+m.id;else render();
   }},isNew?t('cat.create'):t('common.save')));
   d=dialog(isNew?t('cat.newHubTitle'):t('hub.editHub'),[
-    h('div',{class:'inl'},fld(t('fld.icon'),h('div',{},icon,ems)),fld(t('fld.name'),name)),
+    fld(t('fld.name'),name),fld(t('fld.icon'),h('div',{},icon,ems)),
     fld(t('fld.color'),sw),
     fld(t('fld.description'),desc,t('cat.descHint'))],btns);
   name.focus();
@@ -2779,7 +2826,7 @@ const MANUAL_HTML_DA=`
 <h3>Opdatering</h3>
 <p>Appen tjekker selv for nye versioner. Er der en, vises en bjælke øverst med "Opdater nu". I den installerede udgave henter og starter den den nye installer. I den portable udgave (mærket "Portable" nederst i sidebaren) skifter appen selv sine filer ud i mappen og genstarter; mappen skal kunne skrives i. Versionsnummeret står nederst i sidebaren.</p>
 <h3>Eksempeldata</h3>
-<p>Første gang oprettes tre eksempelhubs: Økonomi, Stamdata og Diverse. Du kan omdøbe, ændre og slette dem frit.</p>
+<p>Første gang oprettes to eksempelhubs: Hub 1 og Hub 2. Du kan omdøbe, ændre og slette dem frit.</p>
 
 <h2 id="m-begreber">Begreber</h2>
 <table>
@@ -2848,14 +2895,14 @@ const MANUAL_HTML_DA=`
 
 <h2 id="m-organiser">Organiser: hubs, tags og frister</h2>
 <h3>Hubs</h3>
-<p>Hver fil kan ligge i én <b>hub</b>, fx Økonomi eller Stamdata. En hub har sin egen side med:</p>
+<p>Hver fil kan ligge i én <b>hub</b>, fx Økonomi eller Projekter. En hub har sin egen side med:</p>
 <ul>
 <li>en beskrivelse og nøgletal (antal filer, favoritter, filer der mangler, sidst åbnet),</li>
 <li><b>Genveje</b>: hubbens favoritter som store knapper, der åbner filen med ét klik (op til 14),</li>
 <li>de nærmeste frister,</li>
 <li><b>Noter</b>: et frit tekstfelt, der gemmes automatisk,</li>
 <li>hubbens filer nederst med de samme filtre som biblioteket,</li>
-<li>knapperne <b>Redigér hub</b> (navn, farve og beskrivelse) og <b>Ny fil i hubben</b>.</li>
+<li>knapperne <b>Redigér hub</b> (navn, farve og beskrivelse), <b>Tilføj eksisterende filer…</b> (sæt kryds ved filer, der allerede er på dashboardet, og læg dem i hubben; en fil fra en anden hub flyttes, da en fil kun kan ligge i én hub) og <b>Ny fil i hubben</b>.</li>
 </ul>
 <p>Du kan vælge navn, ikon, farve og beskrivelse og flytte en hub op og ned i listen (↑ og ↓ i redigeringsdialogen). Sletter du en hub, beholdes filerne, men de mister deres hub. Filer uden hub vises kun under "Alle filer", hvor hubben står som "Uden hub". Vil du dele en hub op i mindre grupper, så brug tags.</p>
 <h3>Tags</h3>
@@ -2873,7 +2920,7 @@ const MANUAL_HTML_DA=`
 </ul>
 <p>"Fjern" nederst til venstre fjerner posten fra dashboardet (ikke selve filen).</p>
 <h3>Redigér flere filer på én gang</h3>
-<p>Tryk på <b>☑ Markér</b> i værktøjslinjen i biblioteket eller på en hub-side. Så får hver fil et afkrydsningsfelt, og et klik på kortet markerer det i stedet for at åbne filen. Hold <kbd>Shift</kbd> nede for at markere alle filer mellem to klik. Tryk på <b>Vælg alle</b> for at markere alle de filer, der lige nu vises.</p>
+<p>Tryk på <b>☑ Markér</b> i værktøjslinjen i biblioteket eller på en hub-side, eller over "Alle filer" på Overblik. Så får hver fil et afkrydsningsfelt, og et klik på kortet markerer det i stedet for at åbne filen. Hold <kbd>Shift</kbd> nede for at markere alle filer mellem to klik. Tryk på <b>Vælg alle</b> for at markere alle de filer, der lige nu vises.</p>
 <p>Nederst dukker en handlingslinje op med disse valg: <b>Tilføj tag…</b> (ét eller flere tags til alle valgte), <b>Fjern tag…</b>, <b>Hub…</b> (flyt til en anden hub), <b>Favorit</b>, <b>Arkivér</b> og <b>Fjern…</b> (fjerner posterne fra dashboardet, ikke selve filerne). Tryk på <b>Færdig</b> eller <kbd>Esc</kbd> for at forlade markér-tilstanden.</p>
 <div class="note">Tip: filtrér først, fx på et tag eller en søgning, og tryk så "Vælg alle". Så kan du tagge alle filer, der matcher, i ét hug. Markerede filer, som et filter skjuler, tælles stadig med, og linjen viser, hvor mange der er skjult.</div>
 <h3>Favoritter</h3>
@@ -3008,7 +3055,7 @@ const MANUAL_HTML_EN=`
 <h3>Updating</h3>
 <p>The app checks for new versions itself. If one is available, a banner appears at the top with "Install now". In the installed version it downloads and launches the new installer. In the portable version (marked "Portable" at the bottom of the sidebar) the app replaces its own files in its folder and restarts; the folder must be writable. The version number is shown at the bottom of the sidebar.</p>
 <h3>Sample data</h3>
-<p>The first time you run it, three sample hubs are created: Økonomi, Stamdata and Diverse. You can rename, change or delete them freely.</p>
+<p>The first time you run it, two sample hubs are created: Hub 1 and Hub 2. You can rename, change or delete them freely.</p>
 
 <h2 id="m-begreber">Concepts</h2>
 <table>
@@ -3077,14 +3124,14 @@ const MANUAL_HTML_EN=`
 
 <h2 id="m-organiser">Organizing: hubs, tags and deadlines</h2>
 <h3>Hubs</h3>
-<p>Each file can belong to one <b>hub</b>, e.g. Finance or Master data. A hub has its own page with:</p>
+<p>Each file can belong to one <b>hub</b>, e.g. Finance or Projects. A hub has its own page with:</p>
 <ul>
 <li>a description and key numbers (file count, favorites, missing files, last opened),</li>
 <li><b>Shortcuts</b>: the hub's favorites as large buttons that open the file with one click (up to 14),</li>
 <li>the nearest deadlines,</li>
 <li><b>Notes</b>: a free text field that saves automatically,</li>
 <li>the hub's files at the bottom, with the same filters as the library,</li>
-<li>the <b>Edit hub</b> (name, color and description) and <b>New file in hub</b> buttons.</li>
+<li>the <b>Edit hub</b> (name, color and description), <b>Add existing files…</b> (tick files that are already on the dashboard to put them in the hub; a file from another hub is moved, since a file can only be in one hub) and <b>New file in hub</b> buttons.</li>
 </ul>
 <p>You can choose a name, icon, color and description, and move a hub up and down the list (↑ and ↓ in the edit dialog). If you delete a hub, the files are kept but lose their hub. Files without a hub are only shown under "All files", where the hub is listed as "No hub". To split a hub into smaller groups, use tags.</p>
 <h3>Tags</h3>
@@ -3102,7 +3149,7 @@ const MANUAL_HTML_EN=`
 </ul>
 <p>"Remove" in the bottom left removes the entry from the dashboard (not the file itself).</p>
 <h3>Editing several files at once</h3>
-<p>Press <b>☑ Select</b> in the toolbar in the library or on a hub page. Each file then gets a checkbox, and clicking a card selects it instead of opening the file. Hold <kbd>Shift</kbd> to select every file between two clicks. Press <b>Select all</b> to select every file currently shown.</p>
+<p>Press <b>☑ Select</b> in the toolbar in the library or on a hub page, or above "All files" on the Overview. Each file then gets a checkbox, and clicking a card selects it instead of opening the file. Hold <kbd>Shift</kbd> to select every file between two clicks. Press <b>Select all</b> to select every file currently shown.</p>
 <p>An action bar appears at the bottom with these choices: <b>Add tag…</b> (one or more tags for all selected), <b>Remove tag…</b>, <b>Hub…</b> (move to another hub), <b>Favorite</b>, <b>Archive</b> and <b>Remove…</b> (removes the entries from the dashboard, not the files themselves). Press <b>Done</b> or <kbd>Esc</kbd> to leave selection mode.</p>
 <div class="note">Tip: filter first, e.g. by a tag or a search, then press "Select all". That lets you tag every matching file in one go. Selected files that a filter hides are still counted, and the bar shows how many are hidden.</div>
 <h3>Favorites</h3>
