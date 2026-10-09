@@ -531,11 +531,9 @@ da:{
 'bulk.removedTagsToast':ts=>'Fjernede '+ts+' fra de valgte filer',
 'bulk.removeSelectedTags':'Fjern valgte tags',
 'bulk.pickHubPlaceholder':'Vælg hub…',
-'bulk.moveToHubTitle':n=>'Flyt '+t('noun.files',n)+' til hub',
 'fld.hub':'Hub',
 'bulk.pickAHub':'Vælg en hub',
 'bulk.hubChangedToast':n=>'Hub ændret for '+t('noun.files',n),
-'bulk.move':'Flyt',
 'menu.preview':'Forhåndsvis…',
 'menu.openInBrowser':'Åbn i browser',
 'menu.showInFolder':'Vis i mappe',
@@ -585,7 +583,18 @@ da:{
 'hub.addExisting':'Tilføj eksisterende filer…',
 'hub.addExistingTitle':n=>'Tilføj eksisterende filer til '+n,
 'hub.addExistingSearch':'Søg i titel, sti, tags eller hub…',
-'hub.addExistingMoveNote':'En fil kan kun ligge i én hub. Filer fra en anden hub flyttes hertil.',
+'hub.addExistingMoveNote':'Filer uden hub får denne hub som hovedhub. Filer fra en anden hub kan vises her også eller flyttes hertil.',
+'hub.modeAlso':'Vis også her',
+'hub.modeMove':'Flyt hertil',
+'hub.alsoIn':'Også i',
+'hub.alsoInHint':'Filen vises også på disse hubs. Farven og grupperingen følger hovedhubben.',
+'hub.alsoInTitle':names=>'Også i: '+names,
+'menu.removeFromHub':name=>'Fjern fra '+name,
+'bulk.hubTitle':n=>'Hub for '+t('noun.files',n),
+'bulk.hubMove':'Flyt til (hovedhub)',
+'bulk.hubAlso':'Vis også i',
+'bulk.hubRemove':'Fjern fra',
+'bulk.apply':'Udfør',
 'hub.addExistingNone':'Alle aktive filer ligger allerede i denne hub.',
 'hub.addExistingNoMatch':'Ingen filer passer til søgningen.',
 'hub.addExistingN':n=>n===1?'Tilføj 1 fil':'Tilføj '+n+' filer',
@@ -746,7 +755,7 @@ da:{
 'scan.findAllHint':'Find alle filer i de valgte mapper.',
 'scan.includeSubfolders':'Medtag undermapper (kan tage tid på netværksdrev)',
 'cat.namePlaceholder':'Fx Økonomi',
-'cat.confirmDelete':name=>'Slette "'+name+'"?\nFilerne beholdes, men mister deres hub.',
+'cat.confirmDelete':name=>'Slette "'+name+'"?\nFilerne beholdes. Filer, der også ligger i en anden hub, får den som hovedhub; resten mister deres hub.',
 'common.delete':'Slet',
 'cat.moveUp':'Flyt op i listen',
 'cat.moveDown':'Flyt ned i listen',
@@ -996,11 +1005,9 @@ da:{
 'bulk.removedTagsToast':ts=>'Removed '+ts+' from the selected files',
 'bulk.removeSelectedTags':'Remove selected tags',
 'bulk.pickHubPlaceholder':'Pick hub…',
-'bulk.moveToHubTitle':n=>'Move '+t('noun.files',n)+' to hub',
 'fld.hub':'Hub',
 'bulk.pickAHub':'Select a hub',
 'bulk.hubChangedToast':n=>'Hub changed for '+t('noun.files',n),
-'bulk.move':'Move',
 'menu.preview':'Preview…',
 'menu.openInBrowser':'Open in browser',
 'menu.showInFolder':'Show in folder',
@@ -1050,7 +1057,18 @@ da:{
 'hub.addExisting':'Add existing files…',
 'hub.addExistingTitle':n=>'Add existing files to '+n,
 'hub.addExistingSearch':'Search title, path, tags or hub…',
-'hub.addExistingMoveNote':'A file can only be in one hub. Files from another hub are moved here.',
+'hub.addExistingMoveNote':'Files without a hub get this hub as their main hub. Files from another hub can be shown here too or moved here.',
+'hub.modeAlso':'Also show here',
+'hub.modeMove':'Move here',
+'hub.alsoIn':'Also in',
+'hub.alsoInHint':'The file is also shown on these hubs. Its colour and grouping follow the main hub.',
+'hub.alsoInTitle':names=>'Also in: '+names,
+'menu.removeFromHub':name=>'Remove from '+name,
+'bulk.hubTitle':n=>'Hub for '+t('noun.files',n),
+'bulk.hubMove':'Move to (main hub)',
+'bulk.hubAlso':'Also show in',
+'bulk.hubRemove':'Remove from',
+'bulk.apply':'Apply',
 'hub.addExistingNone':'All active files are already in this hub.',
 'hub.addExistingNoMatch':'No files match the search.',
 'hub.addExistingN':n=>n===1?'Add 1 file':'Add '+n+' files',
@@ -1211,7 +1229,7 @@ da:{
 'scan.findAllHint':'Find all files in the selected folders.',
 'scan.includeSubfolders':'Include subfolders (can take time on a network drive)',
 'cat.namePlaceholder':'E.g. Finance',
-'cat.confirmDelete':name=>'Delete "'+name+'"?\nThe files will be kept, but will lose their hub.',
+'cat.confirmDelete':name=>'Delete "'+name+'"?\nThe files will be kept. Files that are also in another hub get that as their main hub; the rest lose their hub.',
 'common.delete':'Delete',
 'cat.moveUp':'Move up in the list',
 'cat.moveDown':'Move down in the list',
@@ -1296,7 +1314,7 @@ function migrate(s){s.categories=Array.isArray(s.categories)?s.categories:[];s.c
   s.team=Object.assign({folder:null,displayName:'',files:[],rev:0,lastSync:null},s.team||{});
   s.team.files=Array.isArray(s.team.files)?s.team.files:[];
   const ids=new Set();
-  s.files.forEach(f=>{f.tags=f.tags||[];f.status=f.status||'aktiv';f.opens=f.opens||0;f.category=f.category||'';if(f.recur&&typeof f.recur==='object'&&f.recur.anchor) f.due=f.recur.anchor;f.recur=normRecur(f.recur,f.due);if(!f.id||ids.has(f.id)) f.id=uid();ids.add(f.id)});return s}
+  s.files.forEach(f=>{f.tags=f.tags||[];f.status=f.status||'aktiv';f.opens=f.opens||0;f.category=f.category||'';f.alsoIn=[...new Set(Array.isArray(f.alsoIn)?f.alsoIn:[])].filter(x=>x!==f.category&&s.categories.some(c=>c.id===x));if(f.recur&&typeof f.recur==='object'&&f.recur.anchor) f.due=f.recur.anchor;f.recur=normRecur(f.recur,f.due);if(!f.id||ids.has(f.id)) f.id=uid();ids.add(f.id)});return s}
 
 /* ================= Helpers ================= */
 function h(tag,props,...kids){
@@ -1318,6 +1336,15 @@ const isUrl=p=>/^https?:\/\//i.test(p||'');
 const cleanPath=p=>(p||'').trim().replace(/^["'“”‘’]+|["'“”‘’]+$/g,'').trim();
 const cat=id=>S.categories.find(c=>c.id===id);
 const catOf=f=>cat(f.category)||{id:'',name:t('noHub'),icon:'•',color:'var(--dim)'};
+/* A file has one main hub (f.category: its colour and grouping) and can also be shown on other hubs (f.alsoIn) */
+const inHub=(f,id)=>f.category===id||(f.alsoIn||[]).includes(id);
+function setMainHub(f,id){f.category=id;f.alsoIn=(f.alsoIn||[]).filter(x=>x!==id)}
+function addToHub(f,id){if(!f.category) f.category=id;else if(!inHub(f,id)) f.alsoIn=[...(f.alsoIn||[]),id]}
+function removeFromHub(f,id){if(f.category===id){const[next,...rest]=f.alsoIn||[];f.category=next||'';f.alsoIn=rest}else f.alsoIn=(f.alsoIn||[]).filter(x=>x!==id)}
+function hubPill(f){
+  const c=catOf(f),more=(f.alsoIn||[]).map(cat).filter(Boolean);
+  return h('span',{class:'catpill',title:more.length?t('hub.alsoInTitle',more.map(x=>x.icon+' '+x.name).join(', ')):null},c.icon+' '+c.name+(more.length?' +'+more.length:''));
+}
 function titleFromPath(p){let s=p;if(isUrl(p)){try{s=decodeURIComponent(new URL(p).pathname.split('/').filter(Boolean).pop()||p)}catch{s=p}}else s=p.replace(/[\\/]+$/,'').split(/[\\/]/).pop();return s.replace(/\.[a-z0-9]{2,5}$/i,'')}
 function midEllipsis(p,max){if(p.length<=max) return p;const a=Math.floor(max*.35),b=max-a-1;return p.slice(0,a)+'…'+p.slice(-b)}
 const fmtDate=iso=>new Date(iso).toLocaleDateString(dateLocale(),{day:'numeric',month:'short',year:'numeric'});
@@ -1590,7 +1617,7 @@ addEventListener('hashchange',()=>{if(!S) return;resetUI(parseRoute());if(pendin
 function matches(f,o={}){
   if(UI.status!=='alle'&&(f.status||'aktiv')!==UI.status) return false;
   if(UI.fav&&!f.pinned) return false;
-  if(!o.skipCat&&UI.cat&&f.category!==UI.cat) return false;
+  if(!o.skipCat&&UI.cat&&!inHub(f,UI.cat)) return false;
   if(UI.problem){const x=H[f.path];if(!(x&&x.exists===false)) return false}
   if(UI.q){const hay=[f.title,f.path,f.desc,(f.tags||[]).join(' '),catOf(f).name].join(' ').toLowerCase();for(const t of UI.q.toLowerCase().split(/\s+/).filter(Boolean)) if(!hay.includes(t)) return false}
   if(!o.skipTags&&UI.tags.size){const ft=f.tags||[],sel=[...UI.tags];
@@ -1644,7 +1671,7 @@ function renderSide(){
   const nav=(href,ico,label,n,c,edit)=>h('a',{class:'nav'+((cur===href||(href==='#/'&&cur==='#'))?' on':''),href,style:c?{'--c':c}:{}},
     h('span',{class:'ico'},ico),h('span',{class:'lbl'},label),n!=null?h('span',{class:'n'},n):null,
     edit?h('span',{class:'edit',title:t('nav.editHub'),onClick:e=>{e.preventDefault();e.stopPropagation();catDialog(edit)}},'✎'):null);
-  const cnt=id=>act.filter(f=>f.category===id).length;
+  const cnt=id=>act.filter(f=>inHub(f,id)).length;
   const hubs=S.categories;
   $('#side').replaceChildren(...[
     h('div',{class:'brand'},h('div',{class:'logo'},h('i'),h('i'),h('i'),h('i')),h('div',{},h('b',{},'File Command Center'),h('small',{},t('brand.tagline')))),
@@ -1713,7 +1740,7 @@ function homeView(){
   if(!S.files.length) out.push(onboarding());
 
   const tiles=S.categories.map(c=>{
-    const fl=act.filter(f=>f.category===c.id),cnt={};fl.forEach(f=>(f.tags||[]).forEach(tg=>cnt[tg]=(cnt[tg]||0)+1));
+    const fl=act.filter(f=>inHub(f,c.id)),cnt={};fl.forEach(f=>(f.tags||[]).forEach(tg=>cnt[tg]=(cnt[tg]||0)+1));
     const top=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).slice(0,3),nb=fl.filter(f=>H[f.path]&&H[f.path].exists===false).length;
     return h('a',{class:'tile hub',href:'#/hub/'+c.id,style:{'--c':c.color,textDecoration:'none'}},
       h('div',{class:'ti'},h('span',{class:'em'},c.icon),h('b',{},c.name)),
@@ -1741,10 +1768,10 @@ function homeView(){
 function homeGrid(act){
   if(!act.length) return [];
   const order=id=>{const i=S.categories.findIndex(c=>c.id===id);return i<0?999:i};
-  const pool=act.filter(f=>!UI.cat||f.category===UI.cat);
+  const pool=act.filter(f=>!UI.cat||inHub(f,UI.cat));
   const list=[...sortFiles(pool)].sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||order(a.category)-order(b.category));
   const chips=[h('button',{class:'chip'+(!UI.cat?' on':''),onClick:()=>{UI.cat='';render()}},t('lib.allChip'),h('span',{class:'ct'},act.length))];
-  S.categories.forEach(c=>{const n=act.filter(f=>f.category===c.id).length;if(!n) return;
+  S.categories.forEach(c=>{const n=act.filter(f=>inHub(f,c.id)).length;if(!n) return;
     chips.push(h('button',{class:'chip'+(UI.cat===c.id?' on':''),style:{'--c':c.color},onClick:()=>{UI.cat=UI.cat===c.id?'':c.id;render()}},h('i',{class:'dot'}),c.icon+' '+c.name,h('span',{class:'ct'},n)))});
   const sort=h('select',{title:t('home.sortWithinGroup'),onChange:e=>{S.settings.sort=e.target.value;save();render()}},SORT_KEYS.map(k=>h('option',{value:k,selected:S.settings.sort===k},t('sort.'+k))));
   UI.order=list.map(f=>f.id);
@@ -1885,7 +1912,7 @@ function libraryBlock(opt){
 
   const catBase=S.files.filter(f=>matches(f,{skipCat:true}));
   const cchips=[h('button',{class:'chip'+(!UI.cat?' on':''),onClick:()=>{UI.cat='';render()}},t('lib.allChip'),h('span',{class:'ct'},catBase.length))];
-  S.categories.forEach(c=>cchips.push(h('button',{class:'chip'+(UI.cat===c.id?' on':''),style:{'--c':c.color},onClick:()=>{UI.cat=c.id;render()}},h('i',{class:'dot'}),c.icon+' '+c.name,h('span',{class:'ct'},catBase.filter(f=>f.category===c.id).length))));
+  S.categories.forEach(c=>cchips.push(h('button',{class:'chip'+(UI.cat===c.id?' on':''),style:{'--c':c.color},onClick:()=>{UI.cat=c.id;render()}},h('i',{class:'dot'}),c.icon+' '+c.name,h('span',{class:'ct'},catBase.filter(f=>inHub(f,c.id)).length))));
   if(!opt.lock) out.push(h('div',{class:'chips'},h('span',{class:'lab'},t('lib.hubChipsLabel')),cchips));
 
   const counts={};facet.forEach(f=>(f.tags||[]).forEach(tg=>counts[tg]=(counts[tg]||0)+1));
@@ -1924,7 +1951,7 @@ function fileCard(f){
   return h('article',{class:'card'+(f.status==='arkiv'?' arch':'')+(sm?' selmode':'')+(on?' picked':'')+(pv&&UI.pv===f.id?' pvsel':''),'data-id':f.id,style:{'--c':c.color},onClick:sm?(e=>pickFile(f,e)):pv?(e=>selectFile(f,e)):null,onDblClick:pv?(()=>openFile(f)):null},
     h('div',{class:'card-top'},
       sm?h('span',{class:'pickbox'},on?'☑':'☐'):null,
-      h('div',{class:'card-main',title:sm?t('card.markTitle'):pv?t('card.previewTitle'):t('card.openTitle',f.path),onClick:sm||pv?null:(()=>openFile(f))},typeBadge(f),h('div',{class:'ttl'},h('b',{},f.title),h('span',{class:'catpill'},c.icon+' '+c.name))),
+      h('div',{class:'card-main',title:sm?t('card.markTitle'):pv?t('card.previewTitle'):t('card.openTitle',f.path),onClick:sm||pv?null:(()=>openFile(f))},typeBadge(f),h('div',{class:'ttl'},h('b',{},f.title),hubPill(f))),
       sm||!canPreview(f)?null:h('button',{class:'ib',title:t('card.previewBtn'),onClick:()=>showInPane(f)},'👁'),
       sm?null:h('button',{class:'ib'+(f.pinned?' on':''),title:f.pinned?t('card.favRemove'):t('card.favAdd'),onClick:()=>togglePin(f)},f.pinned?'★':'☆'),
       sm?null:h('button',{class:'ib',title:t('card.moreOptions'),onClick:e=>fileMenu(e.currentTarget,f)},'⋯')),
@@ -1941,7 +1968,7 @@ function fileRow(f){
     sm?h('span',{class:'pickbox'},on?'☑':'☐'):null,
     typeBadge(f),
     h('div',{class:'row-t',title:sm?t('card.markTitle'):pv?t('card.previewTitle'):t('card.openTitle',f.path),onClick:sm||pv?null:(()=>openFile(f))},h('b',{},f.title),h('small',{class:'mono'},midEllipsis(f.path,80))),
-    h('span',{class:'catpill'},c.icon+' '+c.name),
+    hubPill(f),
     h('div',{class:'tags'},(f.tags||[]).slice(0,4).map(tagChip)),
     h('span',{class:'muted sm'},x&&x.modified?fmtDate(x.modified):'–'),
     h('span',{class:'led '+st.k,title:st.t}),
@@ -2012,11 +2039,16 @@ function bulkRemoveTags(files){
 function bulkCategory(files){
   const same=files.every(f=>f.category===files[0].category)?files[0].category:null;let d;
   const sel=h('select',{},h('option',{value:'__',selected:same===null},t('bulk.pickHubPlaceholder')),h('option',{value:'',selected:same===''},t('noHub')),S.categories.map(c=>h('option',{value:c.id,selected:same===c.id},c.icon+' '+c.name)));
-  d=dialog(t('bulk.moveToHubTitle',files.length),[fld(t('fld.hub'),sel)],
+  let mode='move';
+  const seg=h('div',{class:'seg'});
+  const drawSeg=()=>{seg.replaceChildren(...[['move',t('bulk.hubMove')],['also',t('bulk.hubAlso')],['remove',t('bulk.hubRemove')]].map(([k,l])=>h('button',{type:'button',class:mode===k?'on':'',onClick:()=>{mode=k;drawSeg()}},l)));sel.options[1].disabled=mode!=='move'};
+  drawSeg();
+  d=dialog(t('bulk.hubTitle',files.length),[seg,fld(t('fld.hub'),sel)],
     [h('span',{class:'spacer'}),h('button',{class:'btn',onClick:()=>d.close()},t('common.cancel')),h('button',{class:'btn pri',onClick:()=>{
-      if(sel.value==='__'){toast(t('bulk.pickAHub'),'bad');return}
-      files.forEach(f=>f.category=sel.value);save();d.close();render();toast(t('bulk.hubChangedToast',files.length),'ok');
-    }},t('bulk.move'))]);
+      if(sel.value==='__'||(mode!=='move'&&!sel.value)){toast(t('bulk.pickAHub'),'bad');return}
+      files.forEach(f=>mode==='move'?setMainHub(f,sel.value):mode==='also'?addToHub(f,sel.value):removeFromHub(f,sel.value));
+      save();d.close();render();toast(t('bulk.hubChangedToast',files.length),'ok');
+    }},t('bulk.apply'))]);
 }
 addEventListener('keydown',e=>{
   if(e.key!=='Escape'||!S||!UI.select||document.querySelector('dialog[open]')) return;
@@ -2025,6 +2057,7 @@ addEventListener('keydown',e=>{
 });
 
 function fileMenu(anchor,f){
+  const r=parseRoute(),here=r.parts[0]==='hub'?cat(r.parts[1]):null;
   menu(anchor,[
     {label:t('card.open'),fn:()=>openFile(f)},
     ...(canPreview(f)?[{label:t('menu.preview'),fn:()=>showInPane(f)}]:[]),
@@ -2034,6 +2067,7 @@ function fileMenu(anchor,f){
     {label:t('common.edit'),fn:()=>fileDialog(f)},
     {label:f.pinned?t('card.favRemove'):t('card.favAdd'),fn:()=>togglePin(f)},
     {label:f.status==='arkiv'?t('menu.restoreFromArchive'):t('menu.moveToArchive'),fn:()=>{f.status=f.status==='arkiv'?'aktiv':'arkiv';save();render()}},
+    ...(here&&inHub(f,here.id)?[{label:t('menu.removeFromHub',here.icon+' '+here.name),fn:()=>{removeFromHub(f,here.id);save();render()}}]:[]),
     '-',
     {label:t('menu.removeFromDashboard'),danger:true,fn:()=>{if(confirm(t('menu.confirmRemoveFile',f.title))){S.files=S.files.filter(x=>x!==f);save();render()}}}]);
 }
@@ -2412,7 +2446,7 @@ async function fillPane(){
 /* ---------- Hub ---------- */
 function hubView(c){
   UI.cat=c.id;
-  const files=S.files.filter(f=>f.category===c.id&&f.status!=='arkiv');
+  const files=S.files.filter(f=>inHub(f,c.id)&&f.status!=='arkiv');
   const pins=files.filter(f=>f.pinned),bad=files.filter(f=>H[f.path]&&H[f.path].exists===false).length;
   const dues=files.map(f=>({f,d:dueInfo(f)})).filter(x=>x.d&&x.d.n>=0).sort((a,b)=>a.d.d.localeCompare(b.d.d)).slice(0,6);
   const last=files.filter(f=>f.lastOpened).sort((a,b)=>b.lastOpened.localeCompare(a.lastOpened))[0];
@@ -2437,10 +2471,13 @@ function hubView(c){
 
 // Pick files already on the dashboard (active, from other hubs or without a hub) and put them in this hub
 function addExistingDialog(c){
-  const pool=S.files.filter(f=>f.category!==c.id&&f.status!=='arkiv')
+  const pool=S.files.filter(f=>!inHub(f,c.id)&&f.status!=='arkiv')
     .sort((a,b)=>(!!cat(a.category)-!!cat(b.category))||a.title.localeCompare(b.title,'da'));
   if(!pool.length){toast(t('hub.addExistingNone'),'warn');return}
-  const picked=new Set();let d;
+  const picked=new Set();let d,mode='also';
+  const seg=h('div',{class:'seg'});
+  const drawSeg=()=>seg.replaceChildren(...[['also',t('hub.modeAlso')],['move',t('hub.modeMove')]].map(([k,l])=>h('button',{type:'button',class:mode===k?'on':'',onClick:()=>{mode=k;drawSeg()}},l)));
+  drawSeg();
   const add=h('button',{class:'btn pri'},'');
   const upd=()=>{add.textContent=t('hub.addExistingN',picked.size);add.disabled=!picked.size};
   const list=h('div',{class:'imp'});
@@ -2454,11 +2491,11 @@ function addExistingDialog(c){
   };
   const q=h('input',{class:'search',placeholder:t('hub.addExistingSearch'),onInput:draw});
   add.addEventListener('click',()=>{
-    S.files.forEach(f=>{if(picked.has(f.id)) f.category=c.id});
+    S.files.forEach(f=>{if(picked.has(f.id)) mode==='move'?setMainHub(f,c.id):addToHub(f,c.id)});
     save();d.close();render();toast(t('hub.addExistingToast',picked.size,c.name),'ok');
   });
   draw();upd();
-  d=dialog(t('hub.addExistingTitle',c.icon+' '+c.name),[q,h('p',{class:'muted sm'},t('hub.addExistingMoveNote')),list],
+  d=dialog(t('hub.addExistingTitle',c.icon+' '+c.name),[h('div',{class:'inl'},q,seg),h('p',{class:'muted sm'},t('hub.addExistingMoveNote')),list],
     [h('span',{class:'spacer'}),h('button',{class:'btn',onClick:()=>d.close()},t('common.cancel')),add]);
   q.focus();
 }
@@ -2473,6 +2510,9 @@ function fileDialog(f,preset={}){
   path.addEventListener('blur',()=>{path.value=cleanPath(path.value);if(!title.value&&path.value) title.value=titleFromPath(path.value)});
   const pick=kind=>browseDialog({mode:kind==='dir'?'folder':'files',multi:false,start:(path.value&&!isUrl(path.value))?(kind==='dir'?path.value:path.value.replace(/[\\/][^\\/]*$/,'')):'',onPick:ps=>{const p=ps[0];if(p){path.value=p;if(!title.value) title.value=titleFromPath(p)}}});
   const catSel=catSelect(m.category),tags=tagInput(m.tags);
+  const also=new Set(m.alsoIn||[]),alsoBox=h('div',{class:'chips',style:{margin:0}});
+  const drawAlso=()=>alsoBox.replaceChildren(...S.categories.filter(c=>c.id!==catSel.value).map(c=>h('button',{type:'button',class:'chip'+(also.has(c.id)?' on':''),style:{'--c':c.color},onClick:()=>{also.has(c.id)?also.delete(c.id):also.add(c.id);drawAlso()}},c.icon+' '+c.name)));
+  catSel.addEventListener('change',drawAlso);drawAlso();
   const desc=h('textarea',{},m.desc||''),due=h('input',{type:'date',value:m.due||''}),dueL=h('input',{value:m.dueLabel||'',placeholder:t('fdlg.dueLabelPlaceholder')});
   /* Recurrence: fixed choices + "Custom…", which shows the whole rule */
   const R=m.recur&&m.recur.unit?m.recur:null,c=R||{unit:'week',every:1};
@@ -2523,7 +2563,7 @@ function fileDialog(f,preset={}){
     const recurVal=readRecur();
     let dueVal=due.value;
     if(recurVal&&!dueVal){const o=firstOcc(recurVal);if(!o){toast(t('recur.previewNone'),'bad');return}dueVal=o.due}
-    Object.assign(m,{title:title.value.trim()||titleFromPath(p),path:p,category:catSel.value,tags:tags.get(),desc:desc.value.trim(),due:dueVal,dueLabel:dueL.value.trim(),recur:recurVal,status:stat.value,pinned:pin.checked});
+    Object.assign(m,{title:title.value.trim()||titleFromPath(p),path:p,category:catSel.value,alsoIn:catSel.value?[...also].filter(x=>x!==catSel.value&&cat(x)):[],tags:tags.get(),desc:desc.value.trim(),due:dueVal,dueLabel:dueL.value.trim(),recur:recurVal,status:stat.value,pinned:pin.checked});
     if(isNew) S.files.push(m);else Object.assign(f,m);
     save();d.close();render();checkHealth([p]);
   };
@@ -2534,6 +2574,7 @@ function fileDialog(f,preset={}){
     fld(t('fld.pathOrLink'),h('div',{class:'inl'},path,h('button',{class:'btn',type:'button',onClick:()=>pick(false)},t('fdlg.pickFile')),h('button',{class:'btn',type:'button',title:t('fdlg.folderInsteadTitle'),onClick:()=>pick('dir')},t('fdlg.folderBtn'))),t('fdlg.pathHint')),
     fld(t('fld.name'),title),
     h('div',{class:'two'},fld(t('fld.hub'),catSel),fld(t('fld.status'),stat)),
+    S.categories.length>1?h('div',{class:'fld'},h('span',{},t('hub.alsoIn')),alsoBox,h('small',{},t('hub.alsoInHint'))):null,
     fld(t('fld.tags'),tags,t('fld.tagsHint2')),
     fld(t('fld.description'),desc),
     h('div',{class:'two'},fld(t('fld.deadlineOptional'),due),fld(t('fld.whatIsDeadline'),dueL)),
@@ -2711,7 +2752,7 @@ function catDialog(c,preset={}){
   const ems=h('div',{class:'emojis'},EMOJIS.map(e=>h('button',{type:'button',onClick:()=>{icon.value=e}},e)));
   const btns=[];
   if(!isNew){
-    btns.push(h('button',{class:'btn danger',onClick:()=>{if(confirm(t('cat.confirmDelete',c.name))){S.files.forEach(f=>{if(f.category===c.id) f.category=''});S.categories=S.categories.filter(x=>x!==c);save();d.close();if(location.hash.includes(c.id)) location.hash='#/';else render()}}},t('common.delete')));
+    btns.push(h('button',{class:'btn danger',onClick:()=>{if(confirm(t('cat.confirmDelete',c.name))){S.files.forEach(f=>{if(inHub(f,c.id)) removeFromHub(f,c.id)});S.categories=S.categories.filter(x=>x!==c);save();d.close();if(location.hash.includes(c.id)) location.hash='#/';else render()}}},t('common.delete')));
     const mv=dir=>()=>{const i=S.categories.indexOf(c),j=i+dir;if(j<0||j>=S.categories.length) return;[S.categories[i],S.categories[j]]=[S.categories[j],S.categories[i]];save();render()};
     btns.push(h('button',{class:'btn',title:t('cat.moveUp'),onClick:mv(-1)},'↑'),h('button',{class:'btn',title:t('cat.moveDown'),onClick:mv(1)},'↓'));
   }
@@ -2895,14 +2936,14 @@ const MANUAL_HTML_DA=`
 
 <h2 id="m-organiser">Organiser: hubs, tags og frister</h2>
 <h3>Hubs</h3>
-<p>Hver fil kan ligge i én <b>hub</b>, fx Økonomi eller Projekter. En hub har sin egen side med:</p>
+<p>Hver fil har én <b>hovedhub</b>, fx Økonomi eller Projekter, og kan også vises på andre hubs (feltet <b>Også i</b>, når du redigerer filen). Hovedhubben bestemmer filens farve og gruppering; på kortet står den med "+2", hvis filen også ligger i to andre hubs. En hub har sin egen side med:</p>
 <ul>
 <li>en beskrivelse og nøgletal (antal filer, favoritter, filer der mangler, sidst åbnet),</li>
 <li><b>Genveje</b>: hubbens favoritter som store knapper, der åbner filen med ét klik (op til 14),</li>
 <li>de nærmeste frister,</li>
 <li><b>Noter</b>: et frit tekstfelt, der gemmes automatisk,</li>
 <li>hubbens filer nederst med de samme filtre som biblioteket,</li>
-<li>knapperne <b>Redigér hub</b> (navn, farve og beskrivelse), <b>Tilføj eksisterende filer…</b> (sæt kryds ved filer, der allerede er på dashboardet, og læg dem i hubben; en fil fra en anden hub flyttes, da en fil kun kan ligge i én hub) og <b>Ny fil i hubben</b>.</li>
+<li>knapperne <b>Redigér hub</b> (navn, farve og beskrivelse), <b>Tilføj eksisterende filer…</b> (sæt kryds ved filer, der allerede er på dashboardet; vælg <b>Vis også her</b> eller <b>Flyt hertil</b> for filer fra en anden hub) og <b>Ny fil i hubben</b>.</li>
 </ul>
 <p>Du kan vælge navn, ikon, farve og beskrivelse og flytte en hub op og ned i listen (↑ og ↓ i redigeringsdialogen). Sletter du en hub, beholdes filerne, men de mister deres hub. Filer uden hub vises kun under "Alle filer", hvor hubben står som "Uden hub". Vil du dele en hub op i mindre grupper, så brug tags.</p>
 <h3>Tags</h3>
@@ -3024,7 +3065,7 @@ const MANUAL_HTML_DA=`
 <h2 id="m-graenser">Begrænsninger og sikkerhed</h2>
 <ul>
 <li>Dashboardet gemmer kun stier og dine oplysninger om filerne. Det viser ikke filernes indhold.</li>
-<li>En fil kan kun ligge i én hub, og hubs kan ikke have underhubs. Brug tags til en mere detaljeret opdeling.</li>
+<li>Hubs kan ikke have underhubs. Brug tags til en mere detaljeret opdeling.</li>
 <li>Det er lavet til Windows og til én bruger. Appen sørger selv for kun at køre i én instans ad gangen.</li>
 <li>Appen har ingen lyttende netværksport – siden taler kun med appen via interne beskeder, aldrig via nettet. Den åbner kun stier, der er lagt ind i dashboardet, og aldrig programfiler.</li>
 <li>Ændringer i filerne uden for dashboardet (flytning, omdøbning) opdages ved næste kontrol og vises som rød status. Brug "Genfind…" til at rette stierne.</li>
@@ -3124,14 +3165,14 @@ const MANUAL_HTML_EN=`
 
 <h2 id="m-organiser">Organizing: hubs, tags and deadlines</h2>
 <h3>Hubs</h3>
-<p>Each file can belong to one <b>hub</b>, e.g. Finance or Projects. A hub has its own page with:</p>
+<p>Each file has one <b>main hub</b>, e.g. Finance or Projects, and can also be shown on other hubs (the <b>Also in</b> field when you edit the file). The main hub sets the file's colour and grouping; the card shows it with "+2" if the file is also in two other hubs. A hub has its own page with:</p>
 <ul>
 <li>a description and key numbers (file count, favorites, missing files, last opened),</li>
 <li><b>Shortcuts</b>: the hub's favorites as large buttons that open the file with one click (up to 14),</li>
 <li>the nearest deadlines,</li>
 <li><b>Notes</b>: a free text field that saves automatically,</li>
 <li>the hub's files at the bottom, with the same filters as the library,</li>
-<li>the <b>Edit hub</b> (name, color and description), <b>Add existing files…</b> (tick files that are already on the dashboard to put them in the hub; a file from another hub is moved, since a file can only be in one hub) and <b>New file in hub</b> buttons.</li>
+<li>the <b>Edit hub</b> (name, color and description), <b>Add existing files…</b> (tick files that are already on the dashboard; choose <b>Also show here</b> or <b>Move here</b> for files from another hub) and <b>New file in hub</b> buttons.</li>
 </ul>
 <p>You can choose a name, icon, color and description, and move a hub up and down the list (↑ and ↓ in the edit dialog). If you delete a hub, the files are kept but lose their hub. Files without a hub are only shown under "All files", where the hub is listed as "No hub". To split a hub into smaller groups, use tags.</p>
 <h3>Tags</h3>
@@ -3253,7 +3294,7 @@ const MANUAL_HTML_EN=`
 <h2 id="m-graenser">Limitations and security</h2>
 <ul>
 <li>The dashboard only stores paths and your information about the files. It does not show the files' content.</li>
-<li>A file can only belong to one hub, and hubs can't have sub-hubs. Use tags for finer-grained grouping.</li>
+<li>Hubs can't have sub-hubs. Use tags for finer-grained grouping.</li>
 <li>It's built for Windows and for one user. The app only allows one instance to run at a time.</li>
 <li>The app has no listening network port – the page only talks to the app through internal messages, never over the network. It only opens paths that have been added to the dashboard, and never program files.</li>
 <li>Changes to files outside the dashboard (moving, renaming) are detected on the next check and shown as a red status. Use "Find again…" to fix the paths.</li>
