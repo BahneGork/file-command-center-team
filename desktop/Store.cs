@@ -3,13 +3,13 @@ using System.Text.Json;
 
 namespace CommandCenter;
 
-// Gemmer dashboardets data i %LOCALAPPDATA%\FileCommandCenter (ét sæt pr. Windows-bruger)
+// Stores the dashboard's data in %LOCALAPPDATA%\FileCommandCenter (one set per Windows user)
 static class Store
 {
     static readonly UTF8Encoding Utf8 = new(false);
-    // Kun til test: peg data-mappen på en isoleret testmappe i stedet for den rigtige %LOCALAPPDATA%.
-    // .NET's Environment.SpecialFolder løses via Windows' Known Folder-API, ikke miljøvariablen
-    // %LOCALAPPDATA% - at sætte den variabel på procesniveau (fx via ProcessStartInfo) ændrer intet.
+    // Test only: point the data folder at an isolated test folder instead of the real %LOCALAPPDATA%.
+    // .NET's Environment.SpecialFolder is resolved through Windows' Known Folder API, not the
+    // %LOCALAPPDATA% environment variable - setting that variable for the process (e.g. via ProcessStartInfo) changes nothing.
     public static readonly string Dir = Environment.GetEnvironmentVariable("FCC_DATA_DIR") is { Length: > 0 } testDir
         ? testDir
         : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FileCommandCenter");
@@ -17,6 +17,19 @@ static class Store
     static string BackupDir => Path.Combine(Dir, "backups");
 
     public static string? Load() => File.Exists(DataFile) ? File.ReadAllText(DataFile, Utf8) : null;
+
+    // The language chosen on the page (settings.lang), or null if nothing is saved yet
+    public static string? SavedLang()
+    {
+        try
+        {
+            if (Load() is not { } json) return null;
+            using var d = JsonDocument.Parse(json);
+            return d.RootElement.TryGetProperty("settings", out var st) && st.ValueKind == JsonValueKind.Object
+                && st.TryGetProperty("lang", out var l) && l.ValueKind == JsonValueKind.String ? l.GetString() : null;
+        }
+        catch { return null; }
+    }
 
     public static void Save(string json)
     {
@@ -30,7 +43,7 @@ static class Store
                 File.Copy(DataFile, bak);
                 Prune("data-2*.json", 30);
             }
-            // Ekstra sikring: hvis der gemmes FÆRRE filer end før, gemmes først en kopi af det, der var
+            // Extra safety: if a save has FEWER files than before, a copy of what was there is saved first
             try
             {
                 if (CountFiles(File.ReadAllText(DataFile, Utf8)) > CountFiles(json))
@@ -58,7 +71,7 @@ static class Store
             f.Delete();
     }
 
-    // Kun stier, der står på dashboardet, må åbnes/læses
+    // Only paths that are on the dashboard may be opened/read
     public static bool IsRegistered(string p)
     {
         var json = Load();

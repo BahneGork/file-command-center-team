@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  MSI-installer til File Command Center.
-  UpgradeCode må ALDRIG ændres - det er det, der lader en nyere version opdatere en ældre.
-  Byg med: wix build Package.wxs -arch x64 -ext WixToolset.UI.wixext -d PublishDir=..\publish -out FileCommandCenter.msi
+  MSI installer for File Command Center.
+  UpgradeCode must NEVER change - it is what lets a newer version upgrade an older one.
+  Build with: wix build Package.wxs -arch x64 -ext WixToolset.UI.wixext -d PublishDir=..\publish -out FileCommandCenter.msi
 -->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
      xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">

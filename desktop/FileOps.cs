@@ -6,21 +6,23 @@ static class FileOps
 {
     public static readonly string[] Exts = { ".xlsx", ".xlsm", ".xlsb", ".xls", ".csv" };
     static readonly string[] ExcelExts = { ".xlsx", ".xlsm", ".xlsb", ".xls", ".xltx", ".xltm", ".csv" };
-    // Filtyper der aldrig åbnes via dashboardet (programmer/scripts)
+    // File types that are never opened from the dashboard (programs/scripts)
     static readonly string[] Blocked = { ".exe", ".bat", ".cmd", ".com", ".scr", ".ps1", ".psm1", ".vbs", ".vbe", ".js", ".jse", ".wsf", ".wsh",
         ".msi", ".msp", ".hta", ".reg", ".lnk", ".jar", ".dll", ".cpl", ".pif", ".url", ".appref-ms" };
     const int MaxPreviewBytes = 50 * 1024 * 1024;
+    static string FileMissing => L.T("Filen findes ikke. Er netværksdrevet forbundet, eller er filen flyttet?", "The file doesn't exist. Is the network drive connected, or has the file been moved?");
+    static string FolderMissing => L.T("Mappen findes ikke eller kan ikke nås", "The folder doesn't exist or can't be reached");
 
     static string Ext(string p) => Path.GetExtension(p).ToLowerInvariant();
     static readonly EnumerationOptions Visible = new() { IgnoreInaccessible = true, AttributesToSkip = FileAttributes.Hidden | FileAttributes.System };
 
-    // ------------------------------------------------------------ åbn
+    // ------------------------------------------------------------ open
     public static void Open(string p, bool reveal)
     {
         var ext = Ext(p);
         var isDir = Directory.Exists(p);
-        if (!isDir && Blocked.Contains(ext)) throw new ApiError($"Filtypen {ext} åbnes ikke fra dashboardet");
-        if (!isDir && !File.Exists(p)) throw new ApiError("Filen findes ikke. Er netværksdrevet forbundet, eller er filen flyttet?");
+        if (!isDir && Blocked.Contains(ext)) throw new ApiError(L.T($"Filtypen {ext} åbnes ikke fra dashboardet", $"{ext} files are not opened from the dashboard"));
+        if (!isDir && !File.Exists(p)) throw new ApiError(FileMissing);
 
         var psi = new ProcessStartInfo { UseShellExecute = true };
         if (reveal)
@@ -36,7 +38,7 @@ static class FileOps
         else if (ExcelExts.Contains(ext)) _ = BringExcelToFront();
     }
 
-    // Henter Excel-vinduet frem (en baggrundsproces må ellers ikke selv få vinduer forrest)
+    // Brings the Excel window forward (a background process may not otherwise bring windows to the front)
     static async Task BringExcelToFront()
     {
         bool done = false;
@@ -59,7 +61,7 @@ static class FileOps
         }
     }
 
-    // Henter en Stifinder-mappe frem, når den er åbnet (Shell.Application kræver en STA-tråd)
+    // Brings a File Explorer folder forward once it has opened (Shell.Application needs an STA thread)
     static void BringFolderToFront(string p)
     {
         var t = new Thread(() =>
@@ -93,7 +95,7 @@ static class FileOps
         t.Start();
     }
 
-    // ------------------------------------------------------------ tjek / scan / mappebrowser
+    // ------------------------------------------------------------ check / scan / folder browser
     static object Probe(string p)
     {
         try
@@ -105,7 +107,7 @@ static class FileOps
         return new { exists = false };
     }
 
-    // Tjekker parallelt med 6 sek. samlet frist, så et dødt netværksdrev ikke fryser alt
+    // Checks in parallel with a 6 s overall limit, so a dead network drive doesn't freeze everything
     public static async Task<Dictionary<string, object>> Check(IEnumerable<string> paths)
     {
         var jobs = paths.Distinct().Select(p => (p, t: Task.Run(() => Probe(p)))).ToList();
@@ -118,7 +120,7 @@ static class FileOps
 
     public static object Scan(string folder, bool recurse)
     {
-        if (!Directory.Exists(folder)) throw new ApiError("Mappen findes ikke eller kan ikke nås");
+        if (!Directory.Exists(folder)) throw new ApiError(FolderMissing);
         var opt = new EnumerationOptions { IgnoreInaccessible = true, AttributesToSkip = Visible.AttributesToSkip, RecurseSubdirectories = recurse };
         var list = new DirectoryInfo(folder).EnumerateFiles("*", opt)
             .Where(f => !f.Name.StartsWith("~$"))
@@ -127,11 +129,11 @@ static class FileOps
         return new { files = truncated ? list.Take(500).ToList() : list, truncated };
     }
 
-    // Leder efter bestemte fil- eller mappenavne under en mappe (til at genfinde flyttede filer).
-    // Stopper efter 200.000 poster eller 15 sek., så et stort netværksdrev ikke låser appen.
+    // Looks for specific file or folder names under a folder (to find moved files again).
+    // Stops after 200,000 entries or 15 s, so a large network drive doesn't lock up the app.
     public static object Find(string folder, IEnumerable<string> names)
     {
-        if (!Directory.Exists(folder)) throw new ApiError("Mappen findes ikke eller kan ikke nås");
+        if (!Directory.Exists(folder)) throw new ApiError(FolderMissing);
         var want = new HashSet<string>(names, StringComparer.OrdinalIgnoreCase);
         var matches = new Dictionary<string, List<string>>();
         var opt = new EnumerationOptions { IgnoreInaccessible = true, AttributesToSkip = Visible.AttributesToSkip, RecurseSubdirectories = true };
@@ -154,7 +156,7 @@ static class FileOps
         var up = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         var cands = new List<(string name, string path)>
         {
-            ("Skrivebord", Path.Combine(up, "Desktop")), ("Dokumenter", Path.Combine(up, "Documents")), ("Overførsler", Path.Combine(up, "Downloads")),
+            (L.T("Skrivebord", "Desktop"), Path.Combine(up, "Desktop")), (L.T("Dokumenter", "Documents"), Path.Combine(up, "Documents")), (L.T("Overførsler", "Downloads"), Path.Combine(up, "Downloads")),
         };
         foreach (var v in new[] { "OneDrive", "OneDriveCommercial", "OneDriveConsumer" })
         {
@@ -172,7 +174,7 @@ static class FileOps
     {
         if (string.IsNullOrEmpty(path))
             return new { path = "", parent = (string?)null, entries = DriveInfo.GetDrives().Select(d => (object)new { name = d.Name, path = d.Name, type = "drive" }).ToList(), places = Places() };
-        if (!Directory.Exists(path)) throw new ApiError("Mappen findes ikke eller kan ikke nås");
+        if (!Directory.Exists(path)) throw new ApiError(FolderMissing);
 
         var entries = new List<object>();
         var items = new DirectoryInfo(path).EnumerateFileSystemInfos("*", Visible)
@@ -188,15 +190,15 @@ static class FileOps
         return new { path, parent, entries };
     }
 
-    // ------------------------------------------------------------ læs (til forhåndsvisningsruden; siden afgør selv, om den kan vise indholdet)
+    // ------------------------------------------------------------ read (for the preview pane; the page decides whether it can show the content)
     public static object ReadFile(string p, int max)
     {
-        if (!File.Exists(p)) throw new ApiError("Filen findes ikke. Er netværksdrevet forbundet, eller er filen flyttet?");
-        // FileShare.ReadWrite: filen kan godt være åben i Excel
+        if (!File.Exists(p)) throw new ApiError(FileMissing);
+        // FileShare.ReadWrite: the file may well be open in Excel
         using var fs = new FileStream(p, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
         long size = fs.Length;
         long want = max > 0 ? Math.Min(max, size) : size;
-        if (want > MaxPreviewBytes) throw new ApiError("Filen er for stor til forhåndsvisning");
+        if (want > MaxPreviewBytes) throw new ApiError(L.T("Filen er for stor til forhåndsvisning", "The file is too large to preview"));
         var buf = new byte[want];
         fs.ReadExactly(buf, 0, buf.Length);
         return new { b64 = Convert.ToBase64String(buf), size };

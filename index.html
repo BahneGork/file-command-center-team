@@ -234,7 +234,7 @@ dialog::backdrop{background:rgba(2,8,10,.66)}
 .chip[disabled]{opacity:.45;cursor:default}
 .crumb:hover{background:var(--panel2);color:var(--text)}
 
-/* tag-farver */
+/* tag colours */
 .chip.tc{border-color:color-mix(in srgb,var(--tc) 50%,var(--line2));background:color-mix(in srgb,var(--tc) 13%,var(--panel));color:var(--text)}
 .chip.tc:hover{border-color:var(--tc)}
 .chip.tc.on{border-color:var(--tc);background:color-mix(in srgb,var(--tc) 28%,var(--panel));box-shadow:0 0 0 1px var(--tc)}
@@ -243,7 +243,7 @@ dialog::backdrop{background:rgba(2,8,10,.66)}
 .swrow{display:flex;gap:4px;flex-wrap:wrap;flex:1}
 .sw.sm{width:17px;height:17px;border-radius:4px;border-width:2px;padding:0}
 .sw.none{background:transparent;border:1px dashed var(--line2);color:var(--dim);font-size:11px;line-height:13px}
-/* forhåndsvisning */
+/* preview */
 .pvt{border-collapse:collapse;font:11px/1.35 var(--mono);width:100%}
 .pvt th,.pvt td{border:1px solid var(--line);padding:1px 6px;white-space:nowrap;max-width:150px;overflow:hidden;text-overflow:ellipsis;text-align:left}
 .pvt th{background:var(--panel2);color:var(--dim);font-weight:400;position:sticky;top:0}
@@ -332,12 +332,12 @@ body.dragging::after{content:"Slip filerne her";position:fixed;inset:14px;z-inde
 <datalist id="taglist"></datalist>
 <script>
 'use strict';
-/* ================= Konstanter ================= */
+/* ================= Constants ================= */
 const CAT_COLORS=['#5eead4','#ffb02e','#7cc4ff','#f28ab2','#b7a4ff','#9be564','#ff8a5c','#e6d36f','#8fa9ff','#a3b6b5'];
 const EMOJIS=['📊','♻️','💰','📦','🧾','📈','🗂️','⚙️','🏭','🧮','📅','🔧','🌍','🧪','🚚','👥'];
 const SORT_KEYS=['recent','name','opens','modified','added','due'];
 const TYPES={excel:['X','#1d7a46','#fff'],'excel-url':['X','#1d7a46','#fff'],csv:['CSV','#3f8f6f','#fff'],pbi:['BI','#f2c811','#1a1a1a'],word:['W','#2b5eb8','#fff'],pdf:['PDF','#c8382d','#fff'],ppt:['P','#d2582b','#fff'],folder:['📁','var(--panel2)','var(--text)'],link:['🔗','var(--panel2)','var(--text)'],other:['•','var(--panel2)','var(--muted)']};
-/* ================= Sprog (da/en) ================= */
+/* ================= Language (da/en) ================= */
 function lang(){if(S&&S.settings&&S.settings.lang) return S.settings.lang;return (navigator.language||'da').toLowerCase().startsWith('en')?'en':'da'}
 function t(key,...args){
   const e=(STR[lang()]||STR.da)[key];
@@ -1264,8 +1264,8 @@ da:{
 }}
 
 /* ================= State ================= */
-let S=null;                 // gemmes i data.json via appen
-const H={};                 // filstatus fra appen: sti -> {exists,size,modified,timeout}
+let S=null;                 // saved to data.json by the app
+const H={};                 // file status from the app: path -> {exists,size,modified,timeout}
 let helperOnline=true,dirty=false,saveTimer=null,savePromise=Promise.resolve(),saveMsg='';
 let UPDATE=null,updateProgress=null,updateInstalling=false,updateError='',APPINFO=null;
 const UI={q:'',tags:new Set(),tagMode:'and',status:'aktiv',fav:false,cat:'',problem:false,allTags:false,select:false,sel:new Set(),order:[],last:null,pv:null};
@@ -1283,7 +1283,7 @@ function migrate(s){s.categories=Array.isArray(s.categories)?s.categories:[];s.c
   const ids=new Set();
   s.files.forEach(f=>{f.tags=f.tags||[];f.status=f.status||'aktiv';f.opens=f.opens||0;f.category=f.category||'';if(f.recur&&typeof f.recur==='object'&&f.recur.anchor) f.due=f.recur.anchor;f.recur=normRecur(f.recur,f.due);if(!f.id||ids.has(f.id)) f.id=uid();ids.add(f.id)});return s}
 
-/* ================= Hjælpefunktioner ================= */
+/* ================= Helpers ================= */
 function h(tag,props,...kids){
   const el=document.createElement(tag);
   for(const [k,v] of Object.entries(props||{})){
@@ -1314,10 +1314,10 @@ function dateInfo(d){const n=daysUntil(d);let k='ok',tt;
   if(n<0){k='past';tt=t('due.past',n)}else if(n===0){k='warn';tt=t('due.today')}else if(n===1){k='warn';tt=t('due.tomorrow')}else{k=n<=7?'warn':'ok';tt=t('due.inDays',n)}
   return{n,k,t:tt,d}}
 const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-/* -- gentagne frister --
-   En regel: {unit:'day'|'week'|'month'|'year', every:N, days:[0-6] (uge), of:'date'|'workday'|0-6 + pos:±n (måned/år),
-   shift:'before'|'after' (flyt væk fra fridage), until:'ÅÅÅÅ-MM-DD'}.
-   Filens dato (f.due) er gentagelsens startdato; datoerne regnes altid ud fra den, så intet skal "udføres". */
+/* -- recurring deadlines --
+   A rule: {unit:'day'|'week'|'month'|'year', every:N, days:[0-6] (week), of:'date'|'workday'|0-6 + pos:±n (month/year),
+   shift:'before'|'after' (move off days off), until:'YYYY-MM-DD'}.
+   The file's date (f.due) is the start date of the recurrence; dates are always worked out from it, so nothing has to be "done". */
 const pd=s=>new Date(s+'T00:00:00');
 const addDays=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
 const holidaySet=()=>new Set(((S&&S.settings&&S.settings.holidays)||[]).map(x=>x.slice(0,10)));
@@ -1334,8 +1334,8 @@ function shiftDay(d,shift,hol){
   for(let n=0;n<31&&!isWorkday(d,hol);n++) d=addDays(d,shift==='before'?-1:1);
   return d;
 }
-/* Første forekomst efter (eller med inclusive: fra og med) "today", regnet fra startdatoen dateStr: den planlagte dato
-   må ikke ligge før startdatoen, men den flyttede dato må (fx når startdatoen selv er en fridag); null hvis reglen er slut */
+/* First occurrence after "today" (with inclusive: on or after), counted from the start date dateStr: the planned date
+   may not be before the start date, but the moved date may (e.g. when the start date is itself a day off); null if the rule has ended */
 function nextOcc(dateStr,r,today,inclusive){
   if(!today){today=new Date();today.setHours(0,0,0,0)}
   const hol=holidaySet(),d0=pd(dateStr),floor=today;
@@ -1356,8 +1356,8 @@ function danishHolidays(y){
   const e=easter(y),rel=(n,name)=>ymd(addDays(e,n))+' '+name;
   return[y+'-01-01 Nytårsdag',rel(-3,'Skærtorsdag'),rel(-2,'Langfredag'),rel(1,'2. påskedag'),rel(39,'Kristi himmelfartsdag'),rel(50,'2. pinsedag'),y+'-12-25 Juledag',y+'-12-26 2. juledag'];
 }
-/* Ældre formater ('daily' eller {kind,n}) oversættes til en regel. "Regn fra udført" og ankeret fra dengang,
-   fristen blev rykket med ✓, findes ikke længere (se migrate). */
+/* Older formats ('daily' or {kind,n}) are translated to a rule. "Count from done" and the anchor from when
+   the deadline was moved on with ✓ no longer exist (see migrate). */
 function normRecur(r,due){
   if(!r) return '';
   if(typeof r==='object'&&r.unit){const x={...r};delete x.from;delete x.anchor;return x}
@@ -1366,13 +1366,13 @@ function normRecur(r,due){
     :k==='monthly'?{unit:'month',every:1,of:'date',pos:due?pd(due).getDate():1}
     :k==='nthWorkday'?{unit:'month',every:1,of:'workday',pos:n}:k==='lastWorkday'?{unit:'month',every:1,of:'workday',pos:-1}:'';
 }
-/* Første dato fra og med i dag, når en gentagelse ikke har fået en dato: reglen regnes fra i dag */
+/* First date from today on, when a recurrence has no date: the rule is counted from today */
 function firstOcc(r,today){
   if(!today){today=new Date();today.setHours(0,0,0,0)}
   return nextOcc(ymd(today),r,today,true);
 }
-/* Datoen, der gælder nu: for en gentagelse den næste fra og med i dag (eller fra startdatoen, hvis den ligger
-   senere); ellers filens faste dato. null uden dato, eller når gentagelsen er slut. */
+/* The date that applies now: for a recurrence the next one from today on (or from the start date, if that is
+   later); otherwise the file's fixed date. null without a date, or when the recurrence has ended. */
 function nextDate(f,today){
   if(!f.due) return null;
   const r=f.recur&&f.recur.unit?f.recur:null;
@@ -1381,7 +1381,7 @@ function nextDate(f,today){
   const o=nextOcc(f.due,r,today,true);
   return o&&o.due;
 }
-/* Alle datoer for en fil i [from;to]: den faste dato, eller gentagelsens datoer fra startdatoen */
+/* All dates for a file in [from;to]: the fixed date, or the recurrence's dates from the start date */
 function occurrences(f,from,to){
   if(!f.due) return [];
   const r=f.recur&&f.recur.unit?f.recur:null,hi=ymd(to);
@@ -1394,7 +1394,7 @@ function occurrences(f,from,to){
   }
   return out;
 }
-/* RRULE for regler, som kalenderstandarden udtrykker præcist som appen; ellers null (så eksporteres enkeltdatoer) */
+/* RRULE for rules the calendar standard expresses exactly as the app does; otherwise null (single dates are exported instead) */
 function icsRule(f,first){
   const r=f.recur,d=pd(first),BY=['SU','MO','TU','WE','TH','FR','SA'],parts=[];
   if(r.shift) return null;
@@ -1445,7 +1445,7 @@ function icsText(files,today){
   L.push('END:VCALENDAR');
   return L.map(fold).join('\r\n')+'\r\n';
 }
-/* -- /gentagne frister -- */
+/* -- /recurring deadlines -- */
 function isoWeek(d){const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=t.getUTCDay()||7;t.setUTCDate(t.getUTCDate()+4-day);const y0=new Date(Date.UTC(t.getUTCFullYear(),0,1));return Math.ceil(((t-y0)/864e5+1)/7)}
 function fileType(p){
   const hx=H[p];if(hx&&hx.isDir) return 'folder';
@@ -1473,9 +1473,9 @@ const allTags=()=>{const s=new Map();S.files.forEach(f=>(f.tags||[]).forEach(t=>
 const canonTag=t=>allTags().find(x=>x.toLowerCase()===t.toLowerCase())||t;
 function updateTagList(){$('#taglist').replaceChildren(...allTags().map(t=>h('option',{value:t})))}
 
-/* ================= API + gem ================= */
-/* Kald til appen går via WebView2-beskeder. chrome.webview er ikke altid klar i samme tick som
-   siden selv begynder at køre, så vent på den i stedet for at antage den findes fra start. */
+/* ================= API + save ================= */
+/* Calls to the app go through WebView2 messages. chrome.webview is not always ready in the same tick as
+   the page starts running, so wait for it instead of assuming it exists from the start. */
 let native=null;
 const pendingCalls=new Map();let callId=0;
 async function ensureNative(){
@@ -1489,7 +1489,7 @@ async function ensureNative(){
   }
   return native;
 }
-const nativeCall=async(path,body)=>{await ensureNative();return new Promise((res,rej)=>{const id=++callId;pendingCalls.set(id,{res,rej});native.postMessage({id,path,body:body===undefined?null:body})})};
+const nativeCall=async(path,body)=>{await ensureNative();return new Promise((res,rej)=>{const id=++callId;pendingCalls.set(id,{res,rej});native.postMessage({id,path,body:body===undefined?null:body,lang:lang()})})};
 async function api(path,body){return nativeCall(path,body)}
 function setSaveState(m){saveMsg=m;const el=$('#savestate');if(el) el.textContent=m}
 function save(){dirty=true;setSaveState(t('save.saving'));clearTimeout(saveTimer);saveTimer=setTimeout(flushSave,400)}
@@ -1500,7 +1500,7 @@ function flushSave(){
 }
 addEventListener('pagehide',()=>{if(dirty&&S&&native) native.postMessage({id:0,path:'/api/state',body:S})});
 
-/* ================= Filstatus ================= */
+/* ================= File status ================= */
 async function checkHealth(paths,manual){
   if(!S) return;
   const btn=$('#chk');if(btn&&manual) btn.textContent=t('check.checking');
@@ -1514,7 +1514,7 @@ async function checkHealth(paths,manual){
   if(manual&&!failed){const bad=S.files.filter(f=>H[f.path]&&H[f.path].exists===false).length;toast(bad?t('check.notFoundN',bad):t('check.allFound'),bad?'bad':'ok')}
 }
 
-/* ================= Åbn / kopiér ================= */
+/* ================= Open / copy ================= */
 async function openFile(f,reveal=false){
   try{
     if(isUrl(f.path)){
@@ -1571,7 +1571,7 @@ function resetUI(r){
 }
 addEventListener('hashchange',()=>{if(!S) return;resetUI(parseRoute());if(pendingTag){UI.tags.add(pendingTag);pendingTag=null}render();scrollTo(0,0)});
 
-/* ================= Filtrering ================= */
+/* ================= Filtering ================= */
 function matches(f,o={}){
   if(UI.status!=='alle'&&(f.status||'aktiv')!==UI.status) return false;
   if(UI.fav&&!f.pinned) return false;
@@ -1672,7 +1672,7 @@ function addMenu(anchor){
     {label:t('addmenu.newHub'),fn:()=>catDialog(null,{hub:true})}]);
 }
 
-/* ---------- Overblik ---------- */
+/* ---------- Overview ---------- */
 function miniRow(f,extra){
   const c=catOf(f),st=statusOf(f);
   return h('div',{class:'mini',title:f.path,onClick:()=>openFile(f)},typeBadge(f),h('div',{class:'mt'},h('b',{},f.title),h('small',{},c.icon+' '+c.name)),extra||null,h('span',{class:'led '+st.k,title:st.t}));
@@ -1722,7 +1722,7 @@ function homeView(){
   if(low.length) out.push(h('div',{class:'cols',style:{marginTop:'30px'}},low));
   return out;
 }
-// Alle filer som kort: favoritter først, derefter grupperet efter hub (farvet kant)
+// All files as cards: favourites first, then grouped by hub (coloured edge)
 function homeGrid(act){
   if(!act.length) return [];
   const order=id=>{const i=S.categories.findIndex(c=>c.id===id);return i<0?999:i};
@@ -1747,7 +1747,7 @@ function onboarding(){
       h('button',{class:'btn',onClick:()=>pasteDialog({})},t('onboard.pasteLinks'))));
 }
 
-/* ---------- Frister ---------- */
+/* ---------- Deadlines ---------- */
 const DUE_VIEWS=['day','week','month','quarter','year'];
 function duePeriod(view,ref){
   const y=ref.getFullYear(),m=ref.getMonth(),fmt=(d,o)=>d.toLocaleDateString(dateLocale(),o);
@@ -1790,14 +1790,14 @@ function exportIcs(){
   toast(t('dv.exported',n),'ok');
 }
 
-/* ---------- Genfind filer, der mangler ---------- */
+/* ---------- Find missing files again ---------- */
 function relinkDialog(){
   const missing=S.files.filter(f=>!isUrl(f.path)&&H[f.path]&&H[f.path].exists===false);
   if(!missing.length){toast(t('relink.noneMissing'),'ok');return}
   let d;const prop=new Map(),extra=new Map(),checked=new Set();
   const trim=x=>cleanPath(x).replace(/[\\/]+$/,''),norm=x=>x.replace(/\//g,'\\').toLowerCase();
   const nameOf=x=>trim(x).split(/[\\/]/).pop(),dirOf=x=>trim(x).replace(/[\\/][^\\/]*$/,'');
-  // Fælles start på de manglende filers mapper, som forslag til den gamle mappe
+  // Common start of the missing files' folders, as a suggestion for the old folder
   const dirs=missing.map(f=>dirOf(f.path).split(/[\\/]/));let ci=0;
   while(dirs.every(a=>ci<a.length&&a[ci].toLowerCase()===dirs[0][ci].toLowerCase())) ci++;
   const oldP=h('input',{class:'mono',value:dirs[0].slice(0,ci).join('\\')}),newP=h('input',{class:'mono',placeholder:t('relink.newPlaceholder')});
@@ -1811,7 +1811,7 @@ function relinkDialog(){
       h('div',{class:'mono muted',style:{overflowWrap:'anywhere'}},f.path),
       h('div',{class:'mono',style:{overflowWrap:'anywhere',color:np?'var(--ok)':'var(--dim)'}},np?'→ '+np+(extra.get(f.id)?'  '+t('relink.moreMatches',extra.get(f.id)):''):t('relink.noMatch'))));
   }));upd()};
-  // Behold kun forslag, der findes på disken og ikke allerede står på dashboardet
+  // Keep only suggestions that exist on disk and are not already on the dashboard
   const propose=async cands=>{
     const have=new Set(S.files.map(f=>f.path.toLowerCase()));
     cands=cands.filter(c=>c[1]&&!have.has(c[1].toLowerCase()));
@@ -1848,7 +1848,7 @@ function relinkDialog(){
   draw();
 }
 
-/* ---------- Bibliotek ---------- */
+/* ---------- Library ---------- */
 function libraryView(r){
   const c=r.parts[0]==='cat'?cat(r.parts[1]):null;
   let title=t('lib.allFiles');
@@ -1931,7 +1931,7 @@ function fileRow(f){
     sm?h('span'):h('div',{class:'acts'},h('button',{class:'ib'+(f.pinned?' on':''),onClick:()=>togglePin(f)},f.pinned?'★':'☆'),h('button',{class:'ib',onClick:e=>fileMenu(e.currentTarget,f)},'⋯')));
 }
 
-/* ---------- Markér flere filer og redigér samlet ---------- */
+/* ---------- Select several files and edit them together ---------- */
 function pickFile(f,e){
   const ids=UI.order||[];
   if(e&&e.shiftKey&&UI.last&&ids.includes(UI.last)&&ids.includes(f.id)){
@@ -2075,7 +2075,7 @@ function teamView(){
     list.length?h('div',{class:'grid'},list.map(teamCard)):h('p',{class:'muted'},t('team.empty'))];
 }
 
-/* ---------- Tags: farver, omdøb, slet ---------- */
+/* ---------- Tags: colours, rename, delete ---------- */
 function setTagColor(name,col){
   S.settings.tagColors=S.settings.tagColors||{};
   if(col) S.settings.tagColors[name.toLowerCase()]=col;else delete S.settings.tagColors[name.toLowerCase()];
@@ -2122,7 +2122,7 @@ function tagManager(){
   d=dialog(t('tag.managerTitle'),[h('p',{class:'muted',style:{marginTop:0}},t('tag.managerBody')),box],[h('span',{class:'spacer'}),h('button',{class:'btn pri',onClick:()=>d.close()},t('common.close'))]);
 }
 
-/* ---------- Forhåndsvisning af Excel- og CSV-filer ---------- */
+/* ---------- Preview of Excel and CSV files ---------- */
 const TAG_COLORS=CAT_COLORS;
 const IMG_EXT=/\.(png|jpe?g|gif|webp|bmp|ico|svg)$/i;
 const IMG_MIME={png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',gif:'image/gif',webp:'image/webp',bmp:'image/bmp',ico:'image/x-icon',svg:'image/svg+xml'};
@@ -2150,7 +2150,7 @@ async function fetchBytes(path,max){
   const r=await api('/api/file',{path,max:max||0,teamFolder:S.team.folder||''});
   return{u8:Uint8Array.from(atob(r.b64),c=>c.charCodeAt(0)),size:r.size};
 }
-/* -- minimal zip-læser (xlsx er en zip-fil) -- */
+/* -- minimal zip reader (xlsx is a zip file) -- */
 function zipIndex(u8){
   const dv=new DataView(u8.buffer,u8.byteOffset,u8.byteLength);let e=-1;
   for(let i=u8.length-22;i>=Math.max(0,u8.length-66000);i--){if(dv.getUint32(i,true)===0x06054b50){e=i;break}}
@@ -2288,7 +2288,7 @@ function pvTable(data,maxRows,maxCols,head){
     head?h('thead',{},h('tr',{},h('th',{class:'rn'}),Array.from({length:cols},(_,i)=>h('th',{},colName(i))))):null,
     h('tbody',{},rows.map((r,ri)=>h('tr',{},h('td',{class:'rn'},String(ri+1)),Array.from({length:cols},(_,ci)=>{const v=(r&&r[ci])||'';return h('td',{title:v.length>22?v:null,class:/^-?[\d.,]+( %)?$/.test(v)?'num':''},v)}))))));
 }
-/* -- forhåndsvisningsrude (som i Stifinder): viser den valgte fil ved siden af listen -- */
+/* -- preview pane (as in File Explorer): shows the selected file next to the list -- */
 const PANE={key:'',tok:0};
 function initPaneResize(){
   const grip=$('#panegrip'),app=document.querySelector('.app');
@@ -2331,7 +2331,7 @@ async function fillPane(){
   if(!on){PANE.key='';revokePaneBlob();pane.replaceChildren();return}
   const f=[...S.files,...S.team.files].find(x=>x.id===UI.pv),x=f&&H[f.path];
   const key=f?[f.id,f.title,f.path,x&&x.modified,x&&x.size,x&&x.exists].join('|'):'-';
-  if(key===PANE.key&&pane.firstChild) return;   // uændret: behold rudens indhold og rulleposition
+  if(key===PANE.key&&pane.firstChild) return;   // unchanged: keep the pane's content and scroll position
   PANE.key=key;const tok=++PANE.tok;revokePaneBlob();
   const close=h('button',{class:'ib',title:t('pane.hidePreview'),onClick:()=>{S.settings.preview=false;save();render()}},'✕');
   if(!f){pane.replaceChildren(h('div',{class:'pane-head'},h('b',{},t('pane.title')),h('span',{class:'spacer'}),close),h('span',{class:'pv-msg'},t('pane.pickFileHint')));return}
@@ -2416,7 +2416,7 @@ function hubView(c){
   return[topbar(c.icon+' '+c.name,t('lib.hub')),head,h('div',{class:'hubgrid'},left,right),...libraryBlock({lock:true})];
 }
 
-/* ================= Dialoger ================= */
+/* ================= Dialogs ================= */
 function fileDialog(f,preset={}){
   const isNew=!f;
   const m=f?{...f,tags:[...(f.tags||[])]}:{id:uid(),title:preset.path?titleFromPath(preset.path):'',path:preset.path||'',desc:'',category:preset.category||UI.cat||'',tags:[],pinned:false,status:'aktiv',due:'',dueLabel:'',recur:'',added:new Date().toISOString(),opens:0};
@@ -2427,7 +2427,7 @@ function fileDialog(f,preset={}){
   const pick=kind=>browseDialog({mode:kind==='dir'?'folder':'files',multi:false,start:(path.value&&!isUrl(path.value))?(kind==='dir'?path.value:path.value.replace(/[\\/][^\\/]*$/,'')):'',onPick:ps=>{const p=ps[0];if(p){path.value=p;if(!title.value) title.value=titleFromPath(p)}}});
   const catSel=catSelect(m.category),tags=tagInput(m.tags);
   const desc=h('textarea',{},m.desc||''),due=h('input',{type:'date',value:m.due||''}),dueL=h('input',{value:m.dueLabel||'',placeholder:t('fdlg.dueLabelPlaceholder')});
-  /* Gentagelse: faste valg + "Tilpasset…", som viser hele reglen */
+  /* Recurrence: fixed choices + "Custom…", which shows the whole rule */
   const R=m.recur&&m.recur.unit?m.recur:null,c=R||{unit:'week',every:1};
   const dueDay=()=>(due.value?pd(due.value):new Date()).getDate();
   const PRESETS={daily:()=>({unit:'day',every:1}),weekdays:()=>({unit:'week',every:1,days:[1,2,3,4,5]}),weekly:()=>({unit:'week',every:1}),biweekly:()=>({unit:'week',every:2}),
@@ -2518,7 +2518,7 @@ function importDialog(rows,preset={}){
     list],[h('span',{class:'spacer'}),h('button',{class:'btn',onClick:()=>d.close()},t('common.cancel')),add]);
   upd();
 }
-/* ---------- Filvælger (egen, uafhængig af Windows-dialoger) ---------- */
+/* ---------- File picker (our own, independent of Windows dialogs) ---------- */
 let placesCache=null;
 async function nativePick(mode,multi){
   if(mode==='folder'){const r=await api('/api/pickfolder',{});return r.path?[r.path]:[]}
@@ -2721,7 +2721,7 @@ function holidaysDialog(){
     }},t('common.save'))]);
 }
 
-/* ---------- Hurtigsøg ---------- */
+/* ---------- Quick search ---------- */
 function palette(){
   closeMenu();
   const inp=h('input',{class:'pal-in',placeholder:t('pal.placeholder')}),list=h('div',{class:'pal-list'});
@@ -2761,7 +2761,7 @@ addEventListener('keydown',e=>{
   else if(e.key==='/'&&!typing&&!document.querySelector('dialog[open]')){e.preventDefault();palette()}
 });
 
-/* ---------- Træk og slip ---------- */
+/* ---------- Drag and drop ---------- */
 let dragDepth=0;
 addEventListener('dragenter',e=>{if(e.dataTransfer&&[...e.dataTransfer.types].includes('Files')){dragDepth++;document.body.classList.add('dragging')}});
 addEventListener('dragleave',()=>{dragDepth=Math.max(0,dragDepth-1);if(!dragDepth) document.body.classList.remove('dragging')});
@@ -3246,7 +3246,7 @@ async function ping(){
   catch{if(helperOnline){helperOnline=false;render()}}
 }
 
-/* ================= Opdatering (kun desktop-appen) ================= */
+/* ================= Update (desktop app only) ================= */
 function onNativeEvent(name,data){
   if(name==='update-progress'){updateProgress=data;render()}
 }
@@ -3260,7 +3260,7 @@ async function installUpdate(){
   updateInstalling=true;updateProgress=null;updateError='';render();
   try{await api('/api/update/install')}
   catch(e){updateInstalling=false;updateError=e.message;render();return}
-  // Installeren er nu startet af Windows (med sin egen UAC-/fremgangsdialog); appen lukker snart selv
+  // Windows has now started the installer (with its own UAC/progress dialog); the app closes itself shortly
   showMessage(t('upd.installingTitle'),APPINFO&&APPINFO.portable?t('upd.portableBody'):t('upd.installingBody'));
 }
 function updateBanner(){
