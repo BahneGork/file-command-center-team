@@ -1,32 +1,33 @@
 # File Command Center
 
-Et lille dashboard til at samle adgangen til dine filer (Excel, PDF, billeder, dokumenter, mapper, links – alle typer) ét sted, uanset om de ligger lokalt, på et netværksdrev eller i OneDrive. Dashboardet gemmer kun **stien** til hver fil; filerne flyttes eller kopieres aldrig.
+A small dashboard that gathers your files in one place (Excel, PDF, images, documents, folders, links – any type), whether they live locally, on a network drive or in OneDrive. The dashboard stores only the **path** to each file; files are never moved or copied.
 
-En rigtig Windows-app (.NET 8 + WebView2), uden nogen webserver eller åben port. Se **[desktop/README.md](desktop/README.md)** for byg-instruktioner, hvad appen gør på pc'en, og krav.
+A real Windows app (.NET 8 + WebView2), with no web server and no open port. See **[desktop/README.md](desktop/README.md)** for build instructions, what the app does on the PC, and requirements.
 
-## Funktioner
+The app is in Danish and English: the language button at the bottom of the sidebar switches the whole interface and the manual. The default is Danish.
 
-- Filvælger, "Scan mapper…" og en indbygget mappebrowser til at tilføje filer og mapper.
-- Hubs, tags, favoritter, arkiv og filstatus (findes/mangler filen).
-- Forhåndsvisningsrude (som i Stifinder) med regnearks-/CSV-tabel, billeder, PDF'er og tekst/kode-filer – bredden kan trækkes.
-- Åbner filer i det program, Windows har knyttet til dem, og blokerer altid programmer/scripts (`.exe`, `.ps1`, `.js` osv.).
-- Daglige backups af dine data, plus en ekstra backup hver gang en gemning ville fjerne filer.
-- Appen tjekker selv for nye versioner (GitHub Releases) og kan installere en opdatering med ét klik.
-- Dansk/engelsk: sprogknappen nederst i sidebaren skifter hele grænsefladen og manualen. Standard er dansk; vælges automatisk ud fra styresystemets sprog, før dine indstillinger er indlæst.
+## Features
+
+- File picker, "Scan folders…" and a built-in folder browser for adding files and folders.
+- Hubs, tags, favourites, archive and file status (does the file exist or is it missing).
+- Preview pane (as in File Explorer) with a spreadsheet/CSV table, images, PDFs and text/code files – the width can be dragged.
+- Opens files in the program Windows has associated with them, and always blocks programs/scripts (`.exe`, `.ps1`, `.js` etc.).
+- Deadlines, including recurring ones, with calendar export (.ics).
+- Daily backups of your data, plus an extra backup whenever a save would remove files.
+- The app checks for new versions itself (GitHub Releases) and can install an update with one click.
 
 ## Data
 
-Dine data (`data.json` + `backups/`) gemmes lokalt i `%LOCALAPPDATA%\FileCommandCenter\` og er **ikke** en del af dette repo.
+Your data (`data.json` + `backups/`) is stored locally in `%LOCALAPPDATA%\FileCommandCenter\` and is **not** part of this repo.
 
-## Hent appen
+## Get the app
 
-Fra [Releases](https://github.com/BahneGork/file-command-center/releases/latest) - to former, samme app:
-- **Installer (.msi)** - installerer i `Program Files`, kræver admin, giver en Start-menu-genvej og selv-opdatering. Byg-instruktioner: **[desktop/installer/README.md](desktop/installer/README.md)**.
-- **Portabel (.zip)** - pak ud og kør `FileCommandCenter.exe` hvor som helst, ingen installation, ingen admin-rettigheder nødvendigt. `web`-mappen skal blive liggende ved siden af .exe'en. Fra v1.0.7 opdaterer den sig selv via "Opdater nu" (henter den nye .zip og skifter sine egne filer ud), så længe mappen kan skrives i. En portabel kopi fra før v1.0.7 skal opdateres manuelt én sidste gang.
+From [Releases](https://github.com/BahneGork/file-command-center/releases/latest) – two forms, same app:
+- **Installer (.msi)** – installs to `Program Files`, needs admin, adds a Start menu shortcut and updates itself. Build instructions: **[desktop/installer/README.md](desktop/installer/README.md)**.
+- **Portable (.zip)** – unzip and run `FileCommandCenter.exe` anywhere, no installation, no admin rights needed. The `web` folder must stay next to the .exe. From v1.0.7 it updates itself through "Opdater nu" / "Update now" (downloads the new .zip and swaps out its own files), as long as its folder is writable. A portable copy from before v1.0.7 has to be updated by hand one last time.
 
-Begge er selvstændige builds (intet .NET skal være installeret i forvejen).
+Both are self-contained builds (no .NET needs to be installed beforehand).
 
-## Ikke gjort endnu
+## Not done yet
 
-- **Kodesignering.** Installeren er usigneret, så Windows vil advare (SmartScreen/Defender).
-- Se `desktop/README.md` og `desktop/installer/README.md` for flere detaljer om, hvad der mangler.
+- **Code signing.** The installer is unsigned, so Windows will warn (SmartScreen/Defender). See [desktop/README.md](desktop/README.md) and [desktop/installer/README.md](desktop/installer/README.md) for details.

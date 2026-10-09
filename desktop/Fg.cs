@@ -3,7 +3,7 @@ using System.Text;
 
 namespace CommandCenter;
 
-// Henter vinduer forrest (Windows tillader ellers ikke, at et program selv får andres vinduer frem)
+// Brings windows to the front (Windows otherwise doesn't let a program bring other programs' windows forward)
 static class Fg
 {
     delegate bool EnumProc(IntPtr h, IntPtr l);
@@ -23,10 +23,10 @@ static class Fg
     [DllImport("user32.dll", CharSet = CharSet.Auto)] static extern int GetClassName(IntPtr hWnd, StringBuilder sb, int max);
     [DllImport("user32.dll", CharSet = CharSet.Auto)] static extern int GetWindowText(IntPtr hWnd, StringBuilder sb, int max);
 
-    // Tvinger et vindue forrest: kobler til det aktive vindues tråd, lægger vinduet øverst og giver det fokus
+    // Forces a window to the front: attaches to the active window's thread, puts the window on top and gives it focus
     public static void Force(IntPtr h)
     {
-        // F24 trykkes og slippes først: det får Windows til at lade os skifte forgrundsvindue
+        // Press and release F24 first: that makes Windows let us change the foreground window
         keybd_event(0x87, 0, 0, UIntPtr.Zero); keybd_event(0x87, 0, 2, UIntPtr.Zero);
         if (IsIconic(h)) ShowWindow(h, 9);
         IntPtr fg = GetForegroundWindow();
@@ -42,7 +42,7 @@ static class Fg
         if (attached) AttachThreadInput(me, fgThread, false);
     }
 
-    // Finder et Stifinder-vindue ud fra titel (mappens navn)
+    // Finds a File Explorer window by its title (the folder's name)
     public static IntPtr FindExplorerByTitle(string title)
     {
         IntPtr found = IntPtr.Zero;

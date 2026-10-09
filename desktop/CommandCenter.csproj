@@ -8,9 +8,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>FileCommandCenter</AssemblyName>
     <RootNamespace>CommandCenter</RootNamespace>
-    <!-- Eneste sted app-versionen sættes. Skal matche Version i installer\Package.wxs og git-tagget (vX.Y.Z) ved en udgivelse. -->
+    <!-- The only place the app version is set. Must match Version in installer\Package.wxs and the git tag (vX.Y.Z) for a release. -->
     <Version>1.0.7</Version>
-    <!-- Udgave: "installer" (standard) eller "portable" (byg med -p:Flavor=portable). Bygges ind i exe'en, så appen ved, hvordan den skal opdatere sig selv. -->
+    <!-- Flavor: "installer" (default) or "portable" (build with -p:Flavor=portable). Built into the exe, so the app knows how to update itself. -->
     <Flavor Condition="'$(Flavor)' == ''">installer</Flavor>
   </PropertyGroup>
 
@@ -22,7 +22,7 @@
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4191.47" />
   </ItemGroup>
 
-  <!-- Siden er den samme index.html som PowerShell-versionen bruger (én kilde) -->
+  <!-- The page is the same index.html the PowerShell version used (a single source) -->
   <ItemGroup>
     <Content Include="..\index.html" Link="web\index.html" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>

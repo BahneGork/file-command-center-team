@@ -7,7 +7,7 @@ namespace CommandCenter;
 
 sealed class MainForm : Form
 {
-    // Siden vises fra en intern adresse, der peger på mappen "web" ved siden af programmet. Der åbnes ingen netværksport.
+    // The page is shown from an internal address that points at the "web" folder next to the program. No network port is opened.
     const string Host = "commandcenter.local";
     readonly WebView2 web = new() { Dock = DockStyle.Fill };
     TaskCompletionSource? flushed;
@@ -32,7 +32,8 @@ sealed class MainForm : Form
         }
         catch (WebView2RuntimeNotFoundException)
         {
-            MessageBox.Show("Microsoft Edge WebView2 Runtime mangler på denne pc, så dashboardet kan ikke vises.\nInstallér 'WebView2 Runtime' fra Microsoft.",
+            MessageBox.Show(L.T("Microsoft Edge WebView2 Runtime mangler på denne pc, så dashboardet kan ikke vises.\nInstallér 'WebView2 Runtime' fra Microsoft.",
+                    "Microsoft Edge WebView2 Runtime is missing on this PC, so the dashboard can't be shown.\nInstall 'WebView2 Runtime' from Microsoft."),
                 Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
             closeNow = true; Close();
             return;
@@ -45,7 +46,7 @@ sealed class MainForm : Form
         c.Settings.IsPasswordAutosaveEnabled = false;
         c.SetVirtualHostNameToFolderMapping(Host, Path.Combine(AppContext.BaseDirectory, "web"), CoreWebView2HostResourceAccessKind.Deny);
 
-        // Siden må kun tale med sig selv: alt andet blokeres
+        // The page may only talk to itself: everything else is blocked
         c.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
         c.WebResourceRequested += (_, e) =>
         {
@@ -56,7 +57,7 @@ sealed class MainForm : Form
         {
             if (Uri.TryCreate(e.Uri, UriKind.Absolute, out var u) && u.Scheme == "https" && u.Host == Host) return;
             e.Cancel = true;
-            // Excel-link til en fil på nettet (siden lader som et klik på ms-excel:...)
+            // Excel link to a file on the web (the page fakes a click on ms-excel:...)
             if (e.Uri.StartsWith("ms-excel:ofe|u|https://", StringComparison.OrdinalIgnoreCase) || e.Uri.StartsWith("ms-excel:ofe|u|http://", StringComparison.OrdinalIgnoreCase))
                 Launch(e.Uri);
         };
@@ -82,8 +83,9 @@ sealed class MainForm : Form
         var id = msg.GetProperty("id").GetInt32();
         var path = msg.GetProperty("path").GetString() ?? "";
         if (path == "/flushed") { flushed?.TrySetResult(); return; }
+        if (msg.TryGetProperty("lang", out var langEl) && langEl.ValueKind == JsonValueKind.String) L.En = langEl.GetString() == "en";
 
-        // Downloadfremgang sendes løbende som en "event"-besked, ikke som svar på et bestemt kald
+        // Download progress is sent continuously as an "event" message, not as a reply to a specific call
         Action<long, long>? onProgress = null;
         if (path == "/api/update/install")
         {
@@ -102,9 +104,9 @@ sealed class MainForm : Form
         catch (Exception ex) { ok = false; reply = $"{{\"id\":{id},\"ok\":false,\"error\":{JsonSerializer.Serialize(ex.Message)}}}"; }
         if (id > 0) web.CoreWebView2.PostWebMessageAsJson(reply);
 
-        // Installeren er startet i en separat proces; luk os selv ned (med normal gem-før-luk), så vores
-        // .exe ikke længere er låst, når installeren skal skrive de nye filer. Kort pause, så siden når at
-        // vise "Opdaterer…" først.
+        // The installer has started in a separate process; shut ourselves down (with the normal save-before-close), so our
+        // .exe is no longer locked when the installer writes the new files. Short pause, so the page has time to
+        // show "Updating…" first.
         if (ok && path == "/api/update/install")
         {
             await Task.Delay(2000);
@@ -112,7 +114,7 @@ sealed class MainForm : Form
         }
     }
 
-    // Lukker først, når siden har gemt (ellers kan de sidste ændringer gå tabt)
+    // Only closes once the page has saved (otherwise the last changes could be lost)
     async void OnClosing(object? sender, FormClosingEventArgs e)
     {
         if (closeNow || web.CoreWebView2 == null) return;

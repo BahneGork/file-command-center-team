@@ -4,11 +4,11 @@ using System.Text.Json.Nodes;
 
 namespace CommandCenter;
 
-// Team-delt fildatabase: flere skrivere, samme mappe (et netværksdrev, en OneDrive/SharePoint-synkroniseret
-// mappe, eller hvad brugeren nu peger på - appen er ligeglad med, hvad der holder mappen synkroniseret).
-// I modsætning til Store.cs (én bruger, hele filen overskrives ved hver gemning) skal denne håndtere flere
-// samtidige skrivere: hver post har sit eget "senest ændret"-tidsstempel, og en slettet post bliver en
-// gravsten i stedet for at forsvinde, så en computer, der endnu ikke har set slettelsen, ikke genopliver den.
+// Team-shared file database: several writers, one folder (a network drive, a OneDrive/SharePoint-synced
+// folder, or whatever the user points at - the app doesn't care what keeps the folder in sync).
+// Unlike Store.cs (one user, the whole file is overwritten on every save) this one has to handle several
+// writers at once: each entry has its own "last modified" timestamp, and a deleted entry becomes a
+// tombstone instead of disappearing, so a computer that hasn't seen the deletion yet doesn't bring it back.
 static class TeamStore
 {
     static readonly UTF8Encoding Utf8 = new(false);
@@ -18,15 +18,15 @@ static class TeamStore
     static string DataFile(string folder) => Path.Combine(folder, FileName);
     static string BackupDir(string folder) => Path.Combine(folder, "backups");
 
-    // Læser den delte fil rå (bruges til eksport og som fald-tilbage, hvis mappen ikke kan nås)
+    // Reads the shared file raw (used for export and as a fallback if the folder can't be reached)
     public static string? Load(string folder)
     {
         var p = DataFile(folder);
         return File.Exists(p) ? File.ReadAllText(p, Utf8) : null;
     }
 
-    // Er stien registreret i den delte database? Fejler lukket (false), hvis mappen mangler, ikke kan
-    // læses, eller filen er ugyldig - et midlertidigt utilgængeligt drev skal ikke vælte personlige åbninger.
+    // Is the path registered in the shared database? Fails closed (false) if the folder is missing, can't be
+    // read, or the file is invalid - a drive that is briefly unavailable must not break opening personal files.
     public static bool IsRegistered(string? folder, string p)
     {
         if (string.IsNullOrEmpty(folder)) return false;
@@ -49,8 +49,8 @@ static class TeamStore
 
     static JsonObject EmptyDoc() => new() { ["rev"] = 0L, ["categories"] = new JsonArray(), ["files"] = new JsonArray() };
 
-    // JsonValue.GetValue&lt;long&gt;() kaster, hvis tallet blev bygget som en rå C#-int (fx i EmptyDoc) i stedet for
-    // parset fra JSON-tekst - de to former opfører sig forskelligt. TryGetValue med begge typer er robust over for begge.
+    // JsonValue.GetValue&lt;long&gt;() throws if the number was built as a raw C# int (e.g. in EmptyDoc) instead of
+    // parsed from JSON text - the two forms behave differently. TryGetValue with both types handles either.
     static long RevOf(JsonObject doc) =>
         doc["rev"] is JsonValue v ? (v.TryGetValue<long>(out var l) ? l : v.TryGetValue<int>(out var i) ? i : 0) : 0;
 
@@ -59,11 +59,11 @@ static class TeamStore
         var json = Load(folder);
         if (json == null) return EmptyDoc();
         try { return JsonNode.Parse(json) as JsonObject ?? EmptyDoc(); }
-        catch { return EmptyDoc(); }   // ugyldig fil: opfør dig som om den var tom, i stedet for at vælte synkroniseringen
+        catch { return EmptyDoc(); }   // invalid file: act as if it were empty, instead of breaking the sync
     }
 
-    // Slår to lister af poster sammen (hubs eller filer): for hvert id vinder den nyeste "modifiedAt".
-    // Id'er, der kun findes på den ene side, tages altid med - intet forsvinder tavst.
+    // Merges two lists of entries (hubs or files): for each id the newest "modifiedAt" wins.
+    // Ids that only exist on one side are always kept - nothing disappears silently.
     static JsonArray MergeEntries(JsonArray a, JsonArray b)
     {
         var byId = new Dictionary<string, JsonObject>();
@@ -87,11 +87,11 @@ static class TeamStore
     {
         var ta = a["modifiedAt"]?.GetValue<string>() ?? "";
         var tb = b["modifiedAt"]?.GetValue<string>() ?? "";
-        return string.CompareOrdinal(ta, tb) > 0;   // ISO-tidsstempler sorterer korrekt som tekst
+        return string.CompareOrdinal(ta, tb) > 0;   // ISO timestamps sort correctly as text
     }
 
-    // Slår klientens lokale tilstand sammen med den delte fil og skriver resultatet tilbage.
-    // Prøver igen, hvis en anden computer nåede at skrive, imens vi arbejdede (optimistisk låsning via "rev").
+    // Merges the client's local state with the shared file and writes the result back.
+    // Tries again if another computer managed to write while we were working (optimistic locking via "rev").
     public static JsonObject Sync(string folder, JsonObject local)
     {
         Directory.CreateDirectory(folder);
@@ -106,14 +106,14 @@ static class TeamStore
                 ["files"] = MergeEntries(AsArray(remote["files"]), AsArray(local["files"])),
             };
             try { if (TryWrite(folder, merged, remoteRev)) return merged; }
-            catch (IOException) { }   // delt drev kan drille et øjeblik; prøv igen
+            catch (IOException) { }   // a shared drive can act up for a moment; try again
             Thread.Sleep(150 * (attempt + 1));
         }
-        throw new ApiError("Kunne ikke synkronisere team-databasen - prøv igen om lidt.");
+        throw new ApiError(L.T("Kunne ikke synkronisere team-databasen - prøv igen om lidt.", "Couldn't sync the team database - try again in a moment."));
     }
 
-    // Erstatter HELE den delte database med et gendannet øjebliksbillede ("Gendan team-database fra fil…").
-    // Går stadig igennem rev-tjekket, så det ikke usynligt overskriver ændringer, andre har lavet i mellemtiden.
+    // Replaces the WHOLE shared database with a restored snapshot ("Restore team database from file…").
+    // Still goes through the rev check, so it doesn't silently overwrite changes others have made in the meantime.
     public static JsonObject Restore(string folder, JsonObject snapshot)
     {
         Directory.CreateDirectory(folder);
@@ -131,19 +131,19 @@ static class TeamStore
             catch (IOException) { }
             Thread.Sleep(150 * (attempt + 1));
         }
-        throw new ApiError("Kunne ikke gendanne team-databasen - prøv igen om lidt.");
+        throw new ApiError(L.T("Kunne ikke gendanne team-databasen - prøv igen om lidt.", "Couldn't restore the team database - try again in a moment."));
     }
 
     static JsonArray AsArray(JsonNode? n) => n as JsonArray ?? new JsonArray();
 
-    // Skriver kun, hvis "rev" i filen stadig er den, vi læste ud fra (ingen anden nåede at skrive imens).
+    // Only writes if "rev" in the file is still the one we read from (nobody else managed to write in the meantime).
     static bool TryWrite(string folder, JsonObject merged, long expectedPrevRev)
     {
         var path = DataFile(folder);
         if (File.Exists(path))
         {
             var currentRev = RevOf(ReadDoc(folder));
-            if (currentRev != expectedPrevRev) return false;   // en anden skrev imens - prøv igen med friske data
+            if (currentRev != expectedPrevRev) return false;   // someone else wrote in the meantime - try again with fresh data
             Backup(folder, path);
         }
         var tmp = path + ".tmp";
@@ -152,8 +152,8 @@ static class TeamStore
         return true;
     }
 
-    // Daglig sikkerhedskopi i den delte mappe selv, så alle med adgang til mappen kan se/gendanne den -
-    // et ekstra sikkerhedsnet oven på, hvad selve delingsmekanismen allerede tilbyder (fx OneDrives egen historik).
+    // Daily backup in the shared folder itself, so everyone with access to the folder can see/restore it -
+    // an extra safety net on top of what the sharing mechanism already offers (e.g. OneDrive's own history).
     static void Backup(string folder, string dataFile)
     {
         try
@@ -168,6 +168,6 @@ static class TeamStore
                     f.Delete();
             }
         }
-        catch { }   // backup er et sikkerhedsnet, ikke noget der må vælte en synkronisering
+        catch { }   // the backup is a safety net, not something that may break a sync
     }
 }
